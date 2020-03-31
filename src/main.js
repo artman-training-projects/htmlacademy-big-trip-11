@@ -25,6 +25,15 @@ const createRouteCostTemplate = () => {
   );
 };
 
+const createTripControlsTemplate = () => {
+  return (
+    `<nav class="trip-controls__trip-tabs  trip-tabs">
+      <a class="trip-tabs__btn  trip-tabs__btn--active" href="#">Table</a>
+      <a class="trip-tabs__btn" href="#">Stats</a>
+    </nav>`
+  );
+};
+
 const render = (container, template, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template);
 };
@@ -35,6 +44,9 @@ render(tripMain, createRouteTemplate());
 const tripInfo = document.querySelector(`.trip-info`);
 render(tripInfo, createRouteInfoTemplate());
 render(tripInfo, createRouteCostTemplate());
+
+const tripControls = document.querySelector(`.trip-controls`);
+render(tripControls, createTripControlsTemplate());
 
 // /////////////////////////////////
 // const siteMainElement = document.querySelector(`.main`);
