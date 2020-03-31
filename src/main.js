@@ -360,6 +360,14 @@ const render = (container, template, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template);
 };
 
+const renderRoutePoints = (container, template, place, routeCount) => {
+  for (const route of container) {
+    for (let i = 0; i < routeCount; i++) {
+      render(route, template, place);
+    }
+  }
+};
+
 const tripMain = document.querySelector(`.trip-main`);
 render(tripMain, createRouteTemplate());
 
@@ -377,8 +385,4 @@ render(tripEvents, createTripEditTemplate());
 render(tripEvents, createTripOffersTemplate());
 
 const tripPoints = tripEvents.querySelectorAll(`.trip-events__list`);
-for (const route of tripPoints) {
-  for (let i = 0; i < ROUTE_POINT; i++) {
-    render(route, createTripOffersPointsTemplate());
-  }
-}
+renderRoutePoints(tripPoints, createTripOffersPointsTemplate(), `beforeend`, ROUTE_POINT);
