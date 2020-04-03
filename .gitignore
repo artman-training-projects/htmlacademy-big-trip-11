@@ -13,4 +13,4 @@ node_modules/
 
 # Файлы сборки (допишите самостоятельно)
 public/bundle.js
-public/boundle.map.js
+public/boundle.js.map
