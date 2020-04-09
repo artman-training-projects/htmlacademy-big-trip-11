@@ -8,10 +8,10 @@ import {createTripEditTemplate} from './components/trip-edit';
 import {createTripOffersTemplate} from './components/trip-offers';
 import {createTripOffersPointsTemplate} from './components/trip-offers-points';
 
-import {generateTripPoint} from './mock/trip-point';
+import {generateTrip} from './mock/trip-point';
 
 // времянка для логов
-console.log(generateTripPoint());
+console.log(generateTrip());
 
 const ROUTE_POINT = 3;
 

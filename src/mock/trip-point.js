@@ -4,28 +4,6 @@ const tripPointTypes = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `F
 
 const tripDestinationCitys = [`Amsterdam`, `Geneva`, `Melbourne`, `Chamonix`, `Saint Petersburg`, `Frankfurt`, `Lisbon`, `Sochi`, `Barcelona`, `Helsinki`, `Oslo`, `Moscow`, `Kioto`, `Tokyo`];
 
-const offerCount = {
-  MIN: 0,
-  MAX: 5,
-};
-
-const tripOffers = [{
-  title: `title1`,
-  price: 20,
-}, {
-  title: `title2`,
-  price: 40,
-}, {
-  title: `title3`,
-  price: 60,
-}, {
-  title: `title4`,
-  price: 80,
-}, {
-  title: `title5`,
-  price: 100,
-}];
-
 const tripDestinationDescriptions = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
   `Cras aliquet varius magna, non porta ligula feugiat eget.`,
@@ -47,6 +25,11 @@ const descriptionCount = {
 
 const photoCount = {
   MIN: 1,
+  MAX: 5,
+};
+
+const offerCount = {
+  MIN: 0,
   MAX: 5,
 };
 
@@ -75,6 +58,22 @@ const getTripDestinationDesccription = (descriptions, length) => {
   return getRandomArrayFromArray(descriptions, count).join(` `);
 };
 
+const getTripOffers = (count) => {
+  const offerCounts = getRandomIntegerNumber(count.MIN, count.MAX);
+
+  let offers = [];
+
+  for (let i = 0; i < offerCounts; i++) {
+    offers
+      .push({
+        title: `offer title - ${Math.random()}`,
+        price: getRandomIntegerNumber(price.MIN, price.MAX),
+      });
+  }
+
+  return offers;
+};
+
 const generateTripDestination = () => {
   return {
     destination: {
@@ -88,13 +87,18 @@ const generateTripDestination = () => {
 const generateTripOffer = () => {
   return {
     type: getRandomArrayItem(tripPointTypes),
-    offers: [{
-      title: `title`,
-      price: ``,
-    }]
+    offers: getTripOffers(offerCount),
   };
 };
 
-const generateTripPoint = () => Object.assign({}, generateTripDestination(), generateTripOffer());
+const generateTripPoint = () => {
+  return {
+    basePrice: getRandomIntegerNumber(price.MIN, price.MAX),
+    timeFrom: ``,
+    timeTo: ``,
+  };
+};
 
-export {generateTripPoint};
+const generateTrip = () => Object.assign({}, generateTripPoint(), generateTripDestination(), generateTripOffer());
+
+export {generateTrip};
