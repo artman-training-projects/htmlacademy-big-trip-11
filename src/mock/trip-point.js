@@ -1,4 +1,4 @@
-import {getRandomArrayItem, getRandomIntegerNumber} from '../utils';
+import {getRandomArrayItem, getRandomIntegerNumber, getRandomArrayFromArray} from '../utils';
 
 const tripPointTypes = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`, `Check-in`, `Sightseeing`, `Restaurant`];
 
@@ -40,6 +40,11 @@ const tripDestinationDescriptions = [
   `In rutrum ac purus sit amet tempus.`,
 ];
 
+const descriptionCount = {
+  MIN: 1,
+  MAX: 5,
+};
+
 const photoCount = {
   MIN: 1,
   MAX: 5,
@@ -65,11 +70,16 @@ const getTripDestinationPhotos = (count) => {
   return photos;
 };
 
+const getTripDestinationDesccription = (descriptions, length) => {
+  const count = getRandomIntegerNumber(length.MIN, length.MAX);
+  return getRandomArrayFromArray(descriptions, count).join(` `);
+};
+
 const generateTripDestination = () => {
   return {
     destination: {
       name: getRandomArrayItem(tripDestinationCitys),
-      description: `description`,
+      description: getTripDestinationDesccription(tripDestinationDescriptions, descriptionCount),
       pictures: getTripDestinationPhotos(photoCount),
     }
   };
@@ -85,8 +95,6 @@ const generateTripOffer = () => {
   };
 };
 
-const generateTripPoint = () => {
-  return Object.assign({}, generateTripDestination(), generateTripOffer());
-};
+const generateTripPoint = () => Object.assign({}, generateTripDestination(), generateTripOffer());
 
 export {generateTripPoint};
