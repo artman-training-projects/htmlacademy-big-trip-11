@@ -1,29 +1,28 @@
-const tripPointTypes = {
-  transport: [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`],
-  place: [`Check`, `Sightseeing`, `Restaurant`],
-};
+import {getRandomArrayItem, getRandomIntegerNumber} from '../utils';
+
+const tripPointTypes = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`, `Check-in`, `Sightseeing`, `Restaurant`];
 
 const tripDestinationCitys = [`Amsterdam`, `Geneva`, `Melbourne`, `Chamonix`, `Saint Petersburg`, `Frankfurt`, `Lisbon`, `Sochi`, `Barcelona`, `Helsinki`, `Oslo`, `Moscow`, `Kioto`, `Tokyo`];
 
-const tripTime = {
-  from: 10,
-  to: 12,
+const offerCount = {
+  MIN: 0,
+  MAX: 5,
 };
 
-const tripPointOptions = [{
-  title: `title`,
+const tripOffers = [{
+  title: `title1`,
   price: 20,
 }, {
-  title: `title`,
+  title: `title2`,
   price: 40,
 }, {
-  title: `title`,
+  title: `title3`,
   price: 60,
 }, {
-  title: `title`,
+  title: `title4`,
   price: 80,
 }, {
-  title: `title`,
+  title: `title5`,
   price: 100,
 }];
 
@@ -38,21 +37,56 @@ const tripDestinationDescriptions = [
   `Sed sed nisi sed augue convallis suscipit in sed felis.`,
   `Aliquam erat volutpat.`,
   `Nunc fermentum tortor ac porta dapibus.`,
-  `In rutrum ac purus sit amet tempus.`
+  `In rutrum ac purus sit amet tempus.`,
 ];
 
-const tripDestinationPhotos = `http://picsum.photos/248/152?r=${Math.random()}`;
+const photoCount = {
+  MIN: 1,
+  MAX: 5,
+};
+
+const price = {
+  MIN: 10,
+  MAX: 200,
+};
+
+const getTripDestinationPhotos = (count) => {
+  const photosCount = getRandomIntegerNumber(count.MIN, count.MAX);
+  let photos = [];
+
+  for (let i = 0; i < photosCount; i++) {
+    photos
+      .push({
+        src: `http://picsum.photos/248/152?r=${Math.random()}`,
+        description: `alt-${Math.random()}`,
+      });
+  }
+
+  return photos;
+};
+
+const generateTripDestination = () => {
+  return {
+    destination: {
+      name: getRandomArrayItem(tripDestinationCitys),
+      description: `description`,
+      pictures: getTripDestinationPhotos(photoCount),
+    }
+  };
+};
+
+const generateTripOffer = () => {
+  return {
+    type: getRandomArrayItem(tripPointTypes),
+    offers: [{
+      title: `title`,
+      price: ``,
+    }]
+  };
+};
 
 const generateTripPoint = () => {
-  return {
-    type,
-    destination: {
-      title,
-      description,
-      photos,
-    },
-    options,
-  };
+  return Object.assign({}, generateTripDestination(), generateTripOffer());
 };
 
 export {generateTripPoint};

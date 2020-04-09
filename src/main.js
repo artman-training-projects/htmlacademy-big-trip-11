@@ -8,6 +8,11 @@ import {createTripEditTemplate} from './components/trip-edit';
 import {createTripOffersTemplate} from './components/trip-offers';
 import {createTripOffersPointsTemplate} from './components/trip-offers-points';
 
+import {generateTripPoint} from './mock/trip-point';
+
+// времянка для логов
+console.log(generateTripPoint());
+
 const ROUTE_POINT = 3;
 
 const render = (container, template, place = `beforeend`) => {
