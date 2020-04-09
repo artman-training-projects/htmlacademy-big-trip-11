@@ -94,8 +94,8 @@ const generateTripOffer = () => {
 const generateTripPoint = () => {
   return {
     basePrice: getRandomIntegerNumber(price.MIN, price.MAX),
-    timeFrom: ``,
-    timeTo: ``,
+    dateFrom: new Date(),
+    dateTo: new Date(Date.now() + getRandomIntegerNumber(1, 4) * 60 * 60 * 1000),
   };
 };
 

@@ -11,7 +11,7 @@ import {createTripOffersPointsTemplate} from './components/trip-offers-points';
 import {generateTrip} from './mock/trip-point';
 
 // времянка для логов
-console.log(generateTrip());
+console.log(JSON.stringify(generateTrip(), null, 2));
 
 const ROUTE_POINT = 3;
 
