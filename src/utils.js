@@ -15,4 +15,8 @@ const getRandomArrayFromArray = (array, length) => {
   return newArray;
 };
 
-export {getRandomIntegerNumber, getRandomArrayItem, getRandomArrayFromArray};
+const getTime = (datetime) => (`${datetime.getHours()}:${datetime.getMinutes() < 10 ? 0 + `` + datetime.getMinutes() : datetime.getMinutes()}`);
+
+const getDate = (datetime) => (`${datetime.getDate()}/${datetime.getMonth()}/${datetime.getFullYear()}`);
+
+export {getRandomIntegerNumber, getRandomArrayItem, getRandomArrayFromArray, getTime, getDate};

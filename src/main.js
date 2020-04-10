@@ -8,10 +8,11 @@ import {createTripEditTemplate} from './components/trip-edit';
 import {createTripOffersTemplate} from './components/trip-offers';
 import {createTripOffersPointsTemplate} from './components/trip-offers-points';
 
-import {generateTrip} from './mock/trip-point';
+import {generateTrips} from './mock/trip-point';
 
 // времянка для логов
-console.log(JSON.stringify(generateTrip(), null, 2));
+const trips = generateTrips(20);
+console.log(trips);
 
 const ROUTE_POINT = 3;
 
@@ -28,7 +29,7 @@ const renderRoutePoints = (container, template, place, routeCount) => {
 };
 
 const tripMain = document.querySelector(`.trip-main`);
-render(tripMain, createRouteTemplate());
+render(tripMain, createRouteTemplate(), `afterbegin`);
 
 const tripInfo = tripMain.querySelector(`.trip-info`);
 render(tripInfo, createRouteInfoTemplate());
@@ -40,8 +41,8 @@ render(tripControls, createTripControlsFilterTemplate());
 
 const tripEvents = document.querySelector(`.trip-events`);
 render(tripEvents, createTripEventsSortTemplate());
-render(tripEvents, createTripEditTemplate());
+render(tripEvents, createTripEditTemplate(trips[0]));
 render(tripEvents, createTripOffersTemplate());
 
 const tripPoints = tripEvents.querySelectorAll(`.trip-events__list`);
-renderRoutePoints(tripPoints, createTripOffersPointsTemplate(), `beforeend`, ROUTE_POINT);
+renderRoutePoints(tripPoints, createTripOffersPointsTemplate(trips), `beforeend`, ROUTE_POINT);

@@ -1,4 +1,4 @@
-export const createTripOffersTemplate = () => {
+const createTripOffersTemplate = () => {
   return (
     `<ul class="trip-days">
       <li class="trip-days__item  day">
@@ -36,3 +36,5 @@ export const createTripOffersTemplate = () => {
     </ul>`
   );
 };
+
+export {createTripOffersTemplate};
