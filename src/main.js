@@ -1,48 +1,26 @@
-import {createRouteTemplate} from './components/route';
-import {createRouteInfoTemplate} from './components/route-info';
-import {createRouteCostTemplate} from './components/route-cost';
-import {createTripControlsTemplate} from './components/trip-controls';
-import {createTripControlsFilterTemplate} from './components/trip-controls-filter';
-import {createTripEventsSortTemplate} from './components/trip-events-sort';
-import {createTripEditTemplate} from './components/trip-edit';
-import {createTripOffersTemplate} from './components/trip-offers';
-import {createTripOffersPointsTemplate} from './components/trip-offers-points';
-
 import {generateTrips} from './mock/trip-point';
+import {render} from './utils';
+
+import {createTripInfoTemplate} from './components/page-header/info/trip-info';
+import {createTripControlsTemplate} from './components/page-header/controls/trip-controls';
+import {createTripSortTemplate} from './components/page-main/trip-sort/trip-sort';
+import {createTripDaysTemplate} from './components/page-main/trip-days/trip-days';
+import {createTripEventEditTemplate} from './components/page-main/event-edit/event-edit';
+
+const trips = generateTrips(20);
 
 // времянка для логов
-const trips = generateTrips(20);
 console.log(trips);
 
-const ROUTE_POINT = 3;
-
-const render = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
-};
-
-const renderRoutePoints = (container, template, place, routeCount) => {
-  for (const route of container) {
-    for (let i = 0; i < routeCount; i++) {
-      render(route, template, place);
-    }
-  }
-};
-
 const tripMain = document.querySelector(`.trip-main`);
-render(tripMain, createRouteTemplate(), `afterbegin`);
-
-const tripInfo = tripMain.querySelector(`.trip-info`);
-render(tripInfo, createRouteInfoTemplate());
-render(tripInfo, createRouteCostTemplate());
+render(tripMain, createTripInfoTemplate(), `afterbegin`);
 
 const tripControls = tripMain.querySelector(`.trip-controls`);
 render(tripControls, createTripControlsTemplate());
-render(tripControls, createTripControlsFilterTemplate());
 
 const tripEvents = document.querySelector(`.trip-events`);
-render(tripEvents, createTripEventsSortTemplate());
-render(tripEvents, createTripEditTemplate(trips[0]));
-render(tripEvents, createTripOffersTemplate());
+render(tripEvents, createTripSortTemplate());
+render(tripEvents, createTripDaysTemplate());
 
-const tripPoints = tripEvents.querySelectorAll(`.trip-events__list`);
-renderRoutePoints(tripPoints, createTripOffersPointsTemplate(trips), `beforeend`, ROUTE_POINT);
+const tripDays = tripEvents.querySelector(`.trip-days`);
+render(tripDays, createTripEventEditTemplate(), `beforebegin`);

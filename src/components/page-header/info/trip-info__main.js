@@ -1,4 +1,4 @@
-const createRouteInfoTemplate = () => {
+const createTripInfoMainTemplate = () => {
   return (
     `<div class="trip-info__main">
       <h1 class="trip-info__title">Amsterdam &mdash; Chamonix &mdash; Geneva</h1>
@@ -8,4 +8,4 @@ const createRouteInfoTemplate = () => {
   );
 };
 
-export {createRouteInfoTemplate};
+export {createTripInfoMainTemplate};

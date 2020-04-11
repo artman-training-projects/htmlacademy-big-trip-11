@@ -1,3 +1,7 @@
+const render = (container, template, place = `beforeend`) => {
+  container.insertAdjacentHTML(place, template);
+};
+
 const getRandomIntegerNumber = (min, max) => (min + Math.floor(Math.random() * (max - min)));
 
 const getRandomArrayItem = (array) => (array[getRandomIntegerNumber(0, array.length)]);
@@ -19,4 +23,4 @@ const getTime = (datetime) => (`${datetime.getHours()}:${datetime.getMinutes() <
 
 const getDate = (datetime) => (`${datetime.getDate()}/${datetime.getMonth()}/${datetime.getFullYear()}`);
 
-export {getRandomIntegerNumber, getRandomArrayItem, getRandomArrayFromArray, getTime, getDate};
+export {render, getRandomIntegerNumber, getRandomArrayItem, getRandomArrayFromArray, getTime, getDate};
