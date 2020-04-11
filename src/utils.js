@@ -21,18 +21,17 @@ const getRandomArrayFromArray = (array, length) => {
   return newArray;
 };
 
-const getStartDate = () => {
+const generateTripStartDate = () => {
   const diffDays = getRandomIntegerNumber(1, 5);
   return new Date(Date.now() - diffDays * Millisecond.IN_DAY);
 };
 
-
-const generateTripDates = () => {
+const generateTripEndDate = (tripStart) => {
   const diffHours = getRandomIntegerNumber(2, 20);
   const diffMinutes = getRandomIntegerNumber(0, 59);
   const diffTime = diffHours * Millisecond.IN_HOUR + diffMinutes * Millisecond.IN_MINUTE;
 
-  return;
+  return new Date(tripStart.getTime() + diffTime);
 };
 
-export {render, getRandomIntegerNumber, getRandomArrayItem, getRandomArrayFromArray, getStartDate, generateTripDates};
+export {render, getRandomIntegerNumber, getRandomArrayItem, getRandomArrayFromArray, generateTripStartDate, generateTripEndDate};

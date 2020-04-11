@@ -9,6 +9,7 @@ import {createTripEventEditTemplate} from './components/page-main/event-edit/eve
 
 const EVENTS = 20;
 const trips = generateTrips(EVENTS);
+console.log(JSON.stringify(trips[0], null, 2));
 
 const tripMain = document.querySelector(`.trip-main`);
 render(tripMain, createTripInfoTemplate(), `afterbegin`);

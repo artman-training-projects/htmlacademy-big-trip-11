@@ -16,29 +16,24 @@ const tripDestinationDescriptions = [
   `In rutrum ac purus sit amet tempus.`,
 ];
 
-const descriptionCount = {
+const DescriptionCount = {
   MIN: 1,
   MAX: 5,
 };
 
-const photoCount = {
+const PhotoCount = {
   MIN: 1,
   MAX: 5,
 };
 
 const getTripDestinationPhotos = (count) => {
   const photosCount = getRandomIntegerNumber(count.MIN, count.MAX);
-  let photos = [];
-
-  for (let i = 0; i < photosCount; i++) {
-    photos
-      .push({
-        src: `http://picsum.photos/248/152?r=${Math.random()}`,
-        description: `alt-${Math.random()}`,
-      });
-  }
-
-  return photos;
+  return new Array(...new Array(photosCount)).map(() => {
+    return {
+      src: `http://picsum.photos/248/152?r=${Math.random()}`,
+      description: `alt-${Math.random()}`,
+    };
+  });
 };
 
 const getTripDestinationDesccription = (descriptions, length) => {
@@ -50,8 +45,8 @@ const generateTripDestination = () => {
   return {
     destination: {
       name: getRandomArrayItem(tripDestinationCitys),
-      description: getTripDestinationDesccription(tripDestinationDescriptions, descriptionCount),
-      pictures: getTripDestinationPhotos(photoCount),
+      description: getTripDestinationDesccription(tripDestinationDescriptions, DescriptionCount),
+      pictures: getTripDestinationPhotos(PhotoCount),
     }
   };
 };
