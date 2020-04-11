@@ -1,4 +1,4 @@
-import {getRandomIntegerNumber} from '../utils';
+import {getRandomIntegerNumber, getStartDate, generateTripDates} from '../utils';
 import {generateTripOffer} from '../mock/trip-offer';
 import {generateTripDestination} from '../mock/trip-destination';
 
@@ -10,17 +10,20 @@ const price = {
 const generateTripPoint = () => {
   return {
     basePrice: getRandomIntegerNumber(price.MIN, price.MAX),
-    dateFrom: new Date(Date.now()),
-    dateTo: new Date(Date.now() + getRandomIntegerNumber(1, 4) * 60 * 60 * 1000),
+    dateFrom: generateTripDates(),
+    dateTo: generateTripDates(),
   };
 };
 
 const generateTrip = () => Object.assign({}, generateTripPoint(), generateTripDestination(), generateTripOffer());
 
 const generateTrips = (count) => {
+  const startDay = getStartDate();
+  console.log(startDay);
+
   return new Array(count)
     .fill(``)
     .map(generateTrip);
 };
 
-export {generateTrip, generateTrips};
+export {generateTrips};

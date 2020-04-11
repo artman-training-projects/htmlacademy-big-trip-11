@@ -12,7 +12,9 @@ const createTripEventsItemsTemplate = (points) => {
   return templateItems.join(``);
 };
 
-const createTripDaysTemplate = () => {
+const createTripDaysTemplate = (trips) => {
+  console.log(trips);
+
   return (
     `<ul class="trip-days">
       <li class="trip-days__item  day">

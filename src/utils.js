@@ -1,3 +1,5 @@
+import {Millisecond} from './const';
+
 const render = (container, template, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template);
 };
@@ -7,7 +9,7 @@ const getRandomIntegerNumber = (min, max) => (min + Math.floor(Math.random() * (
 const getRandomArrayItem = (array) => (array[getRandomIntegerNumber(0, array.length)]);
 
 const getRandomArrayFromArray = (array, length) => {
-  let oldArray = array.slice();
+  let oldArray = [...array];
   let newArray = [];
 
   for (let i = 0; i < length; i++) {
@@ -19,8 +21,18 @@ const getRandomArrayFromArray = (array, length) => {
   return newArray;
 };
 
-const getTime = (datetime) => (`${datetime.getHours()}:${datetime.getMinutes() < 10 ? 0 + `` + datetime.getMinutes() : datetime.getMinutes()}`);
+const getStartDate = () => {
+  const diffDays = getRandomIntegerNumber(1, 5);
+  return new Date(Date.now() - diffDays * Millisecond.IN_DAY);
+};
 
-const getDate = (datetime) => (`${datetime.getDate()}/${datetime.getMonth()}/${datetime.getFullYear()}`);
 
-export {render, getRandomIntegerNumber, getRandomArrayItem, getRandomArrayFromArray, getTime, getDate};
+const generateTripDates = () => {
+  const diffHours = getRandomIntegerNumber(2, 20);
+  const diffMinutes = getRandomIntegerNumber(0, 59);
+  const diffTime = diffHours * Millisecond.IN_HOUR + diffMinutes * Millisecond.IN_MINUTE;
+
+  return;
+};
+
+export {render, getRandomIntegerNumber, getRandomArrayItem, getRandomArrayFromArray, getStartDate, generateTripDates};
