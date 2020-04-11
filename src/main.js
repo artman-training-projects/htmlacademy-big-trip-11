@@ -1,4 +1,3 @@
-import {render} from './utils';
 import {generateTrips} from './mock/trip-point';
 
 import {createTripInfoTemplate} from './components/page-header/info/trip-info';
@@ -9,17 +8,20 @@ import {createTripEventEditTemplate} from './components/page-main/event-edit/eve
 
 const EVENTS = 20;
 const trips = generateTrips(EVENTS);
-console.log(JSON.stringify(trips[0], null, 2));
+
+const renderTemplate = (container, template, place = `beforeend`) => {
+  container.insertAdjacentHTML(place, template);
+};
 
 const tripMain = document.querySelector(`.trip-main`);
-render(tripMain, createTripInfoTemplate(), `afterbegin`);
+renderTemplate(tripMain, createTripInfoTemplate(), `afterbegin`);
 
 const tripControls = tripMain.querySelector(`.trip-controls`);
-render(tripControls, createTripControlsTemplate());
+renderTemplate(tripControls, createTripControlsTemplate());
 
 const tripEvents = document.querySelector(`.trip-events`);
-render(tripEvents, createTripSortTemplate());
-render(tripEvents, createTripDaysTemplate(trips));
+renderTemplate(tripEvents, createTripSortTemplate());
+renderTemplate(tripEvents, createTripDaysTemplate(trips));
 
 const tripDays = tripEvents.querySelector(`.trip-days`);
-render(tripDays, createTripEventEditTemplate(), `beforebegin`);
+renderTemplate(tripDays, createTripEventEditTemplate(), `beforebegin`);
