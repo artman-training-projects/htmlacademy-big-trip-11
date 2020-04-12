@@ -1,5 +1,6 @@
 import {tripPointTypesMap} from '../../../const';
 import {parseTime, getDiffTime} from '../../../utils';
+import {createTripEventOffersTemplate} from './event__offers';
 
 const createTripEventsItemTemplate = (point) => {
   return (
@@ -20,21 +21,12 @@ const createTripEventsItemTemplate = (point) => {
         </div>
 
         <p class="event__price">
-          &euro;&nbsp;<span class="event__price-value">20</span>
+          &euro;&nbsp;<span class="event__price-value">${point.basePrice}</span>
         </p>
 
         <h4 class="visually-hidden">Offers:</h4>
         <ul class="event__selected-offers">
-          <li class="event__offer">
-            <span class="event__offer-title">Add luggage</span>
-            &plus;
-            &euro;&nbsp;<span class="event__offer-price">50</span>
-          </li>
-          <li class="event__offer">
-            <span class="event__offer-title">Switch to comfort</span>
-            &plus;
-            &euro;&nbsp;<span class="event__offer-price">80</span>
-            </li>
+          ${createTripEventOffersTemplate(point.offers)}
         </ul>
 
         <button class="event__rollup-btn" type="button">

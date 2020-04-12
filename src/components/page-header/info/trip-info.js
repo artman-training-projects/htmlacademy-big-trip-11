@@ -1,12 +1,12 @@
 import {createTripInfoMainTemplate} from './trip-info__main';
 import {createTripInfoCostTemplate} from './trip-info__cost';
 
-const createTripInfoTemplate = () => {
+const createTripInfoTemplate = (events) => {
   return (
     `<section class="trip-main__trip-info  trip-info">
-      ${createTripInfoMainTemplate()}
+      ${createTripInfoMainTemplate(events)}
 
-      ${createTripInfoCostTemplate()}
+      ${createTripInfoCostTemplate(events)}
     </section>`
   );
 };

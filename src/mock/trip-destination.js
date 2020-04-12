@@ -28,12 +28,14 @@ const PhotoCount = {
 
 const getTripDestinationPhotos = (count) => {
   const photosCount = getRandomIntegerNumber(count.MIN, count.MAX);
-  return new Array(...new Array(photosCount)).map(() => {
-    return {
-      src: `http://picsum.photos/248/152?r=${Math.random()}`,
-      description: `alt-${Math.random()}`,
-    };
-  });
+  return new Array(photosCount)
+    .fill(``)
+    .map(() => {
+      return {
+        src: `http://picsum.photos/248/152?r=${Math.random()}`,
+        description: `alt-${Math.random()}`,
+      };
+    });
 };
 
 const getTripDestinationDesccription = (descriptions, length) => {

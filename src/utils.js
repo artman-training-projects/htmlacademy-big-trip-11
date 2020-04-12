@@ -1,4 +1,4 @@
-import {Millisecond} from './const';
+import {Millisecond, monthMap} from './const';
 
 const getRandomIntegerNumber = (min, max) => (min + Math.floor(Math.random() * (max - min)));
 
@@ -60,4 +60,58 @@ const getDiffTime = (from, to) => {
   return diffString;
 };
 
-export {getRandomIntegerNumber, getRandomArrayItem, getRandomArrayFromArray, generateTripStartDate, generateTripEndDate, parseTime, parseDate, getDiffTime};
+const sortByDayFrom = (events) => {
+  return events
+    .slice()
+    .sort((a, b) => a.dateFrom < b.dateFrom ? -1 : 1);
+};
+
+let offerCount = 1;
+const addOfferCount = () => offerCount++;
+
+const calcFullPrice = (events) => {
+  return events
+    .slice()
+    .map((event) => event.basePrice)
+    .reduce((sum, price) => sum + price);
+};
+
+const getRoute = (events) => {
+  const citys = new Set(events
+    .slice()
+    .map((event) => event.destination.name)
+  );
+
+  let route = [...citys];
+
+  if (route <= 3) {
+    route = route
+      .map((city) => `${city}`)
+      .join(` — `);
+  } else {
+    route = [route[0], route[route.length - 1]]
+      .map((city) => `${city}`)
+      .join(` — ... — `);
+  }
+
+  return route;
+};
+
+const getRouteDates = (events) => {
+  let dates = events.slice();
+  dates = [dates[0].dateFrom, dates[dates.length - 1].dateTo];
+
+  const getDateStartString = () => {
+    return `${monthMap.get(dates[0].getMonth())} ${dates[0].getDate()}`;
+  };
+
+  const getDateFinishString = () => {
+    return monthMap.get(dates[0].getMonth()) === monthMap.get(dates[1].getMonth()) ?
+      `${dates[1].getDate()}` :
+      `${monthMap.get(dates[1].getMonth())} ${dates[1].getDate()}`;
+  };
+
+  return `${getDateStartString()} - ${getDateFinishString()}`;
+};
+
+export {getRandomIntegerNumber, getRandomArrayItem, getRandomArrayFromArray, generateTripStartDate, generateTripEndDate, parseTime, parseDate, getDiffTime, sortByDayFrom, addOfferCount, calcFullPrice, getRoute, getRouteDates};

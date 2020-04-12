@@ -7,10 +7,14 @@ const Price = {
   MAX: 200,
 };
 
+let id = 1;
+const idCount = () => id++;
+
 const generateTripPoint = () => {
   let dateFrom = generateTripStartDate();
 
   return {
+    id: idCount(),
     basePrice: getRandomIntegerNumber(Price.MIN, Price.MAX),
     dateFrom,
     dateTo: generateTripEndDate(dateFrom),

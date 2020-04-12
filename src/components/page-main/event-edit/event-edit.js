@@ -2,15 +2,15 @@ import {createTripEventEditHeaderTemplate} from './event__header';
 import {createTripEventEditOffersTemplate} from './event--offers';
 import {createTripEventEditDestinationTemplate} from './event--destination';
 
-const createTripEventEditTemplate = () => {
+const createTripEventEditTemplate = (event) => {
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
-      ${createTripEventEditHeaderTemplate()}
+      ${createTripEventEditHeaderTemplate(event)}
 
       <section class="event__details">
-        ${createTripEventEditOffersTemplate()}
+        ${createTripEventEditOffersTemplate(event.offers)}
 
-        ${createTripEventEditDestinationTemplate()}
+        ${createTripEventEditDestinationTemplate(event.destination)}
       </section>
     </form>`
   );
