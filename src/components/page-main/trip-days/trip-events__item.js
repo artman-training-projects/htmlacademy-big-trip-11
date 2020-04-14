@@ -1,5 +1,5 @@
-import {tripPointTypesMap} from '../../../const';
-import {parseTime, getDiffTime} from '../../../utils';
+import {tripPointTypesMap} from '../../../helpers/const';
+import {parseTime, getDiffTime} from '../../../helpers/utils';
 import {createTripEventOffersTemplate} from './event__offers';
 
 const createTripEventsItemTemplate = (point) => {
@@ -7,7 +7,7 @@ const createTripEventsItemTemplate = (point) => {
     `<li class="trip-events__item">
       <div class="event">
         <div class="event__type">
-          <img class="event__type-icon" width="42" height="42" src="img/icons/${point.type}.png" alt="${point.type} icon">
+          <img class="event__type-icon" width="42" height="42" src="img/icons/${point.type.toLowerCase()}.png" alt="${point.type} icon">
         </div>
         <h3 class="event__title">${tripPointTypesMap.get(point.type)} ${point.destination.name}</h3>
 

@@ -1,4 +1,4 @@
-import {calcFullPrice} from '../../../utils';
+import {calcFullPrice} from '../../../helpers/utils';
 
 const createTripInfoCostTemplate = (events) => {
   return (

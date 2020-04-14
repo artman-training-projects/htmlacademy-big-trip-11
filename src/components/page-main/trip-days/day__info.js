@@ -1,11 +1,14 @@
-import {monthMap} from '../../../const';
+import {monthMap} from '../../../helpers/const';
 
-const createTripDayInfoTemplate = (point) => {
+const createTripDayInfoTemplate = (point, count) => {
   return (
     `<div class="day__info">
-      <span class="day__counter">${1}</span>
-      <time class="day__date" datetime="${point[0].dateFrom}">${monthMap.get(point[0].dateFrom.getMonth())} ${point[0].dateFrom.getDay()}</time>
-    </div>`
+      <span class="day__counter">${count}</span>
+      <time class="day__date" datetime="${point.dateFrom}">${monthMap.get(point.dateFrom.getMonth())} ${point.dateFrom.getDate()}</time>
+    </div>
+
+    <ul class="trip-events__list">
+    </ul>`
   );
 };
 

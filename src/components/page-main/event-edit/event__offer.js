@@ -1,4 +1,5 @@
-import {addOfferCount} from '../../../utils';
+let offerCount = 1;
+const addOfferCount = () => offerCount++;
 
 const createTripEventOffersTempate = (offer) => {
   const count = addOfferCount();

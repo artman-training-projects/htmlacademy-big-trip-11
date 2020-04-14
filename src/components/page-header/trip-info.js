@@ -1,5 +1,5 @@
-import {createTripInfoMainTemplate} from './trip-info__main';
-import {createTripInfoCostTemplate} from './trip-info__cost';
+import {createTripInfoMainTemplate} from './info/trip-info__main';
+import {createTripInfoCostTemplate} from './info/trip-info__cost';
 
 const createTripInfoTemplate = (events) => {
   return (

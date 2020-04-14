@@ -1,4 +1,4 @@
-import {getRoute, getRouteDates} from '../../../utils';
+import {getRoute, getRouteDates} from '../../../helpers/utils';
 
 const createTripInfoMainTemplate = (events) => {
   return (

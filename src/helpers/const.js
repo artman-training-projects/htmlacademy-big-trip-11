@@ -1,3 +1,5 @@
+const SHOW_OFFERS = 3;
+
 const Millisecond = {
   IN_DAY: 86400000,
   IN_HOUR: 3600000,
@@ -141,4 +143,4 @@ const tripOffersMap = new Map([
   }]],
 ]);
 
-export {Millisecond, tripPointTypesMap, tripOffersMap, monthMap};
+export {SHOW_OFFERS, Millisecond, tripPointTypesMap, tripOffersMap, monthMap};

@@ -1,5 +1,5 @@
-import {createTripControlsMenuTemplate} from './trip-menu';
-import {createTripControlsFiltersTemplate} from './trip-filters';
+import {createTripControlsMenuTemplate} from './controls/trip-menu';
+import {createTripControlsFiltersTemplate} from './controls/trip-filters';
 
 const createTripControlsTemplate = () => {
   return (

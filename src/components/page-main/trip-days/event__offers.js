@@ -1,3 +1,5 @@
+import {SHOW_OFFERS} from '../../../helpers/const';
+
 const createTripEventOfferTemplate = (offer) => {
   return (
     `<li class="event__offer">
@@ -9,8 +11,6 @@ const createTripEventOfferTemplate = (offer) => {
 };
 
 const createTripEventOffersTemplate = (offers) => {
-  const SHOW_OFFERS = 3;
-
   return offers ? offers
     .slice(0, SHOW_OFFERS)
     .map((offer) => createTripEventOfferTemplate(offer))

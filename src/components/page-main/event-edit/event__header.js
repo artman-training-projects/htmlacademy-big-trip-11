@@ -1,5 +1,5 @@
-import {tripPointTypesMap} from '../../../const';
-import {parseTime, parseDate} from '../../../utils';
+import {tripPointTypesMap} from '../../../helpers/const';
+import {parseTime, parseDate} from '../../../helpers/utils';
 
 const createTripEventEditHeaderTemplate = (event) => {
   return (
@@ -7,7 +7,7 @@ const createTripEventEditHeaderTemplate = (event) => {
       <div class="event__type-wrapper">
         <label class="event__type  event__type-btn" for="event-type-toggle-1">
           <span class="visually-hidden">Choose event type</span>
-          <img class="event__type-icon" width="17" height="17" src="img/icons/${event.type}.png" alt="${event.type} icon">
+          <img class="event__type-icon" width="17" height="17" src="img/icons/${event.type.toLowerCase()}.png" alt="${event.type} icon">
         </label>
         <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
