@@ -1,7 +1,8 @@
 import {sortEvents} from './helpers/sorting';
 import {generateTrips} from './mock/trip-point';
 
-import {createTripInfoTemplate} from './components/page-header/trip-info';
+// import {createTripInfoTemplate} from './components/page-header/trip-info';
+import {HeaderTripInfo} from './components/page-header/trip-info';
 import {createTripControlsTemplate} from './components/page-header/trip-controls';
 
 import {createTripSortTemplate} from './components/page-main/trip-sort';
@@ -21,7 +22,8 @@ const renderTemplate = (container, template, place = `beforeend`) => {
 };
 
 const tripMain = document.querySelector(`.trip-main`);
-renderTemplate(tripMain, createTripInfoTemplate(tripsSortedByDateFrom), `afterbegin`);
+// renderTemplate(tripMain, createTripInfoTemplate(tripsSortedByDateFrom), `afterbegin`);
+renderTemplate(tripMain, new HeaderTripInfo(tripsSortedByDateFrom).getElement(), `afterbegin`);
 
 const tripControls = tripMain.querySelector(`.trip-controls`);
 renderTemplate(tripControls, createTripControlsTemplate());

@@ -71,3 +71,9 @@ export const getRouteDates = (events) => {
 
   return `${getDateStartString()} - ${getDateFinishString()}`;
 };
+
+export const createElement = (template) => {
+  const element = document.createElement(`template`);
+  element.innerHTML = template;
+  return element.innerHTML;
+};
