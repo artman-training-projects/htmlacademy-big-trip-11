@@ -1,5 +1,5 @@
 import {sortEvents} from './helpers/sorting';
-import {renderTemplate, renderElement, RenderPosition} from './helpers/utils';
+import {renderElement, RenderPosition} from './helpers/utils';
 import {generateTrips} from './mock/trip-point';
 
 import {HeaderTripInfo} from './components/page-header/trip-info';
@@ -7,9 +7,8 @@ import {HeaderTripMenu} from './components/page-header/trip-menu';
 import {HeaderTripFilter} from './components/page-header/trip-filter';
 import {MainEventsSort} from './components/page-main/trip-sort';
 import {MainTripDays} from './components/page-main/trip-days';
-import {MainTripDay} from './components/page-main/trip-days__item';
-
-import {createTripEventsItemTemplate} from './components/page-main/trip-days/trip-events__item';
+import {MainTripDay} from './components/page-main/trip-day/trip-days__item';
+import {MainTripDayEvent} from './components/page-main/trip-day/trip-events__item';
 // import {createTripEventEditTemplate} from './components/page-main/event-edit';
 
 const EVENTS = 20;
@@ -45,7 +44,7 @@ const renderTripEvents = (events) => {
       tripDay = document.querySelectorAll(`.trip-events__list`);
     }
 
-    renderTemplate(tripDay[daysCount - 1], createTripEventsItemTemplate(event));
+    renderElement(tripDay[daysCount - 1], new MainTripDayEvent(event).getElement());
   }
 };
 

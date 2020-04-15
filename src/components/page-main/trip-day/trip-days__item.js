@@ -1,5 +1,5 @@
-import {monthMap} from '../../helpers/const';
-import {createElement} from '../../helpers/utils';
+import {monthMap} from '../../../helpers/const';
+import {createElement} from '../../../helpers/utils';
 
 export class MainTripDay {
   constructor(event, day) {
