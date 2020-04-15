@@ -84,7 +84,7 @@ export const renderTemplate = (container, template, place = `beforeend`) => {
 
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
-  BEFOREEND: `beforeend`,
+  BEFOREEND: `beforeend`
 };
 
 export const renderElement = (container, template, place = RenderPosition.BEFOREEND) => {
@@ -92,7 +92,7 @@ export const renderElement = (container, template, place = RenderPosition.BEFORE
     case RenderPosition.AFTERBEGIN:
       container.prepend(template);
       break;
-    case renderTemplate.BEFOREEND:
+    case RenderPosition.BEFOREEND:
       container.append(template);
       break;
   }
