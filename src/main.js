@@ -3,8 +3,8 @@ import {renderTemplate, renderElement, RenderPosition} from './helpers/utils';
 import {generateTrips} from './mock/trip-point';
 
 import {HeaderTripInfo} from './components/page-header/trip-info';
-// import {createTripControlsTemplate} from './components/page-header/trip-controls';
 import {HeaderTripMenu} from './components/page-header/trip-menu';
+import {HeaderTripFilter} from './components/page-header/trip-filter';
 
 import {createTripSortTemplate} from './components/page-main/trip-sort';
 import {createTripDaysTemplate} from './components/page-main/trip-days';
@@ -23,7 +23,7 @@ renderElement(tripMain, new HeaderTripInfo(tripsSortedByDateFrom).getElement(), 
 
 const tripControls = tripMain.querySelector(`.trip-controls`);
 renderElement(tripControls, new HeaderTripMenu().getElement());
-
+renderElement(tripControls, new HeaderTripFilter().getElement());
 
 const tripEvents = document.querySelector(`.trip-events`);
 renderTemplate(tripEvents, createTripSortTemplate());
