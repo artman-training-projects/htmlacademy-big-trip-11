@@ -5,10 +5,11 @@ import {generateTrips} from './mock/trip-point';
 import {HeaderTripInfo} from './components/page-header/trip-info';
 import {HeaderTripMenu} from './components/page-header/trip-menu';
 import {HeaderTripFilter} from './components/page-header/trip-filter';
+import {MainEventsSort} from './components/page-main/trip-sort';
 
-import {createTripSortTemplate} from './components/page-main/trip-sort';
+
 import {createTripDaysTemplate} from './components/page-main/trip-days';
-import {createTripEventEditTemplate} from './components/page-main/event-edit';
+// import {createTripEventEditTemplate} from './components/page-main/event-edit';
 
 import {createTripDayTemplate} from './components/page-main/trip-days/trip-days__item';
 import {createTripEventsItemTemplate} from './components/page-main/trip-days/trip-events__item';
@@ -26,11 +27,13 @@ renderElement(tripControls, new HeaderTripMenu().getElement());
 renderElement(tripControls, new HeaderTripFilter().getElement());
 
 const tripEvents = document.querySelector(`.trip-events`);
-renderTemplate(tripEvents, createTripSortTemplate());
+renderElement(tripEvents, new MainEventsSort().getElement());
+
+
 renderTemplate(tripEvents, createTripDaysTemplate());
 
 const tripDays = tripEvents.querySelector(`.trip-days`);
-renderTemplate(tripDays, createTripEventEditTemplate(tripsSortedByDateFrom[0]), `beforebegin`);
+// renderTemplate(tripDays, createTripEventEditTemplate(tripsSortedByDateFrom[0]), `beforebegin`);
 
 const renderTripEvents = (events) => {
   let dayFrom;
