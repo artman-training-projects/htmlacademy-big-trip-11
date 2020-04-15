@@ -1,4 +1,5 @@
 import {sortEvents} from './helpers/sorting';
+import {renderTemplate, renderElement, RenderPosition} from './helpers/utils';
 import {generateTrips} from './mock/trip-point';
 
 // import {createTripInfoTemplate} from './components/page-header/trip-info';
@@ -17,13 +18,9 @@ const trips = generateTrips(EVENTS);
 const tripsSortedByDateFrom = sortEvents(trips);
 // console.log(JSON.stringify(trips[0], null, 2));
 
-const renderTemplate = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
-};
-
 const tripMain = document.querySelector(`.trip-main`);
 // renderTemplate(tripMain, createTripInfoTemplate(tripsSortedByDateFrom), `afterbegin`);
-renderTemplate(tripMain, new HeaderTripInfo(tripsSortedByDateFrom).getElement(), `afterbegin`);
+renderElement(tripMain, new HeaderTripInfo(tripsSortedByDateFrom).getElement(), RenderPosition.AFTERBEGIN);
 
 const tripControls = tripMain.querySelector(`.trip-controls`);
 renderTemplate(tripControls, createTripControlsTemplate());
