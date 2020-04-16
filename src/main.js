@@ -1,47 +1,51 @@
-import {createRouteTemplate} from './components/route';
-import {createRouteInfoTemplate} from './components/route-info';
-import {createRouteCostTemplate} from './components/route-cost';
-import {createTripControlsTemplate} from './components/trip-controls';
-import {createTripControlsFilterTemplate} from './components/trip-controls-filter';
-import {createTripEventsSortTemplate} from './components/trip-events-sort';
-import {createTripEditTemplate} from './components/trip-edit';
-import {createTripOffersTemplate} from './components/trip-offers';
-import {createTripOffersPointsTemplate} from './components/trip-offers-points';
+import {sortEvents} from './helpers/sorting';
+import {renderElement, RenderPosition} from './helpers/utils';
+import {generateTrips} from './mock/trip-point';
 
-import {generateTrip} from './mock/trip-point';
+import {HeaderTripInfo} from './components/page-header/trip-info';
+import {HeaderTripMenu} from './components/page-header/trip-menu';
+import {HeaderTripFilter} from './components/page-header/trip-filter';
+import {MainEventsSort} from './components/page-main/trip-sort';
+import {MainTripDays} from './components/page-main/trip-days';
+import {MainTripDay} from './components/page-main/trip-day/trip-days__item';
+import {MainTripDayEvent} from './components/page-main/trip-day/trip-events__item';
+// import {createTripEventEditTemplate} from './components/page-main/event-edit';
 
-// времянка для логов
-console.log(JSON.stringify(generateTrip(), null, 2));
+const EVENTS = 20;
+const trips = generateTrips(EVENTS);
+const tripsSortedByDateFrom = sortEvents(trips);
+// console.log(JSON.stringify(trips[0], null, 2));
 
-const ROUTE_POINT = 3;
+const tripMain = document.querySelector(`.trip-main`);
+renderElement(tripMain, new HeaderTripInfo(tripsSortedByDateFrom).getElement(), RenderPosition.AFTERBEGIN);
 
-const render = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
-};
+const tripControls = tripMain.querySelector(`.trip-controls`);
+renderElement(tripControls, new HeaderTripMenu().getElement());
+renderElement(tripControls, new HeaderTripFilter().getElement());
 
-const renderRoutePoints = (container, template, place, routeCount) => {
-  for (const route of container) {
-    for (let i = 0; i < routeCount; i++) {
-      render(route, template, place);
+const tripEvents = document.querySelector(`.trip-events`);
+renderElement(tripEvents, new MainEventsSort().getElement());
+renderElement(tripEvents, new MainTripDays().getElement());
+
+const tripDays = tripEvents.querySelector(`.trip-days`);
+// renderTemplate(tripDays, createTripEventEditTemplate(tripsSortedByDateFrom[0]), `beforebegin`);
+
+const renderTripEvents = (events) => {
+  let dayFrom;
+  let daysCount = 0;
+  let tripDay;
+
+  for (const event of events) {
+    if (dayFrom !== event.dateFrom.getDate()) {
+      dayFrom = event.dateFrom.getDate();
+      daysCount++;
+      dayFrom = event.dateFrom.getDate();
+      renderElement(tripDays, new MainTripDay(event, daysCount).getElement());
+      tripDay = document.querySelectorAll(`.trip-events__list`);
     }
+
+    renderElement(tripDay[daysCount - 1], new MainTripDayEvent(event).getElement());
   }
 };
 
-const tripMain = document.querySelector(`.trip-main`);
-render(tripMain, createRouteTemplate());
-
-const tripInfo = tripMain.querySelector(`.trip-info`);
-render(tripInfo, createRouteInfoTemplate());
-render(tripInfo, createRouteCostTemplate());
-
-const tripControls = tripMain.querySelector(`.trip-controls`);
-render(tripControls, createTripControlsTemplate());
-render(tripControls, createTripControlsFilterTemplate());
-
-const tripEvents = document.querySelector(`.trip-events`);
-render(tripEvents, createTripEventsSortTemplate());
-render(tripEvents, createTripEditTemplate());
-render(tripEvents, createTripOffersTemplate());
-
-const tripPoints = tripEvents.querySelectorAll(`.trip-events__list`);
-renderRoutePoints(tripPoints, createTripOffersPointsTemplate(), `beforeend`, ROUTE_POINT);
+renderTripEvents(tripsSortedByDateFrom);
