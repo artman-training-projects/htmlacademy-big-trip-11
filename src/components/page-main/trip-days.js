@@ -1,4 +1,11 @@
-import {createElement} from '../../helpers/utils';
+import {createElement} from '../../helpers/components';
+
+const tripDaysTemplate = () => {
+  return (
+    `<ul class="trip-days">
+    </ul>`
+  );
+};
 
 export class MainTripDays {
   constructor() {
@@ -18,9 +25,6 @@ export class MainTripDays {
   }
 
   getTemplate() {
-    return (
-      `<ul class="trip-days">
-      </ul>`
-    );
+    return tripDaysTemplate();
   }
 }

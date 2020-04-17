@@ -1,11 +1,27 @@
-import {calcFullPrice, getRoute, getRouteDates, createElement} from '../../helpers/utils';
+import {calcFullPrice, getRoute, getRouteDates} from '../../helpers/utils';
+import {createElement} from '../../helpers/components';
+
+const tripMainInfoTemplate = (route, dates, fullPrice) => {
+  return (
+    `<section class="trip-main__trip-info  trip-info">
+      <div class="trip-info__main">
+        <h1 class="trip-info__title">${route}</h1>
+
+        <p class="trip-info__dates">${dates}</p>
+      </div>
+
+      <p class="trip-info__cost">
+        Total: &euro;&nbsp;<span class="trip-info__cost-value">${fullPrice}</span>
+      </p>
+    </section>`
+  );
+};
 
 export class HeaderTripInfo {
   constructor(trip) {
     this._route = getRoute(trip);
     this._dates = getRouteDates(trip);
     this._fullPrice = calcFullPrice(trip);
-
     this._element = null;
   }
 
@@ -22,18 +38,6 @@ export class HeaderTripInfo {
   }
 
   getTemplate() {
-    return (
-      `<section class="trip-main__trip-info  trip-info">
-        <div class="trip-info__main">
-          <h1 class="trip-info__title">${this._route}</h1>
-
-          <p class="trip-info__dates">${this._dates}</p>
-        </div>
-
-        <p class="trip-info__cost">
-          Total: &euro;&nbsp;<span class="trip-info__cost-value">${this._fullPrice}</span>
-        </p>
-      </section>`
-    );
+    return tripMainInfoTemplate(this._route, this._dates, this._fullPrice);
   }
 }

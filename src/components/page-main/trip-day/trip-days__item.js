@@ -1,10 +1,24 @@
 import {monthMap} from '../../../helpers/const';
-import {createElement} from '../../../helpers/utils';
+import {createElement} from '../../../helpers/components';
+
+const tripDaysItemTemplate = (day, dateFrom) => {
+  return (
+    `<li class="trip-days__item  day">
+      <div class="day__info">
+        <span class="day__counter">${day}</span>
+        <time class="day__date" datetime="${dateFrom}">${monthMap.get(dateFrom.getMonth())} ${dateFrom.getDate()}</time>
+      </div>
+
+      <ul class="trip-events__list">
+      </ul>
+    </li>`
+  );
+};
 
 export class MainTripDay {
-  constructor(event, day) {
+  constructor(day, event) {
     this._day = day;
-    this._dayFrom = event.dateFrom;
+    this._dateFrom = event.dateFrom;
     this._element = null;
   }
 
@@ -21,16 +35,6 @@ export class MainTripDay {
   }
 
   getTemplate() {
-    return (
-      `<li class="trip-days__item  day">
-        <div class="day__info">
-          <span class="day__counter">${this._day}</span>
-          <time class="day__date" datetime="${this._dayFrom}">${monthMap.get(this._dayFrom.getMonth())} ${this._dayFrom.getDate()}</time>
-        </div>
-
-        <ul class="trip-events__list">
-        </ul>
-      </li>`
-    );
+    return tripDaysItemTemplate(this._day, this._dateFrom);
   }
 }
