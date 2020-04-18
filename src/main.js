@@ -2,6 +2,7 @@ import {sortEvents} from './utils/sorting';
 import {RenderPosition, renderElement} from './utils/element';
 import {generateTrips} from './mock/trip-point';
 
+import MainEventNo from './components/page-main/event-no';
 import HeaderTripInfo from './components/page-header/trip-info';
 import HeaderTripMenu from './components/page-header/trip-menu';
 import HeaderTripFilter from './components/page-header/trip-filter';
@@ -14,7 +15,15 @@ const EVENTS = 20;
 const trips = generateTrips(EVENTS);
 
 if (!trips) {
-  console.log(`nenenene`);
+  const tripMain = document.querySelector(`.trip-main`);
+  renderElement(tripMain, new HeaderTripInfo(trips).getElement(), RenderPosition.AFTERBEGIN);
+
+  const tripControls = tripMain.querySelector(`.trip-controls`);
+  renderElement(tripControls, new HeaderTripMenu().getElement());
+  renderElement(tripControls, new HeaderTripFilter().getElement());
+
+  const tripEvents = document.querySelector(`.trip-events`);
+  renderElement(tripEvents, new MainEventNo().getElement());
 } else {
   const tripsSortedByDateFrom = sortEvents(trips);
   // console.log(JSON.stringify(trips[0], null, 2));

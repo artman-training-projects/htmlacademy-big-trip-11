@@ -19,9 +19,9 @@ const tripMainInfoTemplate = (route, dates, fullPrice) => {
 
 export default class HeaderTripInfo {
   constructor(trip) {
-    this._route = getRoute(trip);
-    this._dates = getRouteDates(trip);
-    this._fullPrice = calcFullPrice(trip);
+    this._route = trip ? getRoute(trip) : ``;
+    this._dates = trip ? getRouteDates(trip) : ``;
+    this._fullPrice = trip ? calcFullPrice(trip) : 0;
     this._element = null;
   }
 
