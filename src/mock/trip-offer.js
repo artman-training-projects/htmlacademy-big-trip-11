@@ -1,4 +1,4 @@
-import {tripOffersMap} from '../helpers/const';
+import {tripOffersMap} from '../utils/const';
 import {getRandomArrayItem} from './utils';
 
 const tripPointTypes = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`, `Check-in`, `Sightseeing`, `Restaurant`];

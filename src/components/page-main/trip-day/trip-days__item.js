@@ -1,5 +1,5 @@
-import {monthMap} from '../../../helpers/const';
-import {createElement} from '../../../helpers/components';
+import {monthMap} from '../../../utils/const';
+import {createElement} from '../../../utils/element';
 
 const tripDaysItemTemplate = (day, dateFrom) => {
   return (
@@ -15,7 +15,7 @@ const tripDaysItemTemplate = (day, dateFrom) => {
   );
 };
 
-export class MainTripDay {
+export default class MainTripDay {
   constructor(day, event) {
     this._day = day;
     this._dateFrom = event.dateFrom;

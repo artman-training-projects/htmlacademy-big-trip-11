@@ -9,17 +9,13 @@ export const createElement = (template) => {
   return element.content.firstChild;
 };
 
-export const renderTemplate = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
-};
-
-export const renderElement = (container, template, place = RenderPosition.BEFOREEND) => {
+export const renderElement = (container, element, place = RenderPosition.BEFOREEND) => {
   switch (place) {
     case RenderPosition.AFTERBEGIN:
-      container.prepend(template);
+      container.prepend(element);
       break;
     case RenderPosition.BEFOREEND:
-      container.append(template);
+      container.append(element);
       break;
   }
 };

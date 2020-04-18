@@ -1,4 +1,4 @@
-import {createElement} from '../../helpers/components';
+import {createElement} from '../../utils/element';
 
 const tripControlsTemplate = () => {
   return (
@@ -9,7 +9,7 @@ const tripControlsTemplate = () => {
   );
 };
 
-export class HeaderTripMenu {
+export default class HeaderTripMenu {
   constructor() {
     this._element = null;
   }

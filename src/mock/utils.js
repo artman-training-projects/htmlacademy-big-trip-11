@@ -1,4 +1,4 @@
-import {Millisecond} from '../helpers/const';
+import {Millisecond} from '../utils/const';
 
 export const getRandomIntegerNumber = (min, max) => (min + Math.floor(Math.random() * (max - min)));
 

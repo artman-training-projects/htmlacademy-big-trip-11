@@ -1,4 +1,4 @@
-import {createElement} from '../../helpers/components';
+import {createElement} from '../../utils/element';
 
 const tripFiltersTemplate = () => {
   return (
@@ -23,7 +23,7 @@ const tripFiltersTemplate = () => {
   );
 };
 
-export class HeaderTripFilter {
+export default class HeaderTripFilter {
   constructor() {
     this._element = null;
   }

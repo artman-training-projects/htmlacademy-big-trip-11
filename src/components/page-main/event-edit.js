@@ -1,4 +1,4 @@
-import {createElement} from './../../helpers/components';
+import {createElement} from '../../utils/element';
 import {createTripEventEditHeaderTemplate} from './event-edit/event__header';
 import {createTripEventEditOffersTemplate} from './event-edit/event--offers';
 import {createTripEventEditDestinationTemplate} from './event-edit/event--destination';
@@ -19,7 +19,7 @@ const createTripEventEditTemplate = (event) => {
   );
 };
 
-export class MainTripDayEventEdit {
+export default class MainTripDayEventEdit {
   constructor(event) {
     this._event = event;
     this._element = null;

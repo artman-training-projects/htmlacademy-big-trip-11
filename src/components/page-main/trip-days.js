@@ -1,4 +1,4 @@
-import {createElement} from '../../helpers/components';
+import {createElement} from '../../utils/element';
 
 const tripDaysTemplate = () => {
   return (
@@ -7,7 +7,7 @@ const tripDaysTemplate = () => {
   );
 };
 
-export class MainTripDays {
+export default class MainTripDays {
   constructor() {
     this._element = null;
   }

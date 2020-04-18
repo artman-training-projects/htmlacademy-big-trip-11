@@ -1,6 +1,6 @@
-import {tripPointTypesMap, SHOW_OFFERS} from '../../../helpers/const';
-import {parseTime, getDiffTime} from '../../../helpers/utils';
-import {createElement} from '../../../helpers/components';
+import {tripPointTypesMap, SHOW_OFFERS} from '../../../utils/const';
+import {parseTime, getDiffTime} from '../../../utils/utils';
+import {createElement} from '../../../utils/element';
 
 const tripEventsItempTemplate = (event) => {
   return (
@@ -54,7 +54,7 @@ const createTripEventOfferTemplate = (offer) => {
   );
 };
 
-export class MainTripDayEvent {
+export default class MainTripDayEvent {
   constructor(event) {
     this._event = event;
     this._element = null;

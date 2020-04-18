@@ -1,5 +1,5 @@
-import {calcFullPrice, getRoute, getRouteDates} from '../../helpers/utils';
-import {createElement} from '../../helpers/components';
+import {calcFullPrice, getRoute, getRouteDates} from '../../utils/utils';
+import {createElement} from '../../utils/element';
 
 const tripMainInfoTemplate = (route, dates, fullPrice) => {
   return (
@@ -17,7 +17,7 @@ const tripMainInfoTemplate = (route, dates, fullPrice) => {
   );
 };
 
-export class HeaderTripInfo {
+export default class HeaderTripInfo {
   constructor(trip) {
     this._route = getRoute(trip);
     this._dates = getRouteDates(trip);

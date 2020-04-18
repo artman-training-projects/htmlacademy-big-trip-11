@@ -1,4 +1,4 @@
-import {createElement} from '../../helpers/components';
+import {createElement} from '../../utils/element';
 
 const tripEventsSortTemplate = () => {
   return (
@@ -35,7 +35,7 @@ const tripEventsSortTemplate = () => {
   );
 };
 
-export class MainEventsSort {
+export default class MainEventsSort {
   constructor() {
     this._element = null;
   }
