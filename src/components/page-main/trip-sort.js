@@ -1,4 +1,4 @@
-import {createElement} from '../../utils/element';
+import AbstractComponent from '../abstract-component';
 
 const tripEventsSortTemplate = () => {
   return (
@@ -35,23 +35,7 @@ const tripEventsSortTemplate = () => {
   );
 };
 
-export default class MainEventsSort {
-  constructor() {
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
-
+export default class MainEventsSort extends AbstractComponent {
   getTemplate() {
     return tripEventsSortTemplate();
   }

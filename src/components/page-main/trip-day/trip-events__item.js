@@ -1,6 +1,6 @@
+import AbstractComponent from '../../abstract-component';
 import {tripPointTypesMap, SHOW_OFFERS} from '../../../utils/const';
 import {parseTime, getDiffTime} from '../../../utils/utils';
-import {createElement} from '../../../utils/element';
 
 const tripEventsItempTemplate = (event) => {
   return (
@@ -54,22 +54,10 @@ const createTripEventOfferTemplate = (offer) => {
   );
 };
 
-export default class MainTripDayEvent {
+export default class MainTripDayEvent extends AbstractComponent {
   constructor(event) {
+    super();
     this._event = event;
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 
   getTemplate() {

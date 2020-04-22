@@ -1,4 +1,4 @@
-import {createElement} from '../../utils/element';
+import AbstractComponent from '../abstract-component';
 import {createTripEventEditHeaderTemplate} from './event-edit/event__header';
 import {createTripEventEditOffersTemplate} from './event-edit/event--offers';
 import {createTripEventEditDestinationTemplate} from './event-edit/event--destination';
@@ -19,22 +19,10 @@ const createTripEventEditTemplate = (event) => {
   );
 };
 
-export default class MainTripDayEventEdit {
+export default class MainTripDayEventEdit extends AbstractComponent {
   constructor(event) {
+    super();
     this._event = event;
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 
   getTemplate() {

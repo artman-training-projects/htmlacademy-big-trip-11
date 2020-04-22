@@ -1,5 +1,6 @@
+import AbstractComponent from '../abstract-component';
 import {calcFullPrice, getRoute, getRouteDates} from '../../utils/utils';
-import {createElement} from '../../utils/element';
+
 
 const tripMainInfoTemplate = (route, dates, fullPrice) => {
   return (
@@ -17,24 +18,12 @@ const tripMainInfoTemplate = (route, dates, fullPrice) => {
   );
 };
 
-export default class HeaderTripInfo {
+export default class HeaderTripInfo extends AbstractComponent {
   constructor(trip) {
+    super();
     this._route = trip ? getRoute(trip) : ``;
     this._dates = trip ? getRouteDates(trip) : ``;
     this._fullPrice = trip ? calcFullPrice(trip) : 0;
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 
   getTemplate() {
