@@ -24,9 +24,9 @@ const generateTripPoint = () => {
 const generateTrip = () => Object.assign({}, generateTripPoint(), generateTripDestination(), generateTripOffer());
 
 const generateTrips = (count) => {
-  return new Array(count)
+  return count ? new Array(count)
     .fill(``)
-    .map(generateTrip);
+    .map(generateTrip) : null;
 };
 
 export {generateTrips};

@@ -1,10 +1,3 @@
-const getPhotos = (photos) => {
-  return photos
-    .slice()
-    .map((photo) => `<img class="event__photo" src="${photo.src}" alt="${photo.description}">`)
-    .join(``);
-};
-
 const createTripEventEditDestinationTemplate = (destination) => {
   return (
     `<section class="event__section  event__section--destination">
@@ -18,6 +11,13 @@ const createTripEventEditDestinationTemplate = (destination) => {
       </div>
     </section>`
   );
+};
+
+const getPhotos = (photos) => {
+  return photos
+    .slice()
+    .map((photo) => `<img class="event__photo" src="${photo.src}" alt="${photo.description}">`)
+    .join(``);
 };
 
 export {createTripEventEditDestinationTemplate};
