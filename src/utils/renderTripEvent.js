@@ -21,19 +21,18 @@ export const renderTripEvent = (event, day) => {
     }
   };
 
-  const onButtonRollupClick = () => replaceEventToEdit();
-  const onButtonEventReset = () => replaceEditToEvent();
-  const onButtonEventSave = () => replaceEditToEvent();
-
   const tripEvent = new MainTripDayEvent(event);
-  const buttonRollup = tripEvent.getElement().querySelector(`.event__rollup-btn`);
-  buttonRollup.addEventListener(`click`, onButtonRollupClick);
+  tripEvent.setButtonRollupClickHandler(() => {
+    replaceEventToEdit();
+  });
 
   const tripEventEdit = new MainTripDayEventEdit(event);
-  const buttonEventSave = tripEventEdit.getElement().querySelector(`.event__save-btn`);
-  const buttonEventReset = tripEventEdit.getElement().querySelector(`.event__reset-btn`);
-  buttonEventSave.addEventListener(`click`, onButtonEventSave);
-  buttonEventReset.addEventListener(`click`, onButtonEventReset);
+  tripEventEdit.setButtonEventSaveClick(() => {
+    replaceEditToEvent();
+  });
+  tripEventEdit.setButtonEventResetClick(() => {
+    replaceEditToEvent();
+  });
 
   renderComponent(day, tripEvent);
 };

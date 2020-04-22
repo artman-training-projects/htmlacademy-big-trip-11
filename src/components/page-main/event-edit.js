@@ -25,6 +25,16 @@ export default class MainTripDayEventEdit extends AbstractComponent {
     this._event = event;
   }
 
+  setButtonEventSaveClick(handler) {
+    this.getElement().querySelector(`.event__save-btn`)
+      .addEventListener(`click`, handler);
+  }
+
+  setButtonEventResetClick(handler) {
+    this.getElement().querySelector(`.event__reset-btn`)
+      .addEventListener(`click`, handler);
+  }
+
   getTemplate() {
     return createTripEventEditTemplate(this._event);
   }
