@@ -1,4 +1,4 @@
-import {renderElement} from './element';
+import {renderComponent} from './element';
 import {renderTripEvent} from './renderTripEvent';
 import MainTripDay from '../components/page-main/trip-day/trip-days__item';
 
@@ -15,7 +15,7 @@ export const renderTrip = (events, tripDays) => {
       dayFrom = event.dateFrom.getDate();
       const dayTrip = new MainTripDay(daysCount, event);
       tripDay = dayTrip.getElement().querySelector(`.trip-events__list`);
-      renderElement(tripDays, dayTrip.getElement());
+      renderComponent(tripDays, dayTrip);
     }
 
     renderTripEvent(event, tripDay);

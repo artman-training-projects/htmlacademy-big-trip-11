@@ -1,5 +1,5 @@
 import AbstractComponent from '../abstract-component';
-import {calcFullPrice, getRoute, getRouteDates} from '../../utils/utils';
+import {calcFullPrice, getRoute, getRouteDates} from '../../utils/common';
 
 
 const tripMainInfoTemplate = (route, dates, fullPrice) => {

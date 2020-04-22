@@ -1,6 +1,6 @@
 import AbstractComponent from '../../abstract-component';
 import {tripPointTypesMap, SHOW_OFFERS} from '../../../utils/const';
-import {parseTime, getDiffTime} from '../../../utils/utils';
+import {parseTime, getDiffTime} from '../../../utils/common';
 
 const tripEventsItempTemplate = (event) => {
   return (

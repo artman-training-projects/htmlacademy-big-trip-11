@@ -1,5 +1,5 @@
 import {tripPointTypesMap} from '../../../utils/const';
-import {parseTime, parseDate} from '../../../utils/utils';
+import {parseTime, parseDate} from '../../../utils/common';
 
 const createTripEventEditHeaderTemplate = (event) => {
   return (

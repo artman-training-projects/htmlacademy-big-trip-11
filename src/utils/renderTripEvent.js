@@ -1,15 +1,15 @@
-import {renderElement} from './element';
+import {renderComponent, replaceComponent} from './element';
 import MainTripDayEvent from '../components/page-main/trip-day/trip-events__item';
 import MainTripDayEventEdit from '../components/page-main/event-edit';
 
 export const renderTripEvent = (event, day) => {
   const replaceEventToEdit = () => {
-    day.replaceChild(tripEventEdit.getElement(), tripEvent.getElement());
+    replaceComponent(tripEventEdit, tripEvent);
     document.addEventListener(`keydown`, onEscKeyDown);
   };
 
   const replaceEditToEvent = () => {
-    day.replaceChild(tripEvent.getElement(), tripEventEdit.getElement());
+    replaceComponent(tripEvent, tripEventEdit);
     document.removeEventListener(`keydown`, onEscKeyDown);
   };
 
@@ -35,5 +35,5 @@ export const renderTripEvent = (event, day) => {
   buttonEventSave.addEventListener(`click`, onButtonEventSave);
   buttonEventReset.addEventListener(`click`, onButtonEventReset);
 
-  renderElement(day, tripEvent.getElement());
+  renderComponent(day, tripEvent);
 };

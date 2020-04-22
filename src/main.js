@@ -1,5 +1,5 @@
 import {sortEvents} from './utils/sorting';
-import {RenderPosition, renderElement} from './utils/element';
+import {RenderPosition, renderComponent} from './utils/element';
 import {generateTrips} from './mock/trip-point';
 
 import MainEventNo from './components/page-main/event-no';
@@ -16,28 +16,28 @@ const trips = generateTrips(EVENTS);
 
 if (!trips) {
   const tripMain = document.querySelector(`.trip-main`);
-  renderElement(tripMain, new HeaderTripInfo(trips).getElement(), RenderPosition.AFTERBEGIN);
+  renderComponent(tripMain, new HeaderTripInfo(trips), RenderPosition.AFTERBEGIN);
 
   const tripControls = tripMain.querySelector(`.trip-controls`);
-  renderElement(tripControls, new HeaderTripMenu().getElement());
-  renderElement(tripControls, new HeaderTripFilter().getElement());
+  renderComponent(tripControls, new HeaderTripMenu());
+  renderComponent(tripControls, new HeaderTripFilter());
 
   const tripEvents = document.querySelector(`.trip-events`);
-  renderElement(tripEvents, new MainEventNo().getElement());
+  renderComponent(tripEvents, new MainEventNo());
 } else {
   const tripsSortedByDateFrom = sortEvents(trips);
   // console.log(JSON.stringify(trips[0], null, 2));
 
   const tripMain = document.querySelector(`.trip-main`);
-  renderElement(tripMain, new HeaderTripInfo(tripsSortedByDateFrom).getElement(), RenderPosition.AFTERBEGIN);
+  renderComponent(tripMain, new HeaderTripInfo(tripsSortedByDateFrom), RenderPosition.AFTERBEGIN);
 
   const tripControls = tripMain.querySelector(`.trip-controls`);
-  renderElement(tripControls, new HeaderTripMenu().getElement());
-  renderElement(tripControls, new HeaderTripFilter().getElement());
+  renderComponent(tripControls, new HeaderTripMenu());
+  renderComponent(tripControls, new HeaderTripFilter());
 
   const tripEvents = document.querySelector(`.trip-events`);
-  renderElement(tripEvents, new MainEventsSort().getElement());
-  renderElement(tripEvents, new MainTripDays().getElement());
+  renderComponent(tripEvents, new MainEventsSort());
+  renderComponent(tripEvents, new MainTripDays());
 
   const tripDays = tripEvents.querySelector(`.trip-days`);
   renderTrip(tripsSortedByDateFrom, tripDays);
