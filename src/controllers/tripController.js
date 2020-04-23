@@ -10,6 +10,7 @@ import MainTripDayEvent from '../components/page-main/trip-day/trip-events__item
 import MainTripDayEventEdit from '../components/page-main/event-edit';
 
 const renderTripEvent = (event, day) => {
+
   const replaceEventToEdit = () => {
     replaceComponent(tripEventEdit, tripEvent);
     document.addEventListener(`keydown`, onEscKeyDown);
@@ -38,6 +39,9 @@ const renderTripEvent = (event, day) => {
     replaceEditToEvent();
   });
   tripEventEdit.setButtonEventResetClick(() => {
+    replaceEditToEvent();
+  });
+  tripEventEdit.setButtonEventCloseClick(() => {
     replaceEditToEvent();
   });
 
