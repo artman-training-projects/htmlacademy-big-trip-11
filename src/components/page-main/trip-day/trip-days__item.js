@@ -1,7 +1,7 @@
 import AbstractComponent from '../../abstract-component';
 import {monthMap} from '../../../utils/const';
 
-const tripDaysItemTemplate = (day, dateFrom) => {
+const tripDaysItemTemplate = (day = ``, dateFrom = ``) => {
   return (
     `<li class="trip-days__item  day">
       <div class="day__info">

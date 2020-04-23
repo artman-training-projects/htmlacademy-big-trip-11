@@ -71,3 +71,7 @@ export const getRouteDates = (events) => {
 
   return `${getDateStartString()} - ${getDateFinishString()}`;
 };
+
+export const getEventTime = (from, to) => {
+  return (to - from);
+};

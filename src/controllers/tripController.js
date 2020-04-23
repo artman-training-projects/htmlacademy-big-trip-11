@@ -1,10 +1,8 @@
-import {sortEvents} from '../utils/sorting';
+import {SortType} from '../utils/const';
+import {getEventTime} from '../utils/common';
 import {RenderPosition, renderComponent, replaceComponent} from '../utils/element';
 
-import NoEvents from '../components/no-events';
-import HeaderTripInfo from '../components/page-header/trip-info';
-import HeaderTripMenu from '../components/page-header/trip-menu';
-import HeaderTripFilter from '../components/page-header/trip-filter';
+import MainEventNo from '../components/page-main/event-no';
 import MainEventsSort from '../components/page-main/trip-sort';
 import MainTripDay from '../components/page-main/trip-day/trip-days__item';
 import MainTripDays from '../components/page-main/trip-days';
@@ -47,7 +45,6 @@ const renderTripEvent = (event, day) => {
 };
 
 const renderTrip = (events, tripDays) => {
-
   let dayFrom;
   let daysCount = 0;
   let tripDay;
@@ -66,33 +63,49 @@ const renderTrip = (events, tripDays) => {
   }
 };
 
+const getSortedEvents = (events, sortType = SortType.EVENT) => {
+  const trip = events.slice();
+  let sortedEvents = [];
+
+  switch (sortType) {
+    case SortType.EVENT:
+      sortedEvents = trip.sort((a, b) => Date.parse(a.dateFrom) - Date.parse(b.dateFrom));
+      break;
+    case SortType.TIME:
+      sortedEvents = trip.sort((a, b) => getEventTime(b.dateFrom, b.dateTo) - getEventTime(a.dateFrom, a.dateTo));
+      break;
+    case SortType.PRICE:
+      sortedEvents = trip.sort((a, b) => b.basePrice - a.basePrice);
+      break;
+  }
+
+  return sortedEvents;
+};
+
 export default class TripController {
   constructor(container) {
-    this._noEvents = new NoEvents();
+    this._noEvents = new MainEventNo();
     this._mainEventSort = new MainEventsSort();
+    this._eventsSorted = null;
     this._container = container;
   }
 
   render(trip) {
     if (!trip) {
-      this._noEvents.getTemplate();
+      renderComponent(this._container, this._noEvents);
     } else {
-      const tripsSortedByDateFrom = sortEvents(trip);
-      // console.log(JSON.stringify(trips[0], null, 2));
+      this._eventsSorted = getSortedEvents(trip);
+      renderComponent(this._container, this._mainEventSort);
 
-      const tripMain = document.querySelector(`.trip-main`);
-      renderComponent(tripMain, new HeaderTripInfo(tripsSortedByDateFrom), RenderPosition.AFTERBEGIN);
+      // const tripDays = new MainTripDays();
+      // renderComponent(tripEvents, tripDays);
+      renderTrip(this._eventsSorted, this._container);
 
-      const tripControls = tripMain.querySelector(`.trip-controls`);
-      renderComponent(tripControls, new HeaderTripMenu());
-      renderComponent(tripControls, new HeaderTripFilter());
-
-      const tripEvents = document.querySelector(`.trip-events`);
-      renderComponent(tripEvents, new MainEventsSort());
-      renderComponent(tripEvents, new MainTripDays());
-
-      const tripDays = tripEvents.querySelector(`.trip-days`);
-      renderTrip(tripsSortedByDateFrom, tripDays);
+      this._mainEventSort.setSortTypeSelectHandler((sortType) => {
+        this._eventsSorted = getSortedEvents(this._eventsSorted, sortType);
+      //   this._container.innerHTML = ``;
+      //   renderTrip(this._eventsSorted, this._container);
+      });
     }
   }
 }

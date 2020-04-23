@@ -1,17 +1,12 @@
 import AbstractComponent from '../abstract-component';
-
-const SortType = {
-  EVENT: `event`,
-  TIME: `time`,
-  PRICE: `price`,
-};
+import {SortType} from '../../utils/const';
 
 const tripEventsSortTemplate = () => {
   let template = ``;
 
   for (const sort of Object.values(SortType)) {
     template += `<div class="trip-sort__item  trip-sort__item--${sort}">
-                  <input id="sort-${sort}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-${sort}" checked>
+                  <input id="sort-${sort}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-${sort}">
                   <label class="trip-sort__btn" for="sort-${sort}" data-sort-type="${sort}">
                     ${sort}
                     <svg class="trip-sort__direction-icon" width="8" height="10" viewBox="0 0 8 10">
@@ -25,6 +20,30 @@ const tripEventsSortTemplate = () => {
 };
 
 export default class MainEventsSort extends AbstractComponent {
+  constructor() {
+    super();
+    this._currentSortType = SortType.EVENT;
+  }
+
+  getSortType() {
+    return this._currentSortType;
+  }
+
+  setSortTypeSelectHandler(handler) {
+    this.getElement().addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      const sortType = evt.target.dataset.sortType;
+
+      if (this._currentSortType === sortType) {
+        return;
+      }
+
+      this._currentSortType = sortType;
+
+      handler(this._currentSortType);
+    });
+  }
+
   getTemplate() {
     return (
       `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
