@@ -1,6 +1,6 @@
 import {SortType} from '../utils/const';
 import {getEventTime} from '../utils/common';
-import {RenderPosition, renderComponent, replaceComponent} from '../utils/element';
+import {renderComponent, replaceComponent} from '../utils/element';
 
 import MainEventNo from '../components/page-main/event-no';
 import MainEventsSort from '../components/page-main/trip-sort';
@@ -44,19 +44,29 @@ const renderTripEvent = (event, day) => {
   renderComponent(day, tripEvent);
 };
 
-const renderTrip = (events, tripDays) => {
+const renderTrip = (trip, container, isSorting = SortType.EVENT) => {
   let dayFrom;
   let daysCount = 0;
   let tripDay;
+  let dayTrip;
 
-  for (const event of events) {
+  if (isSorting !== SortType.EVENT) {
+    dayTrip = new MainTripDay();
+    tripDay = dayTrip.getElement().querySelector(`.trip-events__list`);
+  }
+
+  for (const event of trip) {
     if (dayFrom !== event.dateFrom.getDate()) {
       dayFrom = event.dateFrom.getDate();
       daysCount++;
       dayFrom = event.dateFrom.getDate();
-      const dayTrip = new MainTripDay(daysCount, event);
-      tripDay = dayTrip.getElement().querySelector(`.trip-events__list`);
-      renderComponent(tripDays, dayTrip);
+
+      if (isSorting === SortType.EVENT) {
+        dayTrip = new MainTripDay(daysCount, event.dateFrom);
+        tripDay = dayTrip.getElement().querySelector(`.trip-events__list`);
+      }
+
+      renderComponent(container, dayTrip);
     }
 
     renderTripEvent(event, tripDay);
@@ -86,6 +96,7 @@ export default class TripController {
   constructor(container) {
     this._noEvents = new MainEventNo();
     this._mainEventSort = new MainEventsSort();
+    this._tripDays = new MainTripDays();
     this._eventsSorted = null;
     this._container = container;
   }
@@ -96,15 +107,15 @@ export default class TripController {
     } else {
       this._eventsSorted = getSortedEvents(trip);
       renderComponent(this._container, this._mainEventSort);
+      renderComponent(this._container, this._tripDays);
 
-      // const tripDays = new MainTripDays();
-      // renderComponent(tripEvents, tripDays);
-      renderTrip(this._eventsSorted, this._container);
+      const daysContainer = this._tripDays.getElement();
+      renderTrip(this._eventsSorted, daysContainer);
 
       this._mainEventSort.setSortTypeSelectHandler((sortType) => {
         this._eventsSorted = getSortedEvents(this._eventsSorted, sortType);
-      //   this._container.innerHTML = ``;
-      //   renderTrip(this._eventsSorted, this._container);
+        daysContainer.innerHTML = ``;
+        renderTrip(this._eventsSorted, daysContainer, sortType);
       });
     }
   }
