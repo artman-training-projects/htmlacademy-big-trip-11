@@ -6,7 +6,7 @@ import {createTripEventEditDestinationTemplate} from './event-edit/event--destin
 const createTripEventEditTemplate = (event) => {
   return (
     `<li class="trip-events__item">
-      <form class="trip-events__item  event  event--edit" action="#" method="post">
+      <form class="event  event--edit" action="#" method="post">
         ${createTripEventEditHeaderTemplate(event)}
 
         <section class="event__details">
@@ -32,6 +32,11 @@ export default class MainTripDayEventEdit extends AbstractComponent {
 
   setButtonEventResetClick(handler) {
     this.getElement().querySelector(`.event__reset-btn`)
+      .addEventListener(`click`, handler);
+  }
+
+  setButtonEventCloseClick(handler) {
+    this.getElement().querySelector(`.event__rollup-btn`)
       .addEventListener(`click`, handler);
   }
 

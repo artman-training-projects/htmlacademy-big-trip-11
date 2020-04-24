@@ -1,12 +1,18 @@
-const SHOW_OFFERS = 3;
+export const SHOW_OFFERS = 3;
 
-const Millisecond = {
+export const Millisecond = {
   IN_DAY: 86400000,
   IN_HOUR: 3600000,
   IN_MINUTE: 60000,
 };
 
-const monthMap = new Map([
+export const SortType = {
+  EVENT: `event`,
+  TIME: `time`,
+  PRICE: `price`,
+};
+
+export const monthMap = new Map([
   [0, `JAN`],
   [1, `FEB`],
   [2, `MAR`],
@@ -21,7 +27,7 @@ const monthMap = new Map([
   [11, `DEC`],
 ]);
 
-const tripPointTypesMap = new Map([
+export const tripPointTypesMap = new Map([
   [`Taxi`, `Taxi to`],
   [`Bus`, `Bus to`],
   [`Train`, `Train to`],
@@ -34,7 +40,7 @@ const tripPointTypesMap = new Map([
   [`Restaurant`, `Restaurant in`],
 ]);
 
-const tripOffersMap = new Map([
+export const tripOffersMap = new Map([
   [`Taxi`, [{
     "title": `Upgrade to a business class`,
     "price": 150
@@ -142,5 +148,3 @@ const tripOffersMap = new Map([
     "price": 100
   }]],
 ]);
-
-export {SHOW_OFFERS, Millisecond, tripPointTypesMap, tripOffersMap, monthMap};
