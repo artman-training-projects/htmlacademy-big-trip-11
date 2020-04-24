@@ -1,32 +1,18 @@
 import AbstractComponent from '../../abstract-component';
 import {monthMap} from '../../../utils/const';
 
-const tripDaysItemTemplate = (day = ``, dateFrom = ``) => {
-  let template = ``;
+const tripDaysItemTemplate = (day, dateFrom) => {
+  return (
+    `<li class="trip-days__item  day">
+        <div class="day__info">
+          <span class="day__counter">${day ? day : ``}</span>
+          <time class="day__date" datetime="${dateFrom ? dateFrom : ``}">${dateFrom ? monthMap.get(dateFrom.getMonth()) : ``} ${dateFrom ? dateFrom.getDate() : ``}</time>
+        </div>
 
-  if (dateFrom) {
-    template += `<li class="trip-days__item  day">
-                  <div class="day__info">
-                    <span class="day__counter">${day}</span>
-                    <time class="day__date" datetime="${dateFrom}">${monthMap.get(dateFrom.getMonth())} ${dateFrom.getDate()}</time>
-                  </div>
-
-                  <ul class="trip-events__list">
-                  </ul>
-                </li>`;
-  } else {
-    template += `<li class="trip-days__item  day">
-                  <div class="day__info">
-                    <span class="day__counter"></span>
-                    <time class="day__date" datetime=""></time>
-                  </div>
-
-                  <ul class="trip-events__list">
-                  </ul>
-                </li>`;
-  }
-
-  return template;
+        <ul class="trip-events__list">
+        </ul>
+      </li>`
+  );
 };
 
 export default class MainTripDay extends AbstractComponent {

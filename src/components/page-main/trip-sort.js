@@ -31,7 +31,10 @@ export default class MainEventsSort extends AbstractComponent {
 
   setSortTypeSelectHandler(handler) {
     this.getElement().addEventListener(`click`, (evt) => {
-      evt.preventDefault();
+      if (evt.target.tagName !== `LABEL`) {
+        return;
+      }
+
       const sortType = evt.target.dataset.sortType;
 
       if (this._currentSortType === sortType) {
@@ -39,7 +42,6 @@ export default class MainEventsSort extends AbstractComponent {
       }
 
       this._currentSortType = sortType;
-
       handler(this._currentSortType);
     });
   }
