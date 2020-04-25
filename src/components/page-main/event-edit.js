@@ -26,29 +26,45 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
     this._isFavorite = event.isFavorite;
 
     this._subscribeOnEvents();
+    this._buttonEventSaveHandler = null;
+    this._buttonEventResetHandler = null;
+    this._buttonEventCloseHandler = null;
+    this._favoriteClickHandler = null;
   }
 
   setButtonEventSaveClick(handler) {
-    this.getElement().querySelector(`.event__save-btn`)
-      .addEventListener(`click`, handler);
+    this.getElement().querySelector(`.event--edit`)
+      .addEventListener(`submit`, handler);
+
+    this._buttonEventSaveHandler = handler;
   }
 
   setButtonEventResetClick(handler) {
     this.getElement().querySelector(`.event__reset-btn`)
       .addEventListener(`click`, handler);
+
+    this._buttonEventResetHandler = handler;
   }
 
   setButtonEventCloseClick(handler) {
     this.getElement().querySelector(`.event__rollup-btn`)
       .addEventListener(`click`, handler);
+
+    this._buttonEventCloseHandler = handler;
   }
 
-  setFavoriteClickHandler(handler) {
+  setFavoriteClick(handler) {
     this.getElement().querySelector(`.event__favorite-btn`)
       .addEventListener(`click`, handler);
+
+    this._favoriteClickHandler = handler;
   }
 
   recoveryListeners() {
+    this.setButtonEventSaveClick(this._buttonEventSaveHandler);
+    this.setButtonEventResetClick(this._buttonEventResetHandler);
+    this.setButtonEventCloseClick(this._buttonEventCloseHandler);
+    this.setFavoriteClick(this._favoriteClickHandler);
     this._subscribeOnEvents();
   }
 

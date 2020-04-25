@@ -52,7 +52,7 @@ export default class EventController {
       this._replaceEditToEvent();
     });
 
-    this._mainTripDayEventEdit.setFavoriteClickHandler(() => {
+    this._mainTripDayEventEdit.setFavoriteClick(() => {
       this._onDataChange(this, event, Object.assign({}, event, {
         isFavorite: !event.isFavorite,
       }));
