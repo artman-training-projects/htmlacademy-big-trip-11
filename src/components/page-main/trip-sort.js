@@ -6,7 +6,7 @@ const tripEventsSortTemplate = () => {
 
   for (const sort of Object.values(SortType)) {
     template += `<div class="trip-sort__item  trip-sort__item--${sort}">
-                  <input id="sort-${sort}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-${sort}">
+                  <input id="sort-${sort}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-${sort}" ${sort === SortType.EVENT ? `checked` : ``}>
                   <label class="trip-sort__btn" for="sort-${sort}" data-sort-type="${sort}">
                     ${sort}
                     <svg class="trip-sort__direction-icon" width="8" height="10" viewBox="0 0 8 10">
