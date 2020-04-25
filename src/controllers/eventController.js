@@ -9,6 +9,8 @@ export default class EventController {
     this._mainTripDayEventEdit = null;
     this._onDataChange = onDataChange;
     this._container = container;
+
+    this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
 
   render(event) {
@@ -25,38 +27,21 @@ export default class EventController {
       renderComponent(this._container, this._mainTripDayEvent);
     }
 
-    const replaceEventToEdit = () => {
-      replaceComponent(this._mainTripDayEventEdit, this._mainTripDayEvent);
-      document.addEventListener(`keydown`, onEscKeyDown);
-    };
-
-    const replaceEditToEvent = () => {
-      replaceComponent(this._mainTripDayEvent, this._mainTripDayEventEdit);
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    };
-
-    const onEscKeyDown = (evt) => {
-      const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
-
-      if (isEscKey) {
-        replaceEditToEvent();
-      }
-    };
-
     this._mainTripDayEvent.setButtonRollupClickHandler(() => {
-      replaceEventToEdit();
+      this._replaceEventToEdit();
+      document.addEventListener(`keydown`, this._onEscKeyDown);
     });
 
     this._mainTripDayEventEdit.setButtonEventSaveClick(() => {
-      replaceEditToEvent();
+      this._replaceEditToEvent();
     });
 
     this._mainTripDayEventEdit.setButtonEventResetClick(() => {
-      replaceEditToEvent();
+      this._replaceEditToEvent();
     });
 
     this._mainTripDayEventEdit.setButtonEventCloseClick(() => {
-      replaceEditToEvent();
+      this._replaceEditToEvent();
     });
 
     this._mainTripDayEventEdit.setFavoriteClickHandler(() => {
@@ -64,5 +49,22 @@ export default class EventController {
         isFavorite: !event.isFavorite,
       }));
     });
+  }
+
+  _replaceEventToEdit() {
+    replaceComponent(this._mainTripDayEventEdit, this._mainTripDayEvent);
+  }
+
+  _replaceEditToEvent() {
+    document.removeEventListener(`keydown`, this._onEscKeyDown);
+    replaceComponent(this._mainTripDayEvent, this._mainTripDayEventEdit);
+  }
+
+  _onEscKeyDown(evt) {
+    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+    if (isEscKey) {
+      this._replaceEditToEvent();
+    }
   }
 }

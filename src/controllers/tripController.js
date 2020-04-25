@@ -93,6 +93,7 @@ export default class TripController {
 
   _onSortTypeChange(sortType) {
     this._events = getSortedEvents(this._events, sortType);
+
     const container = this._tripDays.getElement();
     container.innerHTML = ``;
 
