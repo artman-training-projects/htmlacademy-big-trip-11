@@ -9,7 +9,7 @@ import MainTripDays from '../components/page-main/trip-days';
 
 import EventController from './eventController';
 
-const renderTrip = (trip, container, onDataChange, isSorting = SortType.EVENT) => {
+const renderTrip = (trip, container, onDataChange, onViewChange, isSorting = SortType.EVENT) => {
   let dayFrom;
   let daysCount = 0;
   let tripDay;
@@ -34,7 +34,7 @@ const renderTrip = (trip, container, onDataChange, isSorting = SortType.EVENT) =
       renderComponent(container, dayTrip);
     }
 
-    let eventController = new EventController(tripDay, onDataChange);
+    let eventController = new EventController(tripDay, onDataChange, onViewChange);
     eventController.render(event);
 
     return eventController;
@@ -72,6 +72,7 @@ export default class TripController {
 
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
     this._onDataChange = this._onDataChange.bind(this);
+    this._onViewChange = this._onViewChange.bind(this);
     this._mainEventSort.setSortTypeSelectHandler(this._onSortTypeChange);
   }
 
@@ -86,7 +87,7 @@ export default class TripController {
     renderComponent(this._container, this._tripDays);
 
     const daysContainer = this._tripDays.getElement();
-    const newTrip = renderTrip(this._events, daysContainer, this._onDataChange);
+    const newTrip = renderTrip(this._events, daysContainer, this._onDataChange, this._onViewChange);
 
     this._showedEvents = this._showedEvents.concat(newTrip);
   }
@@ -97,7 +98,7 @@ export default class TripController {
     const container = this._tripDays.getElement();
     container.innerHTML = ``;
 
-    const newTrip = renderTrip(this._events, container, this._onDataChange, sortType);
+    const newTrip = renderTrip(this._events, container, this._onDataChange, this._onViewChange, sortType);
     this._showedEvents = newTrip;
   }
 
@@ -110,5 +111,9 @@ export default class TripController {
 
     this._events = [].concat(this._events.slice(0, index), newData, this._events.slice(index + 1));
     eventController.render(this._events[index]);
+  }
+
+  _onViewChange() {
+    this._showedEvents.forEach((it) => it.setDefaultView());
   }
 }

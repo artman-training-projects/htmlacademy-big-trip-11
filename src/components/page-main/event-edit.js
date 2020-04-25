@@ -1,13 +1,13 @@
-import AbstractComponent from '../abstract-component';
+import AbstractSmartComponent from '../abstract-smart-component';
 import {createTripEventEditHeaderTemplate} from './event-edit/event__header';
 import {createTripEventEditOffersTemplate} from './event-edit/event--offers';
 import {createTripEventEditDestinationTemplate} from './event-edit/event--destination';
 
-const createTripEventEditTemplate = (event, isFavorite) => {
+const createTripEventEditTemplate = (event) => {
   return (
     `<li class="trip-events__item">
       <form class="event  event--edit" action="#" method="post">
-        ${createTripEventEditHeaderTemplate(event, isFavorite)}
+        ${createTripEventEditHeaderTemplate(event)}
 
         <section class="event__details">
           ${createTripEventEditOffersTemplate(event.offers)}
@@ -19,11 +19,13 @@ const createTripEventEditTemplate = (event, isFavorite) => {
   );
 };
 
-export default class MainTripDayEventEdit extends AbstractComponent {
+export default class MainTripDayEventEdit extends AbstractSmartComponent {
   constructor(event) {
     super();
-    this._isFavorite = false;
     this._event = event;
+    this._isFavorite = event.isFavorite;
+
+    this._subscribeOnEvents();
   }
 
   setButtonEventSaveClick(handler) {
@@ -46,7 +48,32 @@ export default class MainTripDayEventEdit extends AbstractComponent {
       .addEventListener(`click`, handler);
   }
 
+  recoveryListeners() {
+    this._subscribeOnEvents();
+  }
+
+  rerenderElement() {
+    super.rerenderElement();
+  }
+
+  reset() {
+    const event = this._event;
+
+    this._isFavorite = event.isFavorite;
+
+    this.rerenderElement();
+  }
+
+  _subscribeOnEvents() {
+    const element = this.getElement();
+
+    element.querySelector(`.event__favorite-btn`)
+      .addEventListener(`click`, () => {
+        this.rerenderElement();
+      });
+  }
+
   getTemplate() {
-    return createTripEventEditTemplate(this._event, this._isFavorite);
+    return createTripEventEditTemplate(this._event);
   }
 }

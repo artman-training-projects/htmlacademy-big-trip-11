@@ -3,11 +3,18 @@ import {renderComponent, replaceComponent} from '../utils/element';
 import MainTripDayEvent from '../components/page-main/trip-day/trip-events__item';
 import MainTripDayEventEdit from '../components/page-main/event-edit';
 
+const Mode = {
+  DEFAULT: `default`,
+  EDIT: `edit`,
+};
+
 export default class EventController {
-  constructor(container, onDataChange) {
+  constructor(container, onDataChange, onViewChange) {
     this._mainTripDayEvent = null;
     this._mainTripDayEventEdit = null;
     this._onDataChange = onDataChange;
+    this._onViewChange = onViewChange;
+    this._mode = Mode.DEFAULT;
     this._container = container;
 
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
@@ -32,7 +39,8 @@ export default class EventController {
       document.addEventListener(`keydown`, this._onEscKeyDown);
     });
 
-    this._mainTripDayEventEdit.setButtonEventSaveClick(() => {
+    this._mainTripDayEventEdit.setButtonEventSaveClick((evt) => {
+      evt.preventDefault();
       this._replaceEditToEvent();
     });
 
@@ -51,13 +59,23 @@ export default class EventController {
     });
   }
 
+  setDefaultView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._replaceEditToEvent();
+    }
+  }
+
   _replaceEventToEdit() {
+    this._onViewChange();
     replaceComponent(this._mainTripDayEventEdit, this._mainTripDayEvent);
+    this._mode = Mode.EDIT;
   }
 
   _replaceEditToEvent() {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
+    this._mainTripDayEventEdit.reset();
     replaceComponent(this._mainTripDayEvent, this._mainTripDayEventEdit);
+    this._mode = Mode.DEFAULT;
   }
 
   _onEscKeyDown(evt) {
