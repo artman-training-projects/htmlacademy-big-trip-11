@@ -1,52 +1,13 @@
 import {SortType} from '../utils/const';
 import {getEventTime} from '../utils/common';
-import {renderComponent, replaceComponent} from '../utils/element';
+import {renderComponent} from '../utils/element';
 
 import MainEventNo from '../components/page-main/event-no';
 import MainEventsSort from '../components/page-main/trip-sort';
 import MainTripDay from '../components/page-main/trip-day/trip-days__item';
 import MainTripDays from '../components/page-main/trip-days';
-import MainTripDayEvent from '../components/page-main/trip-day/trip-events__item';
-import MainTripDayEventEdit from '../components/page-main/event-edit';
 
-const renderTripEvent = (event, day) => {
-
-  const replaceEventToEdit = () => {
-    replaceComponent(tripEventEdit, tripEvent);
-    document.addEventListener(`keydown`, onEscKeyDown);
-  };
-
-  const replaceEditToEvent = () => {
-    replaceComponent(tripEvent, tripEventEdit);
-    document.removeEventListener(`keydown`, onEscKeyDown);
-  };
-
-  const onEscKeyDown = (evt) => {
-    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
-
-    if (isEscKey) {
-      replaceEditToEvent();
-    }
-  };
-
-  const tripEvent = new MainTripDayEvent(event);
-  tripEvent.setButtonRollupClickHandler(() => {
-    replaceEventToEdit();
-  });
-
-  const tripEventEdit = new MainTripDayEventEdit(event);
-  tripEventEdit.setButtonEventSaveClick(() => {
-    replaceEditToEvent();
-  });
-  tripEventEdit.setButtonEventResetClick(() => {
-    replaceEditToEvent();
-  });
-  tripEventEdit.setButtonEventCloseClick(() => {
-    replaceEditToEvent();
-  });
-
-  renderComponent(day, tripEvent);
-};
+import EventController from './eventController';
 
 const renderTrip = (trip, container, isSorting = SortType.EVENT) => {
   let dayFrom;
@@ -73,7 +34,8 @@ const renderTrip = (trip, container, isSorting = SortType.EVENT) => {
       renderComponent(container, dayTrip);
     }
 
-    renderTripEvent(event, tripDay);
+    let eventController = new EventController(tripDay);
+    eventController.render(event);
   }
 };
 
