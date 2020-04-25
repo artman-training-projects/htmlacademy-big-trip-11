@@ -1,16 +1,8 @@
+import moment from 'moment';
 import {Millisecond, monthMap, SHOW_OFFERS} from './const';
 
-export const parseTime = (timestamp) => {
-  return [timestamp.getHours(), timestamp.getMinutes()]
-    .map((value) => value < 10 ? `0` + value : value)
-    .join(`:`);
-};
-
-export const parseDate = (timestamp) => {
-  return [...[timestamp.getDay(), timestamp.getMonth()]
-    .map((value) => value < 10 ? `0` + value : value), timestamp.getFullYear().toString().substr(2)]
-    .join(`/`);
-};
+export const parseTime = (timestamp) => moment(timestamp).format(`hh:mm`);
+export const parseDate = (timestamp) => moment(timestamp).format(`DD/MM/YY`);
 
 export const getDiffTime = (from, to) => {
   const diff = (to - from);
