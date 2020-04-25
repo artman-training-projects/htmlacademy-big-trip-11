@@ -4,9 +4,10 @@ import MainTripDayEvent from '../components/page-main/trip-day/trip-events__item
 import MainTripDayEventEdit from '../components/page-main/event-edit';
 
 export default class EventController {
-  constructor(container) {
+  constructor(container, onDataChange) {
     this._mainTripDayEvent = null;
     this._mainTripDayEventEdit = null;
+    this._onDataChange = onDataChange;
     this._container = container;
   }
 
@@ -16,6 +17,13 @@ export default class EventController {
 
     this._mainTripDayEvent = new MainTripDayEvent(event);
     this._mainTripDayEventEdit = new MainTripDayEventEdit(event);
+
+    if (oldMainTripDayEvent && oldMainTripDayEventEdit) {
+      replaceComponent(this._mainTripDayEvent, oldMainTripDayEvent);
+      replaceComponent(this._mainTripDayEventEdit, oldMainTripDayEventEdit);
+    } else {
+      renderComponent(this._container, this._mainTripDayEvent);
+    }
 
     const replaceEventToEdit = () => {
       replaceComponent(this._mainTripDayEventEdit, this._mainTripDayEvent);
@@ -51,6 +59,10 @@ export default class EventController {
       replaceEditToEvent();
     });
 
-    renderComponent(this._container, this._mainTripDayEvent);
+    this._mainTripDayEventEdit.setFavoriteClickHandler(() => {
+      this._onDataChange(this, event, Object.assign({}, event, {
+        isFavorite: !event.isFavorite,
+      }));
+    });
   }
 }

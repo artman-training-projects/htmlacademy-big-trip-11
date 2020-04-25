@@ -3,11 +3,11 @@ import {createTripEventEditHeaderTemplate} from './event-edit/event__header';
 import {createTripEventEditOffersTemplate} from './event-edit/event--offers';
 import {createTripEventEditDestinationTemplate} from './event-edit/event--destination';
 
-const createTripEventEditTemplate = (event) => {
+const createTripEventEditTemplate = (event, isFavorite) => {
   return (
     `<li class="trip-events__item">
       <form class="event  event--edit" action="#" method="post">
-        ${createTripEventEditHeaderTemplate(event)}
+        ${createTripEventEditHeaderTemplate(event, isFavorite)}
 
         <section class="event__details">
           ${createTripEventEditOffersTemplate(event.offers)}
@@ -22,6 +22,7 @@ const createTripEventEditTemplate = (event) => {
 export default class MainTripDayEventEdit extends AbstractComponent {
   constructor(event) {
     super();
+    this._isFavorite = false;
     this._event = event;
   }
 
@@ -40,7 +41,12 @@ export default class MainTripDayEventEdit extends AbstractComponent {
       .addEventListener(`click`, handler);
   }
 
+  setFavoriteClickHandler(handler) {
+    this.getElement().querySelector(`.event__favorite-btn`)
+      .addEventListener(`click`, handler);
+  }
+
   getTemplate() {
-    return createTripEventEditTemplate(this._event);
+    return createTripEventEditTemplate(this._event, this._isFavorite);
   }
 }
