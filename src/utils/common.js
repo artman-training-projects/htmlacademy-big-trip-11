@@ -19,13 +19,6 @@ export const getDiffTime = (from, to) => {
   return diffString;
 };
 
-export const calcFullPrice = (events) => {
-  return events
-    .slice()
-    .map((event) => event.basePrice)
-    .reduce((sum, price) => sum + price);
-};
-
 export const getRoute = (events) => {
   const citys = new Set(events
     .slice()
@@ -66,4 +59,19 @@ export const getRouteDates = (events) => {
 
 export const getEventTime = (from, to) => {
   return (to - from);
+};
+
+
+export const calcFullPrice = (events) => {
+  return events
+    .slice()
+    .map((event) => event.basePrice + calcOffersPrice(event.offers))
+    .reduce((sum, price) => sum + price);
+};
+
+export const calcOffersPrice = (offers) => {
+  return offers ? offers
+    .slice()
+    .map((offer) => offer.price)
+    .reduce((sum, price) => sum + price) : 0;
 };
