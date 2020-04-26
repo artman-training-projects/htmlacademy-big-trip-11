@@ -53,4 +53,4 @@ const generateTripDestination = () => {
   };
 };
 
-export {generateTripDestination};
+export {generateTripDestination, tripDestinationCitys};

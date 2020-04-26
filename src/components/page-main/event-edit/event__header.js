@@ -1,8 +1,15 @@
 import {tripPointTypesMap} from '../../../utils/const';
 import {parseTime, parseDate} from '../../../utils/common';
+import {tripDestinationCitys} from '../../../mock/trip-destination';
 
 let offerCount = 1;
 const addOfferCount = () => offerCount++;
+
+const createTripDestinationList = () => {
+  return tripDestinationCitys
+    .map((city) => `<option value="${city}"></option>`)
+    .join(`\n`);
+};
 
 const createTripEventEditHeaderTemplate = (event) => {
   const count = addOfferCount();
@@ -83,10 +90,7 @@ const createTripEventEditHeaderTemplate = (event) => {
         </label>
         <input class="event__input  event__input--destination" id="event-destination-${count}" type="text" name="event-destination" value="${event.destination.name}" list="destination-list-1">
         <datalist id="destination-list-1">
-          <option value="Amsterdam"></option>
-          <option value="Geneva"></option>
-          <option value="Chamonix"></option>
-          <option value="Saint Petersburg"></option>
+          ${createTripDestinationList()}
         </datalist>
       </div>
 
