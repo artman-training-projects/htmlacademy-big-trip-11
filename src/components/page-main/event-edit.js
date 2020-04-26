@@ -23,12 +23,14 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
   constructor(event) {
     super();
     this._event = event;
+    this._isType = event.type;
     this._isFavorite = event.isFavorite;
 
     this._subscribeOnEvents();
     this._buttonEventSaveHandler = null;
     this._buttonEventResetHandler = null;
     this._buttonEventCloseHandler = null;
+    this._chooseTypeHandler = null;
     this._favoriteClickHandler = null;
   }
 
@@ -53,6 +55,13 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
     this._buttonEventCloseHandler = handler;
   }
 
+  setTypeClick(handler) {
+    this.getElement().querySelector(`.event__type-list`)
+      .addEventListener(`click`, handler);
+
+    this._chooseTypeHandler = handler;
+  }
+
   setFavoriteClick(handler) {
     this.getElement().querySelector(`.event__favorite-btn`)
       .addEventListener(`click`, handler);
@@ -64,6 +73,7 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
     this.setButtonEventSaveClick(this._buttonEventSaveHandler);
     this.setButtonEventResetClick(this._buttonEventResetHandler);
     this.setButtonEventCloseClick(this._buttonEventCloseHandler);
+    this.setTypeClick(this._chooseTypeHandler);
     this.setFavoriteClick(this._favoriteClickHandler);
     this._subscribeOnEvents();
   }
@@ -75,6 +85,7 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
   reset() {
     const event = this._event;
 
+    this._isType = event.type;
     this._isFavorite = event.isFavorite;
 
     this.rerenderElement();

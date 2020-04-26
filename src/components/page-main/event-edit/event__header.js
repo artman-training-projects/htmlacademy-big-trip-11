@@ -4,7 +4,7 @@ import {parseTime, parseDate} from '../../../utils/common';
 let offerCount = 1;
 const addOfferCount = () => offerCount++;
 
-const createTripEventEditHeaderTemplate = (event, isFavorite) => {
+const createTripEventEditHeaderTemplate = (event) => {
   const count = addOfferCount();
 
   return (

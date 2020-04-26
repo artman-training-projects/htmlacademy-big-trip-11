@@ -52,6 +52,16 @@ export default class EventController {
       this._replaceEditToEvent();
     });
 
+    this._mainTripDayEventEdit.setTypeClick((evt) => {
+      if (evt.target.tagName === `INPUT`) {
+        return;
+      }
+
+      this._onDataChange(this, event, Object.assign({}, event, {
+        type: evt.target.innerText,
+      }));
+    });
+
     this._mainTripDayEventEdit.setFavoriteClick(() => {
       this._onDataChange(this, event, Object.assign({}, event, {
         isFavorite: !event.isFavorite,
