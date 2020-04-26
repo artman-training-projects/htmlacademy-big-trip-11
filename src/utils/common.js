@@ -1,7 +1,7 @@
 import moment from 'moment';
 import {Millisecond, monthMap, SHOW_OFFERS} from './const';
 
-export const parseTime = (timestamp) => moment(timestamp).format(`hh:mm`);
+export const parseTime = (timestamp) => moment(timestamp).format(`HH:mm`);
 export const parseDate = (timestamp) => moment(timestamp).format(`DD/MM/YY`);
 
 export const getDiffTime = (from, to) => {

@@ -3,6 +3,9 @@ import {createTripEventEditHeaderTemplate} from './event-edit/event__header';
 import {createTripEventEditOffersTemplate} from './event-edit/event--offers';
 import {createTripEventEditDestinationTemplate} from './event-edit/event--destination';
 
+import flatpickr from 'flatpickr';
+import "flatpickr/dist/flatpickr.min.css";
+
 const createTripEventEditTemplate = (event) => {
   return (
     `<li class="trip-events__item">
@@ -24,6 +27,8 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
     super();
     this._event = event;
     this._isType = event.type;
+    this._isDateFrom = event.dateFrom;
+    this._isDateTo = event.dateTo;
     this._isFavorite = event.isFavorite;
 
     this._subscribeOnEvents();
@@ -33,6 +38,9 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
     this._choiceTypeHandler = null;
     this._choiceDestiantionCityHandler = null;
     this._favoriteClickHandler = null;
+
+    this._flatpickr = null;
+    this._applyFlatpickr();
   }
 
   setButtonEventSaveClick(handler) {
@@ -90,6 +98,8 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
 
   rerenderElement() {
     super.rerenderElement();
+
+    this._applyFlatpickr();
   }
 
   reset() {
@@ -108,6 +118,31 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
       .addEventListener(`click`, () => {
         this.rerenderElement();
       });
+  }
+
+  _applyFlatpickr() {
+    if (this._flatpickr) {
+      this._flatpickr.destroy();
+      this._flatpickr = null;
+    }
+
+    if (this._isDateFrom) {
+      const dateElement = this.getElement().querySelector(`[name="event-start-time"]`);
+      this._flatpickr = flatpickr(dateElement, {
+        enableTime: true,
+        dateFormat: `d/m/y H:i`,
+        defaultDate: this._isDateFrom || ``,
+      });
+    }
+
+    if (this._isDateFrom) {
+      const dateElement = this.getElement().querySelector(`[name="event-end-time"]`);
+      this._flatpickr = flatpickr(dateElement, {
+        enableTime: true,
+        dateFormat: `d/m/y H:i`,
+        defaultDate: this._isDateTo || ``,
+      });
+    }
   }
 
   getTemplate() {
