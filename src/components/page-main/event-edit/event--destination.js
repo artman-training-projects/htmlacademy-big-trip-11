@@ -14,10 +14,10 @@ const createTripEventEditDestinationTemplate = (destination) => {
 };
 
 const getPhotos = (photos) => {
-  return photos
+  return photos ? photos
     .slice()
     .map((photo) => `<img class="event__photo" src="${photo.src}" alt="${photo.description}">`)
-    .join(``);
+    .join(``) : ``;
 };
 
 export {createTripEventEditDestinationTemplate};

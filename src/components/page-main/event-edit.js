@@ -30,7 +30,8 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
     this._buttonEventSaveHandler = null;
     this._buttonEventResetHandler = null;
     this._buttonEventCloseHandler = null;
-    this._chooseTypeHandler = null;
+    this._choiceTypeHandler = null;
+    this._choiceDestiantionCityHandler = null;
     this._favoriteClickHandler = null;
   }
 
@@ -55,12 +56,20 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
     this._buttonEventCloseHandler = handler;
   }
 
-  setTypeClick(handler) {
+  setTypeChoiceClick(handler) {
     this.getElement().querySelector(`.event__type-list`)
       .addEventListener(`click`, handler);
 
-    this._chooseTypeHandler = handler;
+    this._choiceTypeHandler = handler;
   }
+
+  setDestiantionCityChoiceClick(handler) {
+    this.getElement().querySelector(`.event__input--destination`)
+      .addEventListener(`input`, handler);
+
+    this._choiceDestiantionCityHandler = handler;
+  }
+
 
   setFavoriteClick(handler) {
     this.getElement().querySelector(`.event__favorite-btn`)
@@ -73,7 +82,8 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
     this.setButtonEventSaveClick(this._buttonEventSaveHandler);
     this.setButtonEventResetClick(this._buttonEventResetHandler);
     this.setButtonEventCloseClick(this._buttonEventCloseHandler);
-    this.setTypeClick(this._chooseTypeHandler);
+    this.setTypeChoiceClick(this._choiceTypeHandler);
+    this.setDestiantionCityChoiceClick(this._choiceDestiantionCityHandler);
     this.setFavoriteClick(this._favoriteClickHandler);
     this._subscribeOnEvents();
   }

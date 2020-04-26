@@ -1,5 +1,6 @@
 import {tripOffersMap} from '../utils/const';
 import {renderComponent, replaceComponent} from '../utils/element';
+import {DescriptionCount, PhotoCount, tripDestinationDescriptions, getTripDestinationDesccription, getTripDestinationPhotos} from '../mock/trip-destination';
 
 import MainTripDayEvent from '../components/page-main/trip-day/trip-events__item';
 import MainTripDayEventEdit from '../components/page-main/event-edit';
@@ -53,7 +54,7 @@ export default class EventController {
       this._replaceEditToEvent();
     });
 
-    this._mainTripDayEventEdit.setTypeClick((evt) => {
+    this._mainTripDayEventEdit.setTypeChoiceClick((evt) => {
       if (evt.target.tagName === `INPUT`) {
         return;
       }
@@ -61,6 +62,20 @@ export default class EventController {
       this._onDataChange(this, event, Object.assign({}, event, {
         type: evt.target.innerText,
         offers: tripOffersMap.get(evt.target.innerText),
+      }));
+    });
+
+    this._mainTripDayEventEdit.setDestiantionCityChoiceClick((evt) => {
+      if (evt.target.value === ``) {
+        return;
+      }
+
+      this._onDataChange(this, event, Object.assign({}, event, {
+        destination: {
+          name: evt.target.value,
+          description: getTripDestinationDesccription(tripDestinationDescriptions, DescriptionCount),
+          pictures: getTripDestinationPhotos(PhotoCount),
+        }
       }));
     });
 

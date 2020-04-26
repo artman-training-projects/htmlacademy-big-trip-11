@@ -88,8 +88,8 @@ const createTripEventEditHeaderTemplate = (event) => {
         <label class="event__label  event__type-output" for="event-destination-${count}">
           ${tripPointTypesMap.get(event.type)}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-${count}" type="text" name="event-destination" value="${event.destination.name}" list="destination-list-1">
-        <datalist id="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-${count}" type="text" name="event-destination" value="${event.destination.name}" list="destination-list-${count}">
+        <datalist id="destination-list-${count}">
           ${createTripDestinationList()}
         </datalist>
       </div>
