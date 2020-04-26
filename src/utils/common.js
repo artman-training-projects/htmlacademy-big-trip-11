@@ -61,17 +61,9 @@ export const getEventTime = (from, to) => {
   return (to - from);
 };
 
-
-export const calcFullPrice = (events) => {
-  return events
+export const calcFullPrice = (events, prices) => {
+  return events ? events
     .slice()
-    .map((event) => event.basePrice + calcOffersPrice(event.offers))
-    .reduce((sum, price) => sum + price);
-};
-
-export const calcOffersPrice = (offers) => {
-  return offers ? offers
-    .slice()
-    .map((offer) => offer.price)
+    .map((event) => event[prices] + calcFullPrice(event.offers, `price`))
     .reduce((sum, price) => sum + price) : 0;
 };

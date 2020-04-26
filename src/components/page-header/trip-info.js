@@ -23,7 +23,7 @@ export default class HeaderTripInfo extends AbstractComponent {
     super();
     this._route = trip ? getRoute(trip) : ``;
     this._dates = trip ? getRouteDates(trip) : ``;
-    this._fullPrice = trip ? calcFullPrice(trip) : 0;
+    this._fullPrice = trip ? calcFullPrice(trip, `basePrice`) : 0;
   }
 
   getTemplate() {
