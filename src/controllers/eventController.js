@@ -1,3 +1,4 @@
+import {tripOffersMap} from '../utils/const';
 import {renderComponent, replaceComponent} from '../utils/element';
 
 import MainTripDayEvent from '../components/page-main/trip-day/trip-events__item';
@@ -59,6 +60,7 @@ export default class EventController {
 
       this._onDataChange(this, event, Object.assign({}, event, {
         type: evt.target.innerText,
+        offers: tripOffersMap.get(evt.target.innerText),
       }));
     });
 
