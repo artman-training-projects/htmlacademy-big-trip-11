@@ -9,6 +9,7 @@ import TripController from './controllers/tripController';
 
 const EVENTS = 20;
 const trip = generateTrips(EVENTS);
+// console.log(JSON.stringify(trip[0], null, 2));
 
 const tripMain = document.querySelector(`.trip-main`);
 renderComponent(tripMain, new HeaderTripInfo(trip), RenderPosition.AFTERBEGIN);

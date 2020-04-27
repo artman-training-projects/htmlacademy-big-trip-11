@@ -53,4 +53,4 @@ const generateTripDestination = () => {
   };
 };
 
-export {generateTripDestination};
+export {DescriptionCount, PhotoCount, generateTripDestination, tripDestinationCitys, tripDestinationDescriptions, getTripDestinationDesccription, getTripDestinationPhotos};

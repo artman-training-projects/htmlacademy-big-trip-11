@@ -1,8 +1,15 @@
 import {tripPointTypesMap} from '../../../utils/const';
 import {parseTime, parseDate} from '../../../utils/common';
+import {tripDestinationCitys} from '../../../mock/trip-destination';
 
 let offerCount = 1;
 const addOfferCount = () => offerCount++;
+
+const createTripDestinationList = () => {
+  return tripDestinationCitys
+    .map((city) => `<option value="${city}"></option>`)
+    .join(`\n`);
+};
 
 const createTripEventEditHeaderTemplate = (event) => {
   const count = addOfferCount();
@@ -81,12 +88,9 @@ const createTripEventEditHeaderTemplate = (event) => {
         <label class="event__label  event__type-output" for="event-destination-${count}">
           ${tripPointTypesMap.get(event.type)}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-${count}" type="text" name="event-destination" value="${event.destination.name}" list="destination-list-1">
-        <datalist id="destination-list-1">
-          <option value="Amsterdam"></option>
-          <option value="Geneva"></option>
-          <option value="Chamonix"></option>
-          <option value="Saint Petersburg"></option>
+        <input class="event__input  event__input--destination" id="event-destination-${count}" type="text" name="event-destination" value="${event.destination.name}" list="destination-list-${count}">
+        <datalist id="destination-list-${count}">
+          ${createTripDestinationList()}
         </datalist>
       </div>
 
@@ -113,7 +117,7 @@ const createTripEventEditHeaderTemplate = (event) => {
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
       <button class="event__reset-btn" type="reset">Delete</button>
 
-      <input id="event-favorite-${count}" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" checked>
+      <input id="event-favorite-${count}" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${event.isFavorite ? `checked` : ``}>
       <label class="event__favorite-btn" for="event-favorite-${count}">
         <span class="visually-hidden">Add to favorite</span>
         <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">

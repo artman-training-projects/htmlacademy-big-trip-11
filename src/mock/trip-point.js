@@ -15,6 +15,7 @@ const generateTripPoint = () => {
 
   return {
     id: idCount(),
+    isFavorite: Math.random() > 0.5 ? true : false,
     basePrice: getRandomIntegerNumber(Price.MIN, Price.MAX),
     dateFrom,
     dateTo: generateTripEndDate(dateFrom),
