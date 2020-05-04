@@ -13,4 +13,4 @@ const EntryPoints = {
 
 const tripController = new TripController(EntryPoints.EVENTS);
 tripController.init(EntryPoints, trip);
-tripController.render();
+
