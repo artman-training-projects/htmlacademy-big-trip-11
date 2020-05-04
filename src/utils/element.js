@@ -4,9 +4,9 @@ export const RenderPosition = {
 };
 
 export const createElement = (template) => {
-  const element = document.createElement(`template`);
+  const element = document.createElement(`div`);
   element.innerHTML = template;
-  return element.content.firstChild;
+  return element.firstChild;
 };
 
 export const renderComponent = (container, component, place = RenderPosition.BEFOREEND) => {

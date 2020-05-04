@@ -5,7 +5,7 @@ export const getRandomIntegerNumber = (min, max) => (min + Math.floor(Math.rando
 export const getRandomArrayItem = (array) => (array[getRandomIntegerNumber(0, array.length)]);
 
 export const getRandomArrayFromArray = (array, length) => {
-  let oldArray = [...array];
+  let oldArray = Array.from(array);
   let newArray = [];
 
   for (let i = 0; i < length; i++) {

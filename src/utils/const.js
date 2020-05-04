@@ -6,12 +6,6 @@ export const Millisecond = {
   IN_MINUTE: 60000,
 };
 
-export const SortType = {
-  EVENT: `event`,
-  TIME: `time`,
-  PRICE: `price`,
-};
-
 export const monthMap = new Map([
   [0, `JAN`],
   [1, `FEB`],
