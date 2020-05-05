@@ -17,7 +17,7 @@ export const getRandomArrayFromArray = (array, length) => {
   return newArray;
 };
 
-export const generateTripStartDate = () => {
+export const generateEventstartDate = () => {
   const diffDays = getRandomIntegerNumber(1, 5);
   const diffHours = getRandomIntegerNumber(0, 20);
   const diffMinutes = getRandomIntegerNumber(0, 59);

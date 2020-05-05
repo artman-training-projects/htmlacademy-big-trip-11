@@ -1,13 +1,39 @@
 import {tripOffersMap} from '../utils/const';
 import {tripDestinationCitys, getTripDestinationDesccription, getTripDestinationPhotos} from '../mock/trip-destination';
-import {renderComponent, replaceComponent} from '../utils/element';
+import {renderComponent, replaceComponent, removeComponent} from '../utils/element';
 
 import EventComponent from '../components/page-main/trip-day/trip-events__item';
 import EventEditComponent from '../components/page-main/event-edit';
 
-const Mode = {
+export const Mode = {
   DEFAULT: `default`,
   EDIT: `edit`,
+  ADD: `add`,
+};
+
+export const EmptyEvent = {
+  id: ``,
+  isFavorite: false,
+  basePrice: 0,
+  dateFrom: ``,
+  dateTo: ``,
+  destination: {
+    name: ``,
+    description: ``,
+    pictures: [
+      {
+        src: ``,
+        description: ``
+      },
+    ]
+  },
+  type: ``,
+  offers: [
+    {
+      title: ``,
+      price: 0
+    },
+  ]
 };
 
 export default class EventController {
@@ -46,6 +72,12 @@ export default class EventController {
     }
   }
 
+  destroy() {
+    removeComponent(this._eventEditComponent);
+    removeComponent(this._eventComponent);
+    document.removeEventListener(`keydown`, this._onEscKeyDown);
+  }
+
   setDefaultView() {
     if (this._mode !== Mode.DEFAULT) {
       this._replaceEditToEvent();
@@ -61,7 +93,11 @@ export default class EventController {
   _replaceEditToEvent() {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
     this._eventEditComponent.reset();
-    replaceComponent(this._eventComponent, this._eventEditComponent);
+
+    if (document.contains(this._eventEditComponent.getElement())) {
+      replaceComponent(this._eventComponent, this._eventEditComponent);
+    }
+
     this._mode = Mode.DEFAULT;
   }
 

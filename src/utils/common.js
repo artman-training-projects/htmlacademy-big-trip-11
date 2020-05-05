@@ -21,7 +21,7 @@ export const getDiffTime = (from, to) => {
 };
 
 export const calcFullPrice = (events, prices) => {
-  return !events ? events
+  return events ? events
     .slice()
     .map((event) => event[prices] + calcFullPrice(event.offers, `price`))
     .reduce((sum, price) => sum + price) : 0;
@@ -52,6 +52,7 @@ export const getRoute = (events) => {
 
 export const getRouteDates = (events) => {
   let dates = events.slice().sort((a, b) => Date.parse(a.dateFrom) - Date.parse(b.dateFrom));
+  dates = [dates[0].dateFrom, dates[dates.length - 1].dateTo];
 
   const getDateStartString = () => {
     return `${monthMap.get(dates[0].getMonth())} ${dates[0].getDate()}`;
@@ -63,10 +64,5 @@ export const getRouteDates = (events) => {
       `${monthMap.get(dates[1].getMonth())} ${dates[1].getDate()}`;
   };
 
-  if (!dates) {
-    dates = [dates[0].dateFrom, dates[dates.length - 1].dateTo];
-    return `${getDateStartString()} - ${getDateFinishString()}`;
-  } else {
-    return ``;
-  }
+  return `${getDateStartString()} - ${getDateFinishString()}`;
 };

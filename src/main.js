@@ -1,10 +1,10 @@
-import {generateTrips} from './mock/trip-point';
+import {generateEvents} from './mock/trip-point';
 
 import EventsModel from './models/events';
 import TripController from './controllers/tripController';
 
 const EVENTS = 20;
-const trip = generateTrips(EVENTS);
+const trip = generateEvents(EVENTS);
 
 const EntryPoints = {
   MAIN: document.querySelector(`.trip-main`),
