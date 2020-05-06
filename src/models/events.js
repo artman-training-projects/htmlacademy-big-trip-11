@@ -45,7 +45,7 @@ export default class Events {
   }
 
   removeEvent(id) {
-    const index = this._events.findIndex((event) => event.id === id);
+    const index = this._events.findIndex((it) => it.id === id);
 
     if (index === -1) {
       return false;

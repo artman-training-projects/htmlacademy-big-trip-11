@@ -10,17 +10,12 @@ export const Mode = {
 };
 
 export const EmptyEvent = {
-  id: new Date().getMilliseconds() + Math.random(),
-  basePrice: 0,
+  basePrice: ``,
   dateFrom: new Date(),
   dateTo: new Date(),
-  destination: {
-    name: ``,
-    description: ``,
-    pictures: []
-  },
+  destination: ``,
+  [`is_favorite`]: false,
   type: `Taxi`,
-  offers: [],
 };
 
 export default class EventController {
@@ -83,8 +78,8 @@ export default class EventController {
   }
 
   _replaceEventToEdit() {
-    document.addEventListener(`keydown`, this._onEscKeyDown);
     this._onViewChange();
+    document.addEventListener(`keydown`, this._onEscKeyDown);
     replaceComponent(this._eventEditComponent, this._eventComponent);
     this._mode = Mode.EDIT;
   }
@@ -112,8 +107,9 @@ export default class EventController {
     eventEditComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
       const data = eventEditComponent.getData();
+      // console.log(`getData on Submit`);
       // console.log(data);
-      // this._onDataChange(this, event, data);
+      this._onDataChange(this, event, data);
       this._replaceEditToEvent();
     });
 
@@ -131,7 +127,7 @@ export default class EventController {
   _setListenersDataChange(eventEditComponent, event) {
     eventEditComponent.setFavoriteClickHandler(() => {
       this._onDataChange(this, event, Object.assign({}, event, {
-        isFavorite: !event.isFavorite,
+        [`is_favorite`]: !event.is_favorite,
       }));
     });
   }

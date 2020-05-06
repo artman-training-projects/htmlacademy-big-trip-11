@@ -12,7 +12,7 @@ import TripDaysComponent from '../components/page-main/trip-days';
 import TripDayComponent from '../components/page-main/trip-day/trip-days__item';
 
 import EventNoComponent from '../components/page-main/event-edit/event-no';
-import StatisticsComponent from '../components/statistics';
+// import StatisticsComponent from '../components/statistics';
 
 import FilterController, {FilterType} from './filterController';
 import EventController, {Mode as EventControllerMode, EmptyEvent} from './eventController';
@@ -75,7 +75,10 @@ export default class TripController {
     });
 
     const newEventButton = document.querySelector(`.trip-main__event-add-btn`);
-    newEventButton.addEventListener(`click`, () => this.createEvent());
+    newEventButton.addEventListener(`click`, () => {
+      newEventButton.disabled = true;
+      this.createEvent();
+    });
   }
 
   render(events) {
@@ -93,16 +96,15 @@ export default class TripController {
     if (this._creatingEvent) {
       return;
     }
+
     this._activeSortType = SortType.EVENT;
     this._eventsModel.setFilterType(FilterType.EVERYTHING);
     const events = getSortedEvents(this._eventsModel.getAllEvents(), this._activeSortType);
+    this._renderEvents(events);
 
     const eventListElement = this._tripDaysComponent.getElement();
     this._creatingEvent = new EventController(eventListElement, this._onDataChange, this._onViewChange);
     this._creatingEvent.render(EmptyEvent, EventControllerMode.ADD);
-    console.log(this._creatingEvent);
-    // this._creatingEvent.destroy();
-    // console.log(this._creatingEvent);
     this._onViewChange();
   }
 
@@ -131,16 +133,12 @@ export default class TripController {
     this._showedEventsComponents = [];
   }
 
-  _onNewEvent() {
-    //
-  }
-
   _onDataChange(eventController, oldData, newData) {
     if (oldData === EmptyEvent) {
       this._creatingEvent = null;
       if (newData === null) {
         eventController.destroy();
-        this._updateEvents(this._showedEventsComponents);
+        this._updateEvents(getSortedEvents(this._eventsModel.getAllEvents(), this._activeSortType));
       } else {
         this._eventsModel.addEvent(newData);
         eventController.render(newData, EventControllerMode.DEFAULT);

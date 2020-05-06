@@ -10,12 +10,12 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
 const createTripEventEditTemplate = (event, options) => {
-  const {eventType, eventOffers, eventDestiantion} = options;
+  const {eventType, eventOffers, eventDestiantion, eventDateFrom, eventDateTo, eventPrice} = options;
 
   return (
     `<li class="trip-events__item">
       <form class="event  event--edit" action="#" method="post">
-        ${createTripEventEditHeaderTemplate(event, eventType, eventDestiantion)}
+        ${createTripEventEditHeaderTemplate(event, eventType, eventDestiantion, eventPrice)}
 
         <section class="event__details">
           ${createTripEventEditOffersTemplate(eventOffers)}
@@ -28,8 +28,7 @@ const createTripEventEditTemplate = (event, options) => {
 };
 
 const parseFormData = (formData) => {
-  const date = formData.get(`event-type-checked`);
-  console.log(date);
+  // console.log(formData.get(`event-type`));
 
   return {
     basePrice: formData.get(`event-price`),
@@ -38,7 +37,7 @@ const parseFormData = (formData) => {
     destination: {
       name: formData.get(`event-destination`),
     },
-    // type: formData.get(`event-type-checked`),
+    // type: formData.get(`event-type`),
   };
 };
 
@@ -51,13 +50,13 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
     this._eventType = event.type;
     this._eventOffers = event.offers;
     this._eventDestiantion = event.destination;
+    this._basePrice = event.basePrice;
 
-
-    this._subscribeOnEvents();
     this._eventSubmitHandler = null;
     this._eventResetHandler = null;
     this._eventCloseClickHandler = null;
     this._favoriteClickHandler = null;
+    this._subscribeOnEvents();
 
     this._flatpickrFrom = null;
     this._flatpickrTo = null;
@@ -71,6 +70,7 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
       eventDestiantion: this._eventDestiantion,
       eventDateFrom: this._eventDateFrom,
       eventDateTo: this._eventDateTo,
+      eventPrice: this._basePrice,
     });
   }
 
@@ -82,6 +82,13 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
   }
 
   reset() {
+    const event = this._event;
+    this._eventDateFrom = event.dateFrom;
+    this._eventDateTo = event.dateTo;
+    this._eventType = event.type;
+    this._eventOffers = event.offers;
+    this._eventDestiantion = event.destination;
+    this._basePrice = event.basePrice;
     this.rerenderElement();
   }
 
@@ -135,12 +142,26 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
   _subscribeOnEvents() {
     const element = this.getElement();
 
-    element.querySelector(`.event__type-list`).addEventListener(`change`, (evt) => {
+    element.querySelector(`.event__type-list`).addEventListener(`input`, (evt) => {
+      const inputElement = document.querySelector(`[value="${evt.target.value}"]`);
+      // console.log(inputElement);
+      inputElement.checked = true;
       this._eventType = evt.target.value;
-      this._eventOffers = tripOffersMap.get(evt.target.value);
+      this._eventOffers = tripOffersMap.get(this._eventType);
+      // console.log(inputElement);
       this.rerenderElement();
     });
 
+    element.querySelector(`.event__input--price`).addEventListener(`input`, (evt) => {
+      const inputValue = evt.target.value;
+
+      if (inputValue.match(/[^\d]/)) {
+        this._basePrice = false;
+        this.rerenderElement();
+      }
+
+      this._basePrice = inputValue;
+    });
 
     element.querySelector(`.event__input--destination`).addEventListener(`click`, (evt) => {
       evt.target.value = ``;
@@ -155,8 +176,8 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
       }
 
       this._eventDestiantion = {
-        name: evt.target.value,
         description: getTripDestinationDesccription(),
+        name: evt.target.value,
         pictures: getTripDestinationPhotos(),
       };
 
@@ -182,6 +203,9 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
         dateFormat: `d/m/y H:i`,
         [`time_24hr`]: true,
         defaultDate: this._event.dateFrom || new Date(),
+        onChange(timeFrom) {
+          this._eventDateTo = timeFrom;
+        }
       });
     }
 
@@ -192,6 +216,9 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
         dateFormat: `d/m/y H:i`,
         [`time_24hr`]: true,
         defaultDate: this._event.dateTo || new Date(),
+        onChange(timeTo) {
+          this._eventDateTo = timeTo;
+        }
       });
     }
   }

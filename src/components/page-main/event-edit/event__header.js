@@ -1,6 +1,7 @@
 import {tripPointTypesMap} from '../../../utils/const';
 import {parseTime, parseDate} from '../../../utils/common';
 
+// import {tripPointTypes} from '../../../mock/trip-offer';
 import {tripDestinationCitys} from '../../../mock/trip-destination';
 
 const createTripDestinationList = (destinationCitys) => {
@@ -9,7 +10,11 @@ const createTripDestinationList = (destinationCitys) => {
     .join(`\n`);
 };
 
-const createTripEventEditHeaderTemplate = (event, type, eventDestiantion) => {
+const createTripEventEditHeaderTemplate = (event, type, eventDestiantion, eventPrice) => {
+  const isPrice = !!eventPrice;
+
+  // console.log(event.type + ` ` + type);
+
   return (
     `<header class="event__header">
       <div class="event__type-wrapper">
@@ -17,7 +22,7 @@ const createTripEventEditHeaderTemplate = (event, type, eventDestiantion) => {
           <span class="visually-hidden">Choose event type</span>
           <img class="event__type-icon" width="17" height="17" src="img/icons/${type.toLowerCase()}.png" alt="${type} icon">
         </label>
-        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${event.id}" name="event-type-checked" value="${type}" type="checkbox">
+        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${event.id}" type="checkbox">
 
         <div class="event__type-list">
           <fieldset class="event__type-group">
@@ -94,26 +99,26 @@ const createTripEventEditHeaderTemplate = (event, type, eventDestiantion) => {
         <label class="visually-hidden" for="event-start-time-${event.id}">
           From
         </label>
-        <input class="event__input  event__input--time" id="event-start-time-${event.id}" type="text" name="event-start-time" value="${parseDate(event.dateFrom)} ${parseTime(event.dateFrom)}">
+        <input class="event__input  event__input--time" id="event-start-time-${event.id}" type="text" name="event-start-time" value="${(event.dateFrom)} ${(event.dateFrom)}">
         &mdash;
         <label class="visually-hidden" for="event-end-time-${event.id}">
           To
         </label>
-        <input class="event__input  event__input--time" id="event-end-time-${event.id}" type="text" name="event-end-time" value="${parseDate(event.dateTo)} ${parseTime(event.dateTo)}">
+        <input class="event__input  event__input--time" id="event-end-time-${event.id}" type="text" name="event-end-time" value="${(event.dateTo)} ${(event.dateTo)}">
       </div>
 
       <div class="event__field-group  event__field-group--price">
         <label class="event__label" for="event-price-${event.id}">
-          <span class="visually-hidden">${event.basePrice}</span>
+          <span class="visually-hidden">${isPrice ? eventPrice : ``}</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-${event.id}" type="text" name="event-price" value="${event.basePrice}">
+        <input class="event__input  event__input--price" id="event-price-${event.id}" type="text" name="event-price" value="${isPrice ? eventPrice : ``}">
       </div>
 
-      <button class="event__save-btn  btn  btn--blue" type="submit" ${!eventDestiantion.name ? `disabled` : ``}>Save</button>
+      <button class="event__save-btn  btn  btn--blue" type="submit" ${!isPrice ? `disabled` : ``}>Save</button>
       <button class="event__reset-btn" type="reset">Delete</button>
 
-      <input id="event-favorite-${event.id}" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${event.isFavorite ? `checked` : ``}>
+      <input id="event-favorite-${event.id}" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${event.is_favorite ? `checked` : ``}>
       <label class="event__favorite-btn" for="event-favorite-${event.id}">
         <span class="visually-hidden">Add to favorite</span>
         <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">

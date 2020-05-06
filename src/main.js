@@ -3,7 +3,7 @@ import {generateEvents} from './mock/trip-point';
 import EventsModel from './models/events';
 import TripController from './controllers/tripController';
 
-const EVENTS = 20;
+const EVENTS = 10;
 const trip = generateEvents(EVENTS);
 
 const EntryPoints = {

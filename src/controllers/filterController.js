@@ -1,4 +1,5 @@
 import {renderComponent, replaceComponent} from '../utils/element';
+import {getFilteredEvents} from './helpers/getFilteredEvents';
 
 import FilterComponent from '../components/page-header/trip-filter';
 
@@ -21,11 +22,11 @@ export default class FilterController {
   }
 
   render() {
-    // const allEvents = this._eventsModel.getAllEvents();
+    const allEvents = this._eventsModel.getAllEvents();
     const filters = Object.values(FilterType).map((filterType) => {
       return {
         name: filterType,
-        // count: getEventsByFilter(allEvents, filterType).length,
+        count: getFilteredEvents(allEvents, filterType).length,
         checked: filterType === this._eventsModel.getFilterType(),
       };
     });

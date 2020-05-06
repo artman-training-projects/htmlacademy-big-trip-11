@@ -11,10 +11,11 @@ const generateTripPoint = () => {
   let dateFrom = generateEventstartDate();
 
   return {
-    id: new Date().getMilliseconds() + Math.random(),
     basePrice: getRandomIntegerNumber(Price.MIN, Price.MAX),
     dateFrom,
     dateTo: generateTripEndDate(dateFrom),
+    id: new Date().getMilliseconds() + Math.random(),
+    [`is_favorite`]: false,
   };
 };
 

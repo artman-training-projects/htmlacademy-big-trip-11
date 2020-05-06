@@ -1,5 +1,5 @@
 const createTripEventEditDestinationTemplate = (destination) => {
-  return (
+  return destination ? (
     `<section class="event__section  event__section--destination">
       <h3 class="event__section-title  event__section-title--destination">Destination</h3>
       <p class="event__destination-description">${destination.description}</p>
@@ -10,14 +10,14 @@ const createTripEventEditDestinationTemplate = (destination) => {
         </div>
       </div>
     </section>`
-  );
+  ) : ``;
 };
 
 const getPhotos = (photos) => {
-  return photos
+  return photos ? photos
     .slice()
     .map((photo) => `<img class="event__photo" src="${photo.src}" alt="${photo.description}">`)
-    .join(``);
+    .join(``) : ``;
 };
 
 export {createTripEventEditDestinationTemplate};
