@@ -9,52 +9,52 @@ const createTripDestinationList = (destinationCitys) => {
     .join(`\n`);
 };
 
-const createTripEventEditHeaderTemplate = (event, isBlockSaveButton) => {
+const createTripEventEditHeaderTemplate = (event, type, eventDestiantion) => {
   return (
     `<header class="event__header">
       <div class="event__type-wrapper">
         <label class="event__type  event__type-btn" for="event-type-toggle-${event.id}">
           <span class="visually-hidden">Choose event type</span>
-          <img class="event__type-icon" width="17" height="17" src="img/icons/${event.type.toLowerCase()}.png" alt="${event.type} icon">
+          <img class="event__type-icon" width="17" height="17" src="img/icons/${type.toLowerCase()}.png" alt="${type} icon">
         </label>
-        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${event.id}" type="checkbox">
+        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${event.id}" name="event-type-checked" value="${type}" type="checkbox">
 
         <div class="event__type-list">
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Transfer</legend>
 
             <div class="event__type-item">
-              <input id="event-type-taxi-${event.id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi">
+              <input id="event-type-taxi-${event.id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="Taxi">
               <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-${event.id}">Taxi</label>
             </div>
 
             <div class="event__type-item">
-              <input id="event-type-bus-${event.id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus">
+              <input id="event-type-bus-${event.id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="Bus">
               <label class="event__type-label  event__type-label--bus" for="event-type-bus-${event.id}">Bus</label>
             </div>
 
             <div class="event__type-item">
-              <input id="event-type-train-${event.id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="train">
+              <input id="event-type-train-${event.id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="Train">
               <label class="event__type-label  event__type-label--train" for="event-type-train-${event.id}">Train</label>
             </div>
 
             <div class="event__type-item">
-              <input id="event-type-ship-${event.id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="ship">
+              <input id="event-type-ship-${event.id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="Ship">
               <label class="event__type-label  event__type-label--ship" for="event-type-ship-${event.id}">Ship</label>
             </div>
 
             <div class="event__type-item">
-              <input id="event-type-transport-${event.id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="transport">
+              <input id="event-type-transport-${event.id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="Transport">
               <label class="event__type-label  event__type-label--transport" for="event-type-transport-${event.id}">Transport</label>
             </div>
 
             <div class="event__type-item">
-              <input id="event-type-drive-${event.id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="drive">
+              <input id="event-type-drive-${event.id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="Drive">
               <label class="event__type-label  event__type-label--drive" for="event-type-drive-${event.id}">Drive</label>
             </div>
 
             <div class="event__type-item">
-              <input id="event-type-flight-${event.id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="flight">
+              <input id="event-type-flight-${event.id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="Flight">
               <label class="event__type-label  event__type-label--flight" for="event-type-flight-${event.id}">Flight</label>
             </div>
           </fieldset>
@@ -63,17 +63,17 @@ const createTripEventEditHeaderTemplate = (event, isBlockSaveButton) => {
             <legend class="visually-hidden">Activity</legend>
 
             <div class="event__type-item">
-              <input id="event-type-check-in-${event.id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="check-in">
+              <input id="event-type-check-in-${event.id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="Check-in">
               <label class="event__type-label  event__type-label--check-in" for="event-type-check-in-${event.id}">Check-in</label>
             </div>
 
             <div class="event__type-item">
-              <input id="event-type-sightseeing-${event.id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="sightseeing">
+              <input id="event-type-sightseeing-${event.id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="Sightseeing">
               <label class="event__type-label  event__type-label--sightseeing" for="event-type-sightseeing-${event.id}">Sightseeing</label>
             </div>
 
             <div class="event__type-item">
-              <input id="event-type-restaurant-${event.id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant">
+              <input id="event-type-restaurant-${event.id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="Restaurant">
               <label class="event__type-label  event__type-label--restaurant" for="event-type-restaurant-${event.id}">Restaurant</label>
             </div>
           </fieldset>
@@ -82,9 +82,9 @@ const createTripEventEditHeaderTemplate = (event, isBlockSaveButton) => {
 
       <div class="event__field-group  event__field-group--destination">
         <label class="event__label  event__type-output" for="event-destination-${event.id}">
-          ${tripPointTypesMap.get(event.type)}
+          ${tripPointTypesMap.get(type)}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-${event.id}" type="text" name="event-destination" value="${event.destination.name}" list="destination-list-${event.id}">
+        <input class="event__input  event__input--destination" id="event-destination-${event.id}" type="text" name="event-destination" value="${eventDestiantion.name ? eventDestiantion.name : ``}" list="destination-list-${event.id}">
         <datalist id="destination-list-${event.id}">
           ${createTripDestinationList(tripDestinationCitys)}
         </datalist>
@@ -110,7 +110,7 @@ const createTripEventEditHeaderTemplate = (event, isBlockSaveButton) => {
         <input class="event__input  event__input--price" id="event-price-${event.id}" type="text" name="event-price" value="${event.basePrice}">
       </div>
 
-      <button class="event__save-btn  btn  btn--blue" type="submit" ${isBlockSaveButton ? `disabled` : ``}>Save</button>
+      <button class="event__save-btn  btn  btn--blue" type="submit" ${!eventDestiantion.name ? `disabled` : ``}>Save</button>
       <button class="event__reset-btn" type="reset">Delete</button>
 
       <input id="event-favorite-${event.id}" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${event.isFavorite ? `checked` : ``}>
@@ -129,3 +129,6 @@ const createTripEventEditHeaderTemplate = (event, isBlockSaveButton) => {
 };
 
 export {createTripEventEditHeaderTemplate};
+
+
+/* <button class="event__save-btn  btn  btn--blue" type="submit" ${isBlockSaveButton ? `disabled` : ``}>Save</button> */

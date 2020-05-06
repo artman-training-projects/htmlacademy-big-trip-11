@@ -1,5 +1,3 @@
-import {tripOffersMap} from '../utils/const';
-import {tripDestinationCitys, getTripDestinationDesccription, getTripDestinationPhotos} from '../mock/trip-destination';
 import {renderComponent, replaceComponent, removeComponent} from '../utils/element';
 
 import EventComponent from '../components/page-main/trip-day/trip-events__item';
@@ -13,27 +11,16 @@ export const Mode = {
 
 export const EmptyEvent = {
   id: ``,
-  isFavorite: false,
   basePrice: 0,
-  dateFrom: ``,
-  dateTo: ``,
+  dateFrom: new Date(),
+  dateTo: new Date(),
   destination: {
     name: ``,
     description: ``,
-    pictures: [
-      {
-        src: ``,
-        description: ``
-      },
-    ]
+    pictures: []
   },
-  type: ``,
-  offers: [
-    {
-      title: ``,
-      price: 0
-    },
-  ]
+  type: `Taxi`,
+  offers: [],
 };
 
 export default class EventController {
@@ -49,7 +36,8 @@ export default class EventController {
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
 
-  render(event) {
+  render(event, mode) {
+    this._mode = mode;
     const oldEventComponent = this._eventComponent;
     const oldEventEditComponent = this._eventEditComponent;
 
@@ -61,7 +49,7 @@ export default class EventController {
       document.addEventListener(`keydown`, this._onEscKeyDown);
     });
 
-    this._setListenersToggleToEvent(this._eventEditComponent);
+    this._setListenersToggleToEvent(this._eventEditComponent, event);
     this._setListenersDataChange(this._eventEditComponent, event);
 
     if (oldEventComponent && oldEventEditComponent) {
@@ -109,13 +97,17 @@ export default class EventController {
     }
   }
 
-  _setListenersToggleToEvent(eventEditComponent) {
-    eventEditComponent.setButtonEventSaveClickHandler((evt) => {
+  _setListenersToggleToEvent(eventEditComponent, event) {
+    eventEditComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
+      const data = eventEditComponent.getData();
+      // console.log(data);
+      // this._onDataChange(this, event, data);
       this._replaceEditToEvent();
     });
 
-    eventEditComponent.setButtonEventResetClickHandler(() => {
+    eventEditComponent.setResetHandler(() => {
+      this._onDataChange(this, event, null);
       this._replaceEditToEvent();
     });
 
@@ -128,33 +120,6 @@ export default class EventController {
     eventEditComponent.setFavoriteClickHandler(() => {
       this._onDataChange(this, event, Object.assign({}, event, {
         isFavorite: !event.isFavorite,
-      }));
-    });
-
-    eventEditComponent.setTypeChoiceClickHandler((evt) => {
-      if (evt.target.tagName === `INPUT`) {
-        return;
-      }
-
-      this._onDataChange(this, event, Object.assign({}, event, {
-        type: evt.target.innerText,
-        offers: tripOffersMap.get(evt.target.innerText),
-      }));
-    });
-
-    eventEditComponent.setDestiantionChoiceInputHandler((evt) => {
-      const invalidCity = !tripDestinationCitys.find((city) => city === evt.target.value);
-
-      if (invalidCity) {
-        return;
-      }
-
-      this._onDataChange(this, event, Object.assign({}, event, {
-        destination: {
-          name: evt.target.value,
-          description: getTripDestinationDesccription(),
-          pictures: getTripDestinationPhotos(),
-        }
       }));
     });
   }

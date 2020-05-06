@@ -45,7 +45,6 @@ export const getTripDestinationDesccription = (descriptions = tripDestinationDes
 
 export const generateTripDestination = () => {
   return {
-    isFavorite: false,
     destination: {
       name: getRandomArrayItem(tripDestinationCitys),
       description: getTripDestinationDesccription(tripDestinationDescriptions, DescriptionCount),

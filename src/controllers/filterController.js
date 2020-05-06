@@ -12,8 +12,6 @@ export default class FilterController {
   constructor(container, eventsModel) {
     this._container = container;
     this._eventsModel = eventsModel;
-
-    this._activeFilterType = FilterType.EVERYTHING;
     this._filterComponent = null;
 
     this._onDataChange = this._onDataChange.bind(this);
@@ -45,7 +43,6 @@ export default class FilterController {
 
   _onFilterChange(filterType) {
     this._eventsModel.setFilterType(filterType);
-    this._activeFilterType = filterType;
   }
 
   _onDataChange() {

@@ -99,10 +99,26 @@ export default class TripController {
   }
 
   _onDataChange(eventController, oldData, newData) {
-    const isSuccess = this._eventsModel.updateEvent(oldData.id, newData);
+    if (oldData === EmptyEvent) {
+      this._creatingEvent = null;
+      if (newData === null) {
+        eventController.destroy();
+        this._updateEvents(this._showedEventsComponents);
+      } else {
+        this._eventsModel.addEvent(newData);
+        eventController.render(newData, EventControllerMode.DEFAULT);
 
-    if (isSuccess) {
-      eventController.render(newData);
+        this._showedEventsComponents = [].concat(eventController, this._showedEventsComponents);
+      }
+    } else if (newData === null) {
+      console.log(oldData);
+      this._eventsModel.removeEvent(oldData.id);
+      eventController.destroy();
+    } else {
+      const isSuccess = this._eventsModel.updateEvent(oldData.id, newData);
+      if (isSuccess) {
+        eventController.render(newData, EventControllerMode.DEFAULT);
+      }
     }
   }
 
@@ -148,7 +164,7 @@ export default class TripController {
       }
 
       const eventController = new EventController(tripDay, this._onDataChange, this._onViewChange);
-      eventController.render(event);
+      eventController.render(event, EventControllerMode.DEFAULT);
       return eventController;
     });
   }
