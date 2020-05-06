@@ -38,7 +38,7 @@ const parseFormData = (formData) => {
     destination: {
       name: formData.get(`event-destination`),
     },
-    type: formData.get(`event-type-checked`),
+    // type: formData.get(`event-type-checked`),
   };
 };
 
@@ -76,7 +76,7 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
 
   getData() {
     const form = this.getElement().querySelector(`.event--edit`);
-    // console.log(form);
+    console.log(form);
     const formData = new FormData(form);
     return parseFormData(formData);
   }

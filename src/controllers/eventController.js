@@ -1,4 +1,4 @@
-import {renderComponent, replaceComponent, removeComponent} from '../utils/element';
+import {renderComponent, replaceComponent, removeComponent, RenderPosition} from '../utils/element';
 
 import EventComponent from '../components/page-main/trip-day/trip-events__item';
 import EventEditComponent from '../components/page-main/event-edit';
@@ -10,7 +10,7 @@ export const Mode = {
 };
 
 export const EmptyEvent = {
-  id: ``,
+  id: new Date().getMilliseconds() + Math.random(),
   basePrice: 0,
   dateFrom: new Date(),
   dateTo: new Date(),
@@ -44,19 +44,29 @@ export default class EventController {
     this._eventComponent = new EventComponent(event);
     this._eventEditComponent = new EventEditComponent(event);
 
-    this._eventComponent.setButtonEventEditClickHandler(() => {
-      this._replaceEventToEdit();
-      document.addEventListener(`keydown`, this._onEscKeyDown);
-    });
-
+    this._eventComponent.setButtonEventEditClickHandler(() => this._replaceEventToEdit());
     this._setListenersToggleToEvent(this._eventEditComponent, event);
     this._setListenersDataChange(this._eventEditComponent, event);
 
-    if (oldEventComponent && oldEventEditComponent) {
-      replaceComponent(this._eventComponent, oldEventComponent);
-      replaceComponent(this._eventEditComponent, oldEventEditComponent);
-    } else {
-      renderComponent(this._container, this._eventComponent);
+    switch (mode) {
+      case Mode.DEFAULT:
+        if (oldEventComponent && oldEventEditComponent) {
+          replaceComponent(this._eventComponent, oldEventComponent);
+          replaceComponent(this._eventEditComponent, oldEventEditComponent);
+        } else {
+          renderComponent(this._container, this._eventComponent);
+        }
+        break;
+      case Mode.ADD:
+        if (oldEventComponent && oldEventEditComponent) {
+          removeComponent(oldEventEditComponent);
+          removeComponent(oldEventComponent);
+        }
+
+        document.addEventListener(`keydown`, this._onEscKeyDown);
+        const eventContainer = document.querySelector(`.trip-events__list`);
+        renderComponent(eventContainer, this._eventEditComponent, RenderPosition.AFTERBEGIN);
+        break;
     }
   }
 
@@ -73,6 +83,7 @@ export default class EventController {
   }
 
   _replaceEventToEdit() {
+    document.addEventListener(`keydown`, this._onEscKeyDown);
     this._onViewChange();
     replaceComponent(this._eventEditComponent, this._eventComponent);
     this._mode = Mode.EDIT;
@@ -91,8 +102,8 @@ export default class EventController {
 
   _onEscKeyDown(evt) {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
-
     if (isEscKey) {
+      this._onDataChange(this, event, event);
       this._replaceEditToEvent();
     }
   }
@@ -112,6 +123,7 @@ export default class EventController {
     });
 
     eventEditComponent.setButtonEventCloseClickHandler(() => {
+      this._onDataChange(this, event, event);
       this._replaceEditToEvent();
     });
   }

@@ -1,17 +1,20 @@
-import {RenderPosition, renderComponent} from '../utils/element';
+import {HIDDEN_CLASS} from '../components/abstract-component';
+import {RenderPosition, renderComponent, removeComponent} from '../utils/element';
 import {SortType} from '../components/page-main/trip-sort';
 import {getFilteredEvents} from './helpers/getFilteredEvents';
 import {getSortedEvents} from './helpers/getSortedEvents';
 
 import TripInfoComponent from '../components/page-header/trip-info';
-import TripMenuComponent from '../components/page-header/trip-menu';
-
-import EventNoComponent from '../components/page-main/event-edit/event-no';
+import TripMenuComponent, {MenuItem} from '../components/page-header/trip-menu';
 import EventSortComponent from '../components/page-main/trip-sort';
+
 import TripDaysComponent from '../components/page-main/trip-days';
 import TripDayComponent from '../components/page-main/trip-day/trip-days__item';
 
-import FilterController from './filterController';
+import EventNoComponent from '../components/page-main/event-edit/event-no';
+import StatisticsComponent from '../components/statistics';
+
+import FilterController, {FilterType} from './filterController';
 import EventController, {Mode as EventControllerMode, EmptyEvent} from './eventController';
 
 export default class TripController {
@@ -23,8 +26,11 @@ export default class TripController {
     this._noEventsComponent = new EventNoComponent();
     this._eventSortComponent = new EventSortComponent();
     this._tripDaysComponent = new TripDaysComponent();
-
+    this._tripMenuComponent = null;
+    this._statisticsComponent = null;
     this._filterController = null;
+
+    this._creatingEvent = null;
     this._activeSortType = SortType.EVENT;
 
     this._onDataChange = this._onDataChange.bind(this);
@@ -40,12 +46,36 @@ export default class TripController {
     const events = getSortedEvents(this._eventsModel.getAllEvents(), this._activeSortType);
     const {MAIN, CONTROLS} = entryPoints;
     renderComponent(MAIN, new TripInfoComponent(events), RenderPosition.AFTERBEGIN);
-    renderComponent(CONTROLS, new TripMenuComponent());
+
+    this._tripMenuComponent = new TripMenuComponent();
+    renderComponent(CONTROLS, this._tripMenuComponent);
 
     this._filterController = new FilterController(CONTROLS, this._eventsModel);
     this._filterController.render();
 
+    // this._statisticsComponent = new StatisticsComponent(this._eventsModel);
+    // renderComponent(this._container, this._statisticsComponent);
+    // this._statisticsComponent.hide();
+
     this.render(events);
+
+    this._tripMenuComponent.setMenuChange((menuItem) => {
+      switch (menuItem) {
+        case MenuItem.TABLE:
+          this._tripMenuComponent.setActiveMenu(MenuItem.TABLE);
+          // this._statisticsComponent.hide();
+          this.show();
+          break;
+        case MenuItem.STATS:
+          this._tripMenuComponent.setActiveMenu(MenuItem.STATS);
+          this.hide();
+          // this._statisticsComponent.show();
+          break;
+      }
+    });
+
+    const newEventButton = document.querySelector(`.trip-main__event-add-btn`);
+    newEventButton.addEventListener(`click`, () => this.createEvent());
   }
 
   render(events) {
@@ -63,17 +93,25 @@ export default class TripController {
     if (this._creatingEvent) {
       return;
     }
+    this._activeSortType = SortType.EVENT;
+    this._eventsModel.setFilterType(FilterType.EVERYTHING);
+    const events = getSortedEvents(this._eventsModel.getAllEvents(), this._activeSortType);
 
     const eventListElement = this._tripDaysComponent.getElement();
     this._creatingEvent = new EventController(eventListElement, this._onDataChange, this._onViewChange);
+    this._creatingEvent.render(EmptyEvent, EventControllerMode.ADD);
+    console.log(this._creatingEvent);
+    // this._creatingEvent.destroy();
+    // console.log(this._creatingEvent);
+    this._onViewChange();
   }
 
   hide() {
-    this._container.hide();
+    this._container.classList.add(HIDDEN_CLASS);
   }
 
   show() {
-    this._container.show();
+    this._container.classList.remove(HIDDEN_CLASS);
   }
 
   _renderEvents(events) {
@@ -89,8 +127,7 @@ export default class TripController {
 
   _removeEvents() {
     this._showedEventsComponents.forEach((eventComponent) => eventComponent.destroy());
-    const container = this._tripDaysComponent.getElement();
-    container.innerHTML = ``;
+    this._tripDaysComponent.getElement().innerHTML = ``;
     this._showedEventsComponents = [];
   }
 
@@ -111,7 +148,6 @@ export default class TripController {
         this._showedEventsComponents = [].concat(eventController, this._showedEventsComponents);
       }
     } else if (newData === null) {
-      console.log(oldData);
       this._eventsModel.removeEvent(oldData.id);
       eventController.destroy();
     } else {
