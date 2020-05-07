@@ -1,10 +1,10 @@
-import {tripOffersMap} from '../utils/const';
+import {tripOffersMap, TRANSFER_TYPE, ACTIVITY_TYPE} from '../utils/const';
 import {getRandomArrayItem} from './utils';
 
-const tripPointTypes = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`, `Check-in`, `Sightseeing`, `Restaurant`];
 
 const generateTripOffer = () => {
-  const type = getRandomArrayItem(tripPointTypes);
+  const pointTypes = [...TRANSFER_TYPE, ...ACTIVITY_TYPE];
+  const type = getRandomArrayItem(pointTypes);
 
   return {
     type,

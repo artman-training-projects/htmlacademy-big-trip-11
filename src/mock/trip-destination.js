@@ -1,6 +1,5 @@
+import {DESTINATION_CITY} from '../utils/const';
 import {getRandomIntegerNumber, getRandomArrayItem, getRandomArrayFromArray} from './utils';
-
-export const tripDestinationCitys = [`Amsterdam`, `Geneva`, `Melbourne`, `Chamonix`, `Saint Petersburg`, `Frankfurt`, `Lisbon`, `Sochi`, `Barcelona`, `Helsinki`, `Oslo`, `Moscow`, `Kioto`, `Tokyo`];
 
 export const tripDestinationDescriptions = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
@@ -47,7 +46,7 @@ export const generateTripDestination = () => {
   return {
     destination: {
       description: getTripDestinationDesccription(tripDestinationDescriptions, DescriptionCount),
-      name: getRandomArrayItem(tripDestinationCitys),
+      name: getRandomArrayItem(DESTINATION_CITY),
       pictures: getTripDestinationPhotos(PhotoCount),
     }
   };

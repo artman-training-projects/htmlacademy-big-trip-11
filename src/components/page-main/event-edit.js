@@ -1,5 +1,5 @@
-import {tripOffersMap} from '../../utils/const';
-import {tripDestinationCitys, getTripDestinationDesccription, getTripDestinationPhotos} from '../../mock/trip-destination';
+import {DESTINATION_CITY, tripOffersMap} from '../../utils/const';
+import {getTripDestinationDesccription, getTripDestinationPhotos} from '../../mock/trip-destination';
 
 import AbstractSmartComponent from '../abstract-smart-component';
 import {createTripEventEditHeaderTemplate} from './event-edit/event__header';
@@ -28,7 +28,7 @@ const createTripEventEditTemplate = (event, options) => {
 };
 
 const parseFormData = (formData) => {
-  // console.log(formData.get(`event-type`));
+  console.log(formData.get(`event-type`));
 
   return {
     basePrice: formData.get(`event-price`),
@@ -142,25 +142,36 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
   _subscribeOnEvents() {
     const element = this.getElement();
 
-    element.querySelector(`.event__type-list`).addEventListener(`input`, (evt) => {
-      const inputElement = document.querySelector(`[value="${evt.target.value}"]`);
+    element.querySelector(`.event__type-list`).addEventListener(`click`, (evt) => {
+      const target = evt.target;
+      console.log(target);
+      if (target.tagName !== `INPUT`) {
+        return;
+      }
+
+      console.log(target.value);
+
+      // target.checked = true;
+      // const inputElement = document.querySelector(`[name="event-type-checked"`);
       // console.log(inputElement);
-      inputElement.checked = true;
-      this._eventType = evt.target.value;
-      this._eventOffers = tripOffersMap.get(this._eventType);
+      target.setAttribute(`checked`, ``);
+      // inputElement.value = target.textContent;
+      this._eventType = target.value;
+      this._eventOffers = tripOffersMap.get(target.value);
       // console.log(inputElement);
+      console.log(target);
       this.rerenderElement();
     });
 
     element.querySelector(`.event__input--price`).addEventListener(`input`, (evt) => {
-      const inputValue = evt.target.value;
+      const inputPrice = evt.target.value;
 
-      if (inputValue.match(/[^\d]/)) {
+      if (inputPrice.match(/[^\d]/)) {
         this._basePrice = false;
         this.rerenderElement();
       }
 
-      this._basePrice = inputValue;
+      this._basePrice = inputPrice;
     });
 
     element.querySelector(`.event__input--destination`).addEventListener(`click`, (evt) => {
@@ -169,7 +180,8 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
     });
 
     element.querySelector(`.event__input--destination`).addEventListener(`input`, (evt) => {
-      const invalidCity = !tripDestinationCitys.find((city) => city === evt.target.value);
+      const inputCity = evt.target.value;
+      const invalidCity = !DESTINATION_CITY.find((city) => city === inputCity);
 
       if (invalidCity) {
         return;
@@ -177,7 +189,7 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
 
       this._eventDestiantion = {
         description: getTripDestinationDesccription(),
-        name: evt.target.value,
+        name: inputCity,
         pictures: getTripDestinationPhotos(),
       };
 

@@ -21,6 +21,12 @@ export const monthMap = new Map([
   [11, `DEC`],
 ]);
 
+export const DESTINATION_CITY = [`Amsterdam`, `Geneva`, `Melbourne`, `Chamonix`, `Saint Petersburg`, `Frankfurt`, `Lisbon`, `Sochi`, `Barcelona`, `Helsinki`, `Oslo`, `Moscow`, `Kioto`, `Tokyo`];
+
+export const TRANSFER_TYPE = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`];
+
+export const ACTIVITY_TYPE = [`Check-in`, `Sightseeing`, `Restaurant`];
+
 export const tripPointTypesMap = new Map([
   [`Taxi`, `Taxi to`],
   [`Bus`, `Bus to`],
