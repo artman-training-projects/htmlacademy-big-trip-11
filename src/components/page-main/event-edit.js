@@ -13,11 +13,13 @@ const createTripEventEditTemplate = (event, newEvent) => {
   event.type = newEvent.type || event.type;
   event.offers = newEvent.offers || event.offers;
   event.destination = newEvent.destination || event.destination;
+  event.dateFrom = newEvent.dateFrom || event.dateFrom;
+  event.dateTo = newEvent.dateTo || event.dateTo;
 
   return (
     `<li class="trip-events__item">
       <form class="event  event--edit" action="#" method="post">
-        ${createTripEventEditHeaderTemplate(event, event.type, event.destination, event.basePrice)}
+        ${createTripEventEditHeaderTemplate(event)}
 
         <section class="event__details">
           ${createTripEventEditOffersTemplate(event.offers)}
@@ -29,16 +31,18 @@ const createTripEventEditTemplate = (event, newEvent) => {
   );
 };
 
-const parseFormData = (formData) => {
-  console.log(formData.get(`event-start-time`));
+const parseFormData = (formData, newEvent) => {
   return {
     basePrice: formData.get(`event-price`),
-    dateFrom: formData.get(`event-start-time`),
-    dateTo: formData.get(`event-end-time`),
+    dateFrom: new Date(formData.get(`event-start-time`)),
+    dateTo: new Date(formData.get(`event-end-time`)),
     destination: {
+      description: newEvent.destination.description,
       name: formData.get(`event-destination`),
+      pictures: newEvent.destination.pictures,
     },
     type: formData.get(`event-type`),
+    offers: newEvent.offers,
   };
 };
 
@@ -46,7 +50,7 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
   constructor(event) {
     super();
     this._event = event;
-    this._newEvent = {};
+    this._newEvent = this._event;
 
     this._eventSubmitHandler = null;
     this._eventResetHandler = null;
@@ -66,7 +70,7 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
   getData() {
     const form = this.getElement().querySelector(`.event--edit`);
     const formData = new FormData(form);
-    return parseFormData(formData);
+    return parseFormData(formData, this._newEvent);
   }
 
   reset() {
@@ -185,24 +189,23 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
     const dateFromElement = this.getElement().querySelector(`[name="event-start-time"]`);
     this._flatpickrFrom = flatpickr(dateFromElement, {
       enableTime: true,
-      dateFormat: `d/m/y H:i`,
+      altFormat: `d/m/y H:i`,
+      altInput: true,
       [`time_24hr`]: true,
-      defaultDate: this._event.dateFrom || new Date(),
-      onChange(timeFrom) {
-        this._newEvent.dateFrom = timeFrom;
-      }
+      defaultDate: this._event.dateFrom,
+    });
+
+    this._flatpickrFrom.config.onChange.push(() => {
+
     });
 
     const dateToElement = this.getElement().querySelector(`[name="event-end-time"]`);
     this._flatpickrTo = flatpickr(dateToElement, {
       enableTime: true,
-      dateFormat: `d/m/y H:i`,
+      altFormat: `d/m/y H:i`,
+      altInput: true,
       [`time_24hr`]: true,
-      defaultDate: this._event.dateTo || new Date(),
-      onChange(timeTo) {
-        this._newEvent.dateTo = timeTo;
-      }
+      defaultDate: this._event.dateTo,
     });
-
   }
 }

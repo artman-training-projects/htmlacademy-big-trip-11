@@ -14,7 +14,7 @@ export const EmptyEvent = {
   dateFrom: new Date(),
   dateTo: new Date(),
   destination: ``,
-  type: ``,
+  type: `Taxi`,
 };
 
 export default class EventController {
@@ -106,8 +106,6 @@ export default class EventController {
     eventEditComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
       const data = eventEditComponent.getData();
-      // console.log(`getData on Submit`);
-      // console.log(data);
       this._onDataChange(this, event, data);
       this._replaceEditToEvent();
     });

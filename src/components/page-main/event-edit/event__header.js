@@ -1,5 +1,7 @@
 import {DESTINATION_CITY, TRANSFER_TYPE, ACTIVITY_TYPE, tripPointTypesMap} from '../../../utils/const';
 
+import {parseTime, parseDate} from '../../../utils/common';
+
 const createTripDestinationList = (destinationCitys) => {
   return destinationCitys
     .map((city) => `<option value="${city}"></option>`)
@@ -37,7 +39,6 @@ const createTripTypeActivityList = (activityList, currentType, id) => {
 };
 
 const createTripEventEditHeaderTemplate = (event) => {
-  console.log(event.dateFrom);
 
   return (
     `<header class="event__header">
