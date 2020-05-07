@@ -15,6 +15,7 @@ export const EmptyEvent = {
   dateTo: new Date(),
   destination: ``,
   type: `Taxi`,
+  [`is_favorite`]: false,
 };
 
 export default class EventController {
@@ -97,7 +98,9 @@ export default class EventController {
   _onEscKeyDown(evt) {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
     if (isEscKey) {
-      this._onDataChange(this, event, event);
+      if (this._mode === Mode.ADD) {
+        this._onDataChange(this, EmptyEvent, null);
+      }
       this._replaceEditToEvent();
     }
   }
@@ -116,7 +119,8 @@ export default class EventController {
     });
 
     eventEditComponent.setButtonEventCloseClickHandler(() => {
-      this._onDataChange(this, event, event);
+      eventEditComponent.reset();
+      // this._onDataChange(this, event, event);
       this._replaceEditToEvent();
     });
   }

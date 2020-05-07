@@ -33,6 +33,7 @@ const createTripEventEditTemplate = (event, newEvent) => {
 
 const parseFormData = (formData, newEvent) => {
   return {
+    id: new Date().getMilliseconds() + Math.random(),
     basePrice: formData.get(`event-price`),
     dateFrom: new Date(formData.get(`event-start-time`)),
     dateTo: new Date(formData.get(`event-end-time`)),
@@ -43,6 +44,7 @@ const parseFormData = (formData, newEvent) => {
     },
     type: formData.get(`event-type`),
     offers: newEvent.offers,
+    [`is_favorite`]: formData.get(`event-favorite`),
   };
 };
 
@@ -69,12 +71,13 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
 
   getData() {
     const form = this.getElement().querySelector(`.event--edit`);
+    console.log(form);
     const formData = new FormData(form);
     return parseFormData(formData, this._newEvent);
   }
 
   reset() {
-    this._newEvent = {};
+    this._newEvent = this._event;
     this.rerenderElement();
   }
 
@@ -116,13 +119,19 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
   }
 
   setButtonEventCloseClickHandler(handler) {
-    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
-    this._eventCloseClickHandler = handler;
+    const rollUp = this.getElement().querySelector(`.event__rollup-btn`);
+    if (rollUp) {
+      rollUp.addEventListener(`click`, handler);
+      this._eventCloseClickHandler = handler;
+    }
   }
 
   setFavoriteClickHandler(handler) {
-    this.getElement().querySelector(`.event__favorite-btn`).addEventListener(`click`, handler);
-    this._favoriteClickHandler = handler;
+    const favorite = this.getElement().querySelector(`.event__favorite-btn`);
+    if (favorite) {
+      favorite.addEventListener(`click`, handler);
+      this._favoriteClickHandler = handler;
+    }
   }
 
   _subscribeOnEvents() {
@@ -134,7 +143,7 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
         return;
       }
 
-      target.setAttribute(`checked`, ``);
+      target.checked = true;
       this._newEvent.type = target.value;
       this._newEvent.offers = tripOffersMap.get(target.value);
       this.rerenderElement();
@@ -193,10 +202,6 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
       altInput: true,
       [`time_24hr`]: true,
       defaultDate: this._event.dateFrom,
-    });
-
-    this._flatpickrFrom.config.onChange.push(() => {
-
     });
 
     const dateToElement = this.getElement().querySelector(`[name="event-end-time"]`);

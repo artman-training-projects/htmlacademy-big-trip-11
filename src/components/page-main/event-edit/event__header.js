@@ -39,7 +39,6 @@ const createTripTypeActivityList = (activityList, currentType, id) => {
 };
 
 const createTripEventEditHeaderTemplate = (event) => {
-
   return (
     `<header class="event__header">
       <div class="event__type-wrapper">
@@ -93,19 +92,19 @@ const createTripEventEditHeaderTemplate = (event) => {
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-      <button class="event__reset-btn" type="reset">Delete</button>
+      <button class="event__reset-btn" type="reset">${event.id ? `Delete` : `Cancel`}</button>
 
-      <input id="event-favorite-${event.id}" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${event.is_favorite ? `checked` : ``}>
-      <label class="event__favorite-btn" for="event-favorite-${event.id}">
-        <span class="visually-hidden">Add to favorite</span>
-        <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
-          <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
-        </svg>
-      </label>
+      ${event.id ? `<input id="event-favorite-${event.id}" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${event.is_favorite ? `checked` : ``}>
+                    <label class="event__favorite-btn" for="event-favorite-${event.id}">
+                      <span class="visually-hidden">Add to favorite</span>
+                      <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
+                        <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
+                      </svg>
+                    </label>` : ``}
 
-      <button class="event__rollup-btn" type="button">
-        <span class="visually-hidden">Open event</span>
-      </button>
+      ${event.id ? `<button class="event__rollup-btn" type="button">
+                    <span class="visually-hidden">Open event</span>
+                  </button>` : ``}
     </header>`
   );
 };

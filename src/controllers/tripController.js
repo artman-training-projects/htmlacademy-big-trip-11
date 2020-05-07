@@ -15,7 +15,7 @@ import EventNoComponent from '../components/page-main/event-edit/event-no';
 import StatisticsComponent from '../components/statistics';
 
 import FilterController, {FilterType} from './filterController';
-import EventController, {Mode as EventControllerMode, EmptyEvent} from './eventController';
+import EventController, {Mode as EventControllerMode, EmptyEvent, Mode} from './eventController';
 
 export default class TripController {
   constructor(container, eventsModel) {
@@ -74,11 +74,7 @@ export default class TripController {
       }
     });
 
-    const newEventButton = document.querySelector(`.trip-main__event-add-btn`);
-    newEventButton.addEventListener(`click`, () => {
-      newEventButton.disabled = true;
-      this.createEvent();
-    });
+    this._addNewEventButtonHandler();
   }
 
   render(events) {
@@ -139,11 +135,13 @@ export default class TripController {
       if (newData === null) {
         eventController.destroy();
         this._updateEvents(getSortedEvents(this._eventsModel.getAllEvents(), this._activeSortType));
+        this._addNewEventButtonOn();
       } else {
         this._eventsModel.addEvent(newData);
         eventController.render(newData, EventControllerMode.DEFAULT);
 
         this._showedEventsComponents = [].concat(eventController, this._showedEventsComponents);
+        this._addNewEventButtonOn();
       }
     } else if (newData === null) {
       this._eventsModel.removeEvent(oldData.id);
@@ -201,5 +199,18 @@ export default class TripController {
       eventController.render(event, EventControllerMode.DEFAULT);
       return eventController;
     });
+  }
+
+  _addNewEventButtonHandler() {
+    const newEventButton = document.querySelector(`.trip-main__event-add-btn`);
+    newEventButton.addEventListener(`click`, () => {
+      newEventButton.disabled = true;
+      this.createEvent();
+    });
+  }
+
+  _addNewEventButtonOn() {
+    const newEventButton = document.querySelector(`.trip-main__event-add-btn`);
+    newEventButton.disabled = false;
   }
 }
