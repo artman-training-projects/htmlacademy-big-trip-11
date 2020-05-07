@@ -9,18 +9,20 @@ import {createTripEventEditDestinationTemplate} from './event-edit/event--destin
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
-const createTripEventEditTemplate = (event, options) => {
-  const {eventType, eventOffers, eventDestiantion, eventDateFrom, eventDateTo, eventPrice} = options;
+const createTripEventEditTemplate = (event, newEvent) => {
+  event.type = newEvent.type || event.type;
+  event.offers = newEvent.offers || event.offers;
+  event.destination = newEvent.destination || event.destination;
 
   return (
     `<li class="trip-events__item">
       <form class="event  event--edit" action="#" method="post">
-        ${createTripEventEditHeaderTemplate(event, eventType, eventDestiantion, eventPrice)}
+        ${createTripEventEditHeaderTemplate(event, event.type, event.destination, event.basePrice)}
 
         <section class="event__details">
-          ${createTripEventEditOffersTemplate(eventOffers)}
+          ${createTripEventEditOffersTemplate(event.offers)}
 
-          ${createTripEventEditDestinationTemplate(eventDestiantion)}
+          ${createTripEventEditDestinationTemplate(event.destination)}
         </section>
       </form>
     </li>`
@@ -28,8 +30,7 @@ const createTripEventEditTemplate = (event, options) => {
 };
 
 const parseFormData = (formData) => {
-  console.log(formData.get(`event-type`));
-
+  console.log(formData.get(`event-start-time`));
   return {
     basePrice: formData.get(`event-price`),
     dateFrom: formData.get(`event-start-time`),
@@ -37,7 +38,7 @@ const parseFormData = (formData) => {
     destination: {
       name: formData.get(`event-destination`),
     },
-    // type: formData.get(`event-type`),
+    type: formData.get(`event-type`),
   };
 };
 
@@ -45,12 +46,7 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
   constructor(event) {
     super();
     this._event = event;
-    this._eventDateFrom = event.dateFrom;
-    this._eventDateTo = event.dateTo;
-    this._eventType = event.type;
-    this._eventOffers = event.offers;
-    this._eventDestiantion = event.destination;
-    this._basePrice = event.basePrice;
+    this._newEvent = {};
 
     this._eventSubmitHandler = null;
     this._eventResetHandler = null;
@@ -64,31 +60,17 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return createTripEventEditTemplate(this._event, {
-      eventType: this._eventType,
-      eventOffers: this._eventOffers,
-      eventDestiantion: this._eventDestiantion,
-      eventDateFrom: this._eventDateFrom,
-      eventDateTo: this._eventDateTo,
-      eventPrice: this._basePrice,
-    });
+    return createTripEventEditTemplate(this._event, this._newEvent);
   }
 
   getData() {
     const form = this.getElement().querySelector(`.event--edit`);
-    console.log(form);
     const formData = new FormData(form);
     return parseFormData(formData);
   }
 
   reset() {
-    const event = this._event;
-    this._eventDateFrom = event.dateFrom;
-    this._eventDateTo = event.dateTo;
-    this._eventType = event.type;
-    this._eventOffers = event.offers;
-    this._eventDestiantion = event.destination;
-    this._basePrice = event.basePrice;
+    this._newEvent = {};
     this.rerenderElement();
   }
 
@@ -142,41 +124,21 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
   _subscribeOnEvents() {
     const element = this.getElement();
 
-    element.querySelector(`.event__type-list`).addEventListener(`click`, (evt) => {
+    element.querySelector(`.event__type-list`).addEventListener(`change`, (evt) => {
       const target = evt.target;
-      console.log(target);
       if (target.tagName !== `INPUT`) {
         return;
       }
 
-      console.log(target.value);
-
-      // target.checked = true;
-      // const inputElement = document.querySelector(`[name="event-type-checked"`);
-      // console.log(inputElement);
       target.setAttribute(`checked`, ``);
-      // inputElement.value = target.textContent;
-      this._eventType = target.value;
-      this._eventOffers = tripOffersMap.get(target.value);
-      // console.log(inputElement);
-      console.log(target);
+      this._newEvent.type = target.value;
+      this._newEvent.offers = tripOffersMap.get(target.value);
       this.rerenderElement();
-    });
-
-    element.querySelector(`.event__input--price`).addEventListener(`input`, (evt) => {
-      const inputPrice = evt.target.value;
-
-      if (inputPrice.match(/[^\d]/)) {
-        this._basePrice = false;
-        this.rerenderElement();
-      }
-
-      this._basePrice = inputPrice;
     });
 
     element.querySelector(`.event__input--destination`).addEventListener(`click`, (evt) => {
       evt.target.value = ``;
-      this._eventDestiantion.name = false;
+      this._newEvent.destination = false;
     });
 
     element.querySelector(`.event__input--destination`).addEventListener(`input`, (evt) => {
@@ -187,13 +149,24 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
         return;
       }
 
-      this._eventDestiantion = {
+      this._newEvent.destination = {
         description: getTripDestinationDesccription(),
         name: inputCity,
         pictures: getTripDestinationPhotos(),
       };
 
       this.rerenderElement();
+    });
+
+    element.querySelector(`.event__input--price`).addEventListener(`input`, (evt) => {
+      const inputPrice = evt.target.value;
+
+      if (inputPrice.match(/[^\d]/)) {
+        this._newEvent.basePrice = false;
+        this.rerenderElement();
+      }
+
+      this._newEvent.basePrice = inputPrice;
     });
   }
 
@@ -208,30 +181,28 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
       this._flatpickrTo = null;
     }
 
-    if (this._eventDateFrom) {
-      const dateElement = this.getElement().querySelector(`[name="event-start-time"]`);
-      this._flatpickrFrom = flatpickr(dateElement, {
-        enableTime: true,
-        dateFormat: `d/m/y H:i`,
-        [`time_24hr`]: true,
-        defaultDate: this._event.dateFrom || new Date(),
-        onChange(timeFrom) {
-          this._eventDateTo = timeFrom;
-        }
-      });
-    }
 
-    if (this._eventDateTo) {
-      const dateElement = this.getElement().querySelector(`[name="event-end-time"]`);
-      this._flatpickrTo = flatpickr(dateElement, {
-        enableTime: true,
-        dateFormat: `d/m/y H:i`,
-        [`time_24hr`]: true,
-        defaultDate: this._event.dateTo || new Date(),
-        onChange(timeTo) {
-          this._eventDateTo = timeTo;
-        }
-      });
-    }
+    const dateFromElement = this.getElement().querySelector(`[name="event-start-time"]`);
+    this._flatpickrFrom = flatpickr(dateFromElement, {
+      enableTime: true,
+      dateFormat: `d/m/y H:i`,
+      [`time_24hr`]: true,
+      defaultDate: this._event.dateFrom || new Date(),
+      onChange(timeFrom) {
+        this._newEvent.dateFrom = timeFrom;
+      }
+    });
+
+    const dateToElement = this.getElement().querySelector(`[name="event-end-time"]`);
+    this._flatpickrTo = flatpickr(dateToElement, {
+      enableTime: true,
+      dateFormat: `d/m/y H:i`,
+      [`time_24hr`]: true,
+      defaultDate: this._event.dateTo || new Date(),
+      onChange(timeTo) {
+        this._newEvent.dateTo = timeTo;
+      }
+    });
+
   }
 }

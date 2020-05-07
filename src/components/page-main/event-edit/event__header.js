@@ -1,5 +1,4 @@
 import {DESTINATION_CITY, TRANSFER_TYPE, ACTIVITY_TYPE, tripPointTypesMap} from '../../../utils/const';
-import {parseTime, parseDate} from '../../../utils/common';
 
 const createTripDestinationList = (destinationCitys) => {
   return destinationCitys
@@ -37,17 +36,15 @@ const createTripTypeActivityList = (activityList, currentType, id) => {
   return template;
 };
 
-const createTripEventEditHeaderTemplate = (event, type, eventDestiantion, eventPrice) => {
-  const isPrice = !!eventPrice;
-
-  console.log(event.type + ` ` + type);
+const createTripEventEditHeaderTemplate = (event) => {
+  console.log(event.dateFrom);
 
   return (
     `<header class="event__header">
       <div class="event__type-wrapper">
         <label class="event__type  event__type-btn" for="event-type-toggle-${event.id}">
           <span class="visually-hidden">Choose event type</span>
-          <img class="event__type-icon" width="17" height="17" src="img/icons/${type.toLowerCase()}.png" alt="${type} icon">
+          <img class="event__type-icon" width="17" height="17" src="img/icons/${event.type.toLowerCase()}.png" alt="${event.type} icon">
         </label>
         <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${event.id}" type="checkbox">
 
@@ -66,9 +63,9 @@ const createTripEventEditHeaderTemplate = (event, type, eventDestiantion, eventP
 
       <div class="event__field-group  event__field-group--destination">
         <label class="event__label  event__type-output" for="event-destination-${event.id}">
-          ${tripPointTypesMap.get(type)}
+          ${tripPointTypesMap.get(event.type)}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-${event.id}" type="text" name="event-destination" value="${eventDestiantion.name ? eventDestiantion.name : ``}" list="destination-list-${event.id}">
+        <input class="event__input  event__input--destination" id="event-destination-${event.id}" type="text" name="event-destination" value="${event.destination.name ? event.destination.name : ``}" list="destination-list-${event.id}">
         <datalist id="destination-list-${event.id}">
           ${createTripDestinationList(DESTINATION_CITY)}
         </datalist>
@@ -88,13 +85,13 @@ const createTripEventEditHeaderTemplate = (event, type, eventDestiantion, eventP
 
       <div class="event__field-group  event__field-group--price">
         <label class="event__label" for="event-price-${event.id}">
-          <span class="visually-hidden">${isPrice ? eventPrice : ``}</span>
+          <span class="visually-hidden">${event.basePrice}</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-${event.id}" type="text" name="event-price" value="${isPrice ? eventPrice : ``}">
+        <input class="event__input  event__input--price" id="event-price-${event.id}" type="text" name="event-price" value="${event.basePrice}">
       </div>
 
-      <button class="event__save-btn  btn  btn--blue" type="submit" ${!isPrice ? `disabled` : ``}>Save</button>
+      <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
       <button class="event__reset-btn" type="reset">Delete</button>
 
       <input id="event-favorite-${event.id}" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${event.is_favorite ? `checked` : ``}>

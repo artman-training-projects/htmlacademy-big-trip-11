@@ -14,8 +14,7 @@ export const EmptyEvent = {
   dateFrom: new Date(),
   dateTo: new Date(),
   destination: ``,
-  [`is_favorite`]: false,
-  type: `Taxi`,
+  type: ``,
 };
 
 export default class EventController {
