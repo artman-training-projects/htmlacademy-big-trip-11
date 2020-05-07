@@ -1,12 +1,12 @@
 import {HIDDEN_CLASS} from '../components/abstract-component';
 import AbstractSmartComponent from './abstract-smart-component';
 
-import {initStatistics} from '../utils/forStatistics';
+// import {initStatistics} from '../utils/forStatistics';
 
-import Chart from "chart.js";
-import ChartDataLabels from 'chartjs-plugin-datalabels';
+// import Chart from "chart.js";
+// import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-import flatpickr from 'flatpickr';
+// import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
 const createStatisticsTemplate = () => {

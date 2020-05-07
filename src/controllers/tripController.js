@@ -1,5 +1,5 @@
 import {HIDDEN_CLASS} from '../components/abstract-component';
-import {RenderPosition, renderComponent, removeComponent} from '../utils/element';
+import {RenderPosition, renderComponent} from '../utils/element';
 import {SortType} from '../components/page-main/trip-sort';
 import {getFilteredEvents} from './helpers/getFilteredEvents';
 import {getSortedEvents} from './helpers/getSortedEvents';
@@ -15,7 +15,7 @@ import EventNoComponent from '../components/page-main/event-edit/event-no';
 import StatisticsComponent from '../components/statistics';
 
 import FilterController, {FilterType} from './filterController';
-import EventController, {Mode as EventControllerMode, EmptyEvent, Mode} from './eventController';
+import EventController, {Mode as EventControllerMode, EmptyEvent} from './eventController';
 
 export default class TripController {
   constructor(container, eventsModel) {

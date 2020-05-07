@@ -52,7 +52,7 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
   constructor(event) {
     super();
     this._event = event;
-    this._newEvent = this._event;
+    this._newEvent = {};
 
     this._eventSubmitHandler = null;
     this._eventResetHandler = null;
@@ -71,7 +71,6 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
 
   getData() {
     const form = this.getElement().querySelector(`.event--edit`);
-    console.log(form);
     const formData = new FormData(form);
     return parseFormData(formData, this._newEvent);
   }
@@ -132,6 +131,10 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
       favorite.addEventListener(`click`, handler);
       this._favoriteClickHandler = handler;
     }
+  }
+
+  _isValide() {
+
   }
 
   _subscribeOnEvents() {
