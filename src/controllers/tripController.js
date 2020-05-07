@@ -12,7 +12,7 @@ import TripDaysComponent from '../components/page-main/trip-days';
 import TripDayComponent from '../components/page-main/trip-day/trip-days__item';
 
 import EventNoComponent from '../components/page-main/event-edit/event-no';
-// import StatisticsComponent from '../components/statistics';
+import StatisticsComponent from '../components/statistics';
 
 import FilterController, {FilterType} from './filterController';
 import EventController, {Mode as EventControllerMode, EmptyEvent} from './eventController';
@@ -53,9 +53,9 @@ export default class TripController {
     this._filterController = new FilterController(CONTROLS, this._eventsModel);
     this._filterController.render();
 
-    // this._statisticsComponent = new StatisticsComponent(this._eventsModel);
-    // renderComponent(this._container, this._statisticsComponent);
-    // this._statisticsComponent.hide();
+    this._statisticsComponent = new StatisticsComponent(this._eventsModel);
+    renderComponent(this._container, this._statisticsComponent, RenderPosition.BEFOREBEGIN);
+    this._statisticsComponent.hide();
 
     this.render(events);
 
@@ -63,13 +63,13 @@ export default class TripController {
       switch (menuItem) {
         case MenuItem.TABLE:
           this._tripMenuComponent.setActiveMenu(MenuItem.TABLE);
-          // this._statisticsComponent.hide();
+          this._statisticsComponent.hide();
           this.show();
           break;
         case MenuItem.STATS:
           this._tripMenuComponent.setActiveMenu(MenuItem.STATS);
           this.hide();
-          // this._statisticsComponent.show();
+          this._statisticsComponent.show();
           break;
       }
     });
