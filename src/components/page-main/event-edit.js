@@ -31,20 +31,16 @@ const createTripEventEditTemplate = (event, newEvent) => {
   );
 };
 
-const parseFormData = (formData, newEvent) => {
+const parseFormData = (formData) => {
   return {
     id: new Date().getMilliseconds() + Math.random(),
     basePrice: formData.get(`event-price`),
     dateFrom: new Date(formData.get(`event-start-time`)),
     dateTo: new Date(formData.get(`event-end-time`)),
     destination: {
-      description: newEvent.destination.description,
       name: formData.get(`event-destination`),
-      pictures: newEvent.destination.pictures,
     },
     type: formData.get(`event-type`),
-    offers: newEvent.offers,
-    [`is_favorite`]: formData.get(`event-favorite`),
   };
 };
 
@@ -56,7 +52,7 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
 
     this._eventSubmitHandler = null;
     this._eventResetHandler = null;
-    this._eventCloseClickHandler = null;
+    this._eventCloseHandler = null;
     this._favoriteClickHandler = null;
     this._subscribeOnEvents();
 
@@ -72,7 +68,7 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
   getData() {
     const form = this.getElement().querySelector(`.event--edit`);
     const formData = new FormData(form);
-    return parseFormData(formData, this._newEvent);
+    return Object.assign(parseFormData(formData), this._newEvent);
   }
 
   reset() {
@@ -102,7 +98,7 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
   recoveryListeners() {
     this.setSubmitHandler(this._eventSubmitHandler);
     this.setResetHandler(this._eventResetHandler);
-    this.setButtonEventCloseClickHandler(this._eventCloseClickHandler);
+    this.setCloseHandler(this._eventCloseHandler);
     this.setFavoriteClickHandler(this._favoriteClickHandler);
     this._subscribeOnEvents();
   }
@@ -117,11 +113,11 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
     this._eventResetHandler = handler;
   }
 
-  setButtonEventCloseClickHandler(handler) {
+  setCloseHandler(handler) {
     const rollUp = this.getElement().querySelector(`.event__rollup-btn`);
     if (rollUp) {
       rollUp.addEventListener(`click`, handler);
-      this._eventCloseClickHandler = handler;
+      this._eventCloseHandler = handler;
     }
   }
 
@@ -161,6 +157,9 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
       const inputCity = evt.target.value;
       const invalidCity = !DESTINATION_CITY.find((city) => city === inputCity);
 
+      const saveButton = this.getElement().querySelector(`.event__save-btn`);
+      saveButton.disabled = invalidCity;
+
       if (invalidCity) {
         return;
       }
@@ -176,12 +175,10 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
 
     element.querySelector(`.event__input--price`).addEventListener(`input`, (evt) => {
       const inputPrice = evt.target.value;
+      const invalidPrice = inputPrice.match(/[^\d]/);
 
-      if (inputPrice.match(/[^\d]/)) {
-        this._newEvent.basePrice = false;
-        this.rerenderElement();
-      }
-
+      const saveButton = this.getElement().querySelector(`.event__save-btn`);
+      saveButton.disabled = invalidPrice;
       this._newEvent.basePrice = inputPrice;
     });
   }

@@ -48,6 +48,7 @@ export default class EventController {
         if (oldEventComponent && oldEventEditComponent) {
           replaceComponent(this._eventComponent, oldEventComponent);
           replaceComponent(this._eventEditComponent, oldEventEditComponent);
+          this._replaceEditToEvent();
         } else {
           renderComponent(this._container, this._eventComponent);
         }
@@ -58,9 +59,9 @@ export default class EventController {
           removeComponent(oldEventComponent);
         }
 
-        document.addEventListener(`keydown`, this._onEscKeyDown);
         const eventContainer = document.querySelector(`.trip-events__list`);
         renderComponent(eventContainer, this._eventEditComponent, RenderPosition.AFTERBEGIN);
+        document.addEventListener(`keydown`, this._onEscKeyDown);
         break;
     }
   }
@@ -101,6 +102,8 @@ export default class EventController {
       if (this._mode === Mode.ADD) {
         this._onDataChange(this, EmptyEvent, null);
       }
+
+      this._onDataChange(this, event, event);
       this._replaceEditToEvent();
     }
   }
@@ -118,9 +121,9 @@ export default class EventController {
       this._replaceEditToEvent();
     });
 
-    eventEditComponent.setButtonEventCloseClickHandler(() => {
+    eventEditComponent.setCloseHandler(() => {
       eventEditComponent.reset();
-      // this._onDataChange(this, event, event);
+      this._onDataChange(this, event, event);
       this._replaceEditToEvent();
     });
   }

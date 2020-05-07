@@ -23,13 +23,11 @@ export default class FilterController {
 
   render() {
     const allEvents = this._eventsModel.getAllEvents();
-    const filters = Object.values(FilterType).map((filterType) => {
-      return {
-        name: filterType,
-        count: getFilteredEvents(allEvents, filterType).length,
-        checked: filterType === this._eventsModel.getFilterType(),
-      };
-    });
+    const filters = Object.values(FilterType).map((filterType) => ({
+      name: filterType,
+      count: getFilteredEvents(allEvents, filterType).length,
+      checked: filterType === this._eventsModel.getFilterType(),
+    }));
 
     const oldComponent = this._filterComponent;
     this._filterComponent = new FilterComponent(filters);
