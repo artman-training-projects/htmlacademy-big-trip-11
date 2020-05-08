@@ -1,6 +1,7 @@
 import moment from 'moment';
 import {Millisecond, monthMap, SHOW_OFFERS} from './const';
 
+export const getEventTime = (from, to) => (to - from);
 export const parseTime = (timestamp) => moment(timestamp).format(`HH:mm`);
 export const parseDate = (timestamp) => moment(timestamp).format(`DD/MM/YY`);
 
@@ -19,13 +20,22 @@ export const getDiffTime = (from, to) => {
   return diffString;
 };
 
+export const calcFullPrice = (events, prices) => {
+  return events ? events
+    .slice()
+    .map((event) => event[prices] + calcFullPrice(event.offers, `price`))
+    .reduce((sum, price) => sum + price) : 0;
+};
+
 export const getRoute = (events) => {
+  events = events.slice().sort((a, b) => Date.parse(a.dateFrom) - Date.parse(b.dateFrom));
+
   const citys = new Set(events
     .slice()
     .map((event) => event.destination.name)
   );
 
-  let route = [...citys];
+  let route = Array.from(citys);
 
   if (route <= SHOW_OFFERS) {
     route = route
@@ -41,7 +51,7 @@ export const getRoute = (events) => {
 };
 
 export const getRouteDates = (events) => {
-  let dates = events.slice();
+  let dates = events.slice().sort((a, b) => Date.parse(a.dateFrom) - Date.parse(b.dateFrom));
   dates = [dates[0].dateFrom, dates[dates.length - 1].dateTo];
 
   const getDateStartString = () => {
@@ -55,15 +65,4 @@ export const getRouteDates = (events) => {
   };
 
   return `${getDateStartString()} - ${getDateFinishString()}`;
-};
-
-export const getEventTime = (from, to) => {
-  return (to - from);
-};
-
-export const calcFullPrice = (events, prices) => {
-  return events ? events
-    .slice()
-    .map((event) => event[prices] + calcFullPrice(event.offers, `price`))
-    .reduce((sum, price) => sum + price) : 0;
 };

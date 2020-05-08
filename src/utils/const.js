@@ -6,12 +6,6 @@ export const Millisecond = {
   IN_MINUTE: 60000,
 };
 
-export const SortType = {
-  EVENT: `event`,
-  TIME: `time`,
-  PRICE: `price`,
-};
-
 export const monthMap = new Map([
   [0, `JAN`],
   [1, `FEB`],
@@ -26,6 +20,12 @@ export const monthMap = new Map([
   [10, `NOV`],
   [11, `DEC`],
 ]);
+
+export const DESTINATION_CITY = [`Amsterdam`, `Geneva`, `Melbourne`, `Chamonix`, `Saint Petersburg`, `Frankfurt`, `Lisbon`, `Sochi`, `Barcelona`, `Helsinki`, `Oslo`, `Moscow`, `Kioto`, `Tokyo`];
+
+export const TRANSFER_TYPE = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`];
+
+export const ACTIVITY_TYPE = [`Check-in`, `Sightseeing`, `Restaurant`];
 
 export const tripPointTypesMap = new Map([
   [`Taxi`, `Taxi to`],

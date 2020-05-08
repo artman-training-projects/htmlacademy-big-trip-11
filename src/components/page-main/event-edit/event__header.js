@@ -1,135 +1,115 @@
-import {tripPointTypesMap} from '../../../utils/const';
+import {DESTINATION_CITY, TRANSFER_TYPE, ACTIVITY_TYPE, tripPointTypesMap} from '../../../utils/const';
+
 import {parseTime, parseDate} from '../../../utils/common';
-import {tripDestinationCitys} from '../../../mock/trip-destination';
 
-let offerCount = 1;
-const addOfferCount = () => offerCount++;
-
-const createTripDestinationList = () => {
-  return tripDestinationCitys
+const createTripDestinationList = (destinationCitys) => {
+  return destinationCitys
     .map((city) => `<option value="${city}"></option>`)
     .join(`\n`);
 };
 
-const createTripEventEditHeaderTemplate = (event) => {
-  const count = addOfferCount();
+const createTripTypeTransferList = (transferList, currentType, id) => {
+  let template = ``;
+  for (const type of transferList) {
+    const isChecked = (type === currentType) ? `checked` : ``;
 
+    template +=
+      `<div class="event__type-item">
+        <input id="event-type-${type.toLowerCase()}-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${isChecked}>
+        <label class="event__type-label  event__type-label--${type.toLowerCase()}" for="event-type-${type.toLowerCase()}-${id}">${type}</label>
+      </div>`;
+  }
+
+  return template;
+};
+
+const createTripTypeActivityList = (activityList, currentType, id) => {
+  let template = ``;
+  for (const type of activityList) {
+    const isChecked = (type === currentType) ? `checked` : ``;
+
+    template +=
+      `<div class="event__type-item">
+        <input id="event-type-${type.toLowerCase()}-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${isChecked}>
+        <label class="event__type-label  event__type-label--${type.toLowerCase()}" for="event-type-${type.toLowerCase()}-${id}">${type}</label>
+      </div>`;
+  }
+
+  return template;
+};
+
+const createTripEventEditHeaderTemplate = (event) => {
   return (
     `<header class="event__header">
       <div class="event__type-wrapper">
-        <label class="event__type  event__type-btn" for="event-type-toggle-${count}">
+        <label class="event__type  event__type-btn" for="event-type-toggle-${event.id}">
           <span class="visually-hidden">Choose event type</span>
           <img class="event__type-icon" width="17" height="17" src="img/icons/${event.type.toLowerCase()}.png" alt="${event.type} icon">
         </label>
-        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${count}" type="checkbox">
+        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${event.id}" type="checkbox">
 
         <div class="event__type-list">
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Transfer</legend>
-
-            <div class="event__type-item">
-              <input id="event-type-taxi-${count}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi">
-              <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-${count}">Taxi</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-bus-${count}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus">
-              <label class="event__type-label  event__type-label--bus" for="event-type-bus-${count}">Bus</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-train-${count}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="train">
-              <label class="event__type-label  event__type-label--train" for="event-type-train-${count}">Train</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-ship-${count}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="ship">
-              <label class="event__type-label  event__type-label--ship" for="event-type-ship-${count}">Ship</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-transport-${count}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="transport">
-              <label class="event__type-label  event__type-label--transport" for="event-type-transport-${count}">Transport</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-drive-${count}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="drive">
-              <label class="event__type-label  event__type-label--drive" for="event-type-drive-${count}">Drive</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-flight-${count}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="flight" checked>
-              <label class="event__type-label  event__type-label--flight" for="event-type-flight-${count}">Flight</label>
-            </div>
+            ${createTripTypeTransferList(TRANSFER_TYPE, event.type, event.id)}
           </fieldset>
 
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Activity</legend>
-
-            <div class="event__type-item">
-              <input id="event-type-check-in-${count}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="check-in">
-              <label class="event__type-label  event__type-label--check-in" for="event-type-check-in-${count}">Check-in</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-sightseeing-${count}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="sightseeing">
-              <label class="event__type-label  event__type-label--sightseeing" for="event-type-sightseeing-${count}">Sightseeing</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-restaurant-${count}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant">
-              <label class="event__type-label  event__type-label--restaurant" for="event-type-restaurant-${count}">Restaurant</label>
-            </div>
+            ${createTripTypeActivityList(ACTIVITY_TYPE, event.type, event.id)}
           </fieldset>
         </div>
       </div>
 
       <div class="event__field-group  event__field-group--destination">
-        <label class="event__label  event__type-output" for="event-destination-${count}">
+        <label class="event__label  event__type-output" for="event-destination-${event.id}">
           ${tripPointTypesMap.get(event.type)}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-${count}" type="text" name="event-destination" value="${event.destination.name}" list="destination-list-${count}">
-        <datalist id="destination-list-${count}">
-          ${createTripDestinationList()}
+        <input class="event__input  event__input--destination" id="event-destination-${event.id}" type="text" name="event-destination" value="${event.destination.name ? event.destination.name : ``}" list="destination-list-${event.id}">
+        <datalist id="destination-list-${event.id}">
+          ${createTripDestinationList(DESTINATION_CITY)}
         </datalist>
       </div>
 
       <div class="event__field-group  event__field-group--time">
-        <label class="visually-hidden" for="event-start-time-${count}">
+        <label class="visually-hidden" for="event-start-time-${event.id}">
           From
         </label>
-        <input class="event__input  event__input--time" id="event-start-time-${count}" type="text" name="event-start-time" value="${parseDate(event.dateFrom)} ${parseTime(event.dateFrom)}">
+        <input class="event__input  event__input--time" id="event-start-time-${event.id}" type="text" name="event-start-time" value="${(event.dateFrom)} ${(event.dateFrom)}">
         &mdash;
-        <label class="visually-hidden" for="event-end-time-${count}">
+        <label class="visually-hidden" for="event-end-time-${event.id}">
           To
         </label>
-        <input class="event__input  event__input--time" id="event-end-time-${count}" type="text" name="event-end-time" value="${parseDate(event.dateTo)} ${parseTime(event.dateTo)}">
+        <input class="event__input  event__input--time" id="event-end-time-${event.id}" type="text" name="event-end-time" value="${(event.dateTo)} ${(event.dateTo)}">
       </div>
 
       <div class="event__field-group  event__field-group--price">
-        <label class="event__label" for="event-price-${count}">
+        <label class="event__label" for="event-price-${event.id}">
           <span class="visually-hidden">${event.basePrice}</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-${count}" type="text" name="event-price" value="${event.basePrice}">
+        <input class="event__input  event__input--price" id="event-price-${event.id}" type="text" name="event-price" value="${event.basePrice}">
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-      <button class="event__reset-btn" type="reset">Delete</button>
+      <button class="event__reset-btn" type="reset">${event.id ? `Delete` : `Cancel`}</button>
 
-      <input id="event-favorite-${count}" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${event.isFavorite ? `checked` : ``}>
-      <label class="event__favorite-btn" for="event-favorite-${count}">
-        <span class="visually-hidden">Add to favorite</span>
-        <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
-          <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
-        </svg>
-      </label>
+      ${event.id ? `<input id="event-favorite-${event.id}" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${event.is_favorite ? `checked` : ``}>
+                    <label class="event__favorite-btn" for="event-favorite-${event.id}">
+                      <span class="visually-hidden">Add to favorite</span>
+                      <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
+                        <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
+                      </svg>
+                    </label>` : ``}
 
-      <button class="event__rollup-btn" type="button">
-        <span class="visually-hidden">Open event</span>
-      </button>
+      ${event.id ? `<button class="event__rollup-btn" type="button">
+                    <span class="visually-hidden">Open event</span>
+                  </button>` : ``}
     </header>`
   );
 };
 
 export {createTripEventEditHeaderTemplate};
+
+
+/* <button class="event__save-btn  btn  btn--blue" type="submit" ${isBlockSaveButton ? `disabled` : ``}>Save</button> */

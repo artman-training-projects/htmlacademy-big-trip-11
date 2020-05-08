@@ -1,8 +1,7 @@
+import {DESTINATION_CITY} from '../utils/const';
 import {getRandomIntegerNumber, getRandomArrayItem, getRandomArrayFromArray} from './utils';
 
-const tripDestinationCitys = [`Amsterdam`, `Geneva`, `Melbourne`, `Chamonix`, `Saint Petersburg`, `Frankfurt`, `Lisbon`, `Sochi`, `Barcelona`, `Helsinki`, `Oslo`, `Moscow`, `Kioto`, `Tokyo`];
-
-const tripDestinationDescriptions = [
+export const tripDestinationDescriptions = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
   `Cras aliquet varius magna, non porta ligula feugiat eget.`,
   `Fusce tristique felis at fermentum pharetra.`,
@@ -16,17 +15,17 @@ const tripDestinationDescriptions = [
   `In rutrum ac purus sit amet tempus.`,
 ];
 
-const DescriptionCount = {
+export const DescriptionCount = {
   MIN: 1,
   MAX: 5,
 };
 
-const PhotoCount = {
+export const PhotoCount = {
   MIN: 1,
   MAX: 5,
 };
 
-const getTripDestinationPhotos = (count) => {
+export const getTripDestinationPhotos = (count = PhotoCount) => {
   const photosCount = getRandomIntegerNumber(count.MIN, count.MAX);
   return new Array(photosCount)
     .fill(``)
@@ -38,19 +37,17 @@ const getTripDestinationPhotos = (count) => {
     });
 };
 
-const getTripDestinationDesccription = (descriptions, length) => {
+export const getTripDestinationDesccription = (descriptions = tripDestinationDescriptions, length = DescriptionCount) => {
   const count = getRandomIntegerNumber(length.MIN, length.MAX);
   return getRandomArrayFromArray(descriptions, count).join(` `);
 };
 
-const generateTripDestination = () => {
+export const generateTripDestination = () => {
   return {
     destination: {
-      name: getRandomArrayItem(tripDestinationCitys),
       description: getTripDestinationDesccription(tripDestinationDescriptions, DescriptionCount),
+      name: getRandomArrayItem(DESTINATION_CITY),
       pictures: getTripDestinationPhotos(PhotoCount),
     }
   };
 };
-
-export {DescriptionCount, PhotoCount, generateTripDestination, tripDestinationCitys, tripDestinationDescriptions, getTripDestinationDesccription, getTripDestinationPhotos};

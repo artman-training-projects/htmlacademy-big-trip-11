@@ -2,7 +2,7 @@ let offerCount = 1;
 const addOfferCount = () => offerCount++;
 
 const createTripEventEditOffersTemplate = (offers) => {
-  return (
+  return offers ? (
     `<section class="event__section  event__section--offers">
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
@@ -10,7 +10,7 @@ const createTripEventEditOffersTemplate = (offers) => {
         ${createTripEventEditOfferTemplate(offers)}
       </div>
     </section>`
-  );
+  ) : ``;
 };
 
 const createTripEventEditOfferTemplate = (offers) => {
@@ -25,7 +25,7 @@ const createTripEventOffersTempate = (offer) => {
 
   return (
     `<div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="${offer.title}-${count}" type="checkbox" name="${offer.title}" ${Math.random() > 0.5 ? `checked` : ``}>
+      <input class="event__offer-checkbox  visually-hidden" id="${offer.title}-${count}" type="checkbox" name="${offer.title}">
       <label class="event__offer-label" for="${offer.title}-${count}">
         <span class="event__offer-title">${offer.title}</span>
         &plus;

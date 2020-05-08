@@ -60,12 +60,12 @@ export default class MainTripDayEvent extends AbstractComponent {
     this._event = event;
   }
 
-  setButtonRollupClickHandler(handler) {
-    this.getElement().querySelector(`.event__rollup-btn`)
-      .addEventListener(`click`, handler);
-  }
-
   getTemplate() {
     return tripEventsItempTemplate(this._event);
+  }
+
+  setButtonEventEditClickHandler(handler) {
+    this.getElement().querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, handler);
   }
 }
