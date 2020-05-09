@@ -1,4 +1,9 @@
 import {Millisecond} from '../utils/const';
+import {generateEventOffers} from './event-offer';
+import {generateEventDestination} from './event-destination';
+import {generateEventPoint} from './event-point';
+
+export const getRandomId = () => new Date().getMilliseconds() + Math.random();
 
 export const getRandomIntegerNumber = (min, max) => (min + Math.floor(Math.random() * (max - min)));
 
@@ -17,18 +22,25 @@ export const getRandomArrayFromArray = (array, length) => {
   return newArray;
 };
 
-export const generateEventstartDate = () => {
-  const diffDays = getRandomIntegerNumber(1, 5);
+export const generateEventStartDate = () => {
+  const diffDays = getRandomIntegerNumber(-2, 3);
   const diffHours = getRandomIntegerNumber(0, 20);
   const diffMinutes = getRandomIntegerNumber(0, 59);
   const diffTime = diffDays * Millisecond.IN_DAY + diffHours * Millisecond.IN_HOUR + diffMinutes * Millisecond.IN_MINUTE;
   return new Date(Date.now() - diffTime);
 };
 
-export const generateTripEndDate = (tripStart) => {
+export const generateEventEndDate = (tripStart) => {
   const diffHours = getRandomIntegerNumber(0, 20);
   const diffMinutes = getRandomIntegerNumber(0, 59);
   const diffTime = diffHours * Millisecond.IN_HOUR + diffMinutes * Millisecond.IN_MINUTE;
   return new Date(tripStart.getTime() + diffTime);
 };
 
+const generateTrip = () => Object.assign({}, generateEventPoint(), generateEventDestination(), generateEventOffers());
+
+export const generateEvents = (count) => {
+  return count ? new Array(count)
+    .fill(``)
+    .map(generateTrip) : null;
+};

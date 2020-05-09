@@ -1,59 +1,48 @@
 import {DESTINATION_CITY, tripOffersMap} from '../../utils/const';
-import {getTripDestinationDesccription, getTripDestinationPhotos} from '../../mock/trip-destination';
+import {getEventDestinationDescription, getEventDestinationPhotos} from '../../mock/event-destination';
 
-import AbstractSmartComponent from '../abstract-smart-component';
-import {createTripEventEditHeaderTemplate} from './event-edit/event__header';
-import {createTripEventEditOffersTemplate} from './event-edit/event--offers';
-import {createTripEventEditDestinationTemplate} from './event-edit/event--destination';
+import {createMainEventEditTemplate} from './templates/mainEventEditTemplate';
+import AbstracSmarttComponent from '../abstract-smart-component';
 
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
-const createTripEventEditTemplate = (event, newEvent) => {
-  event.type = newEvent.type || event.type;
-  event.offers = newEvent.offers || event.offers;
-  event.destination = newEvent.destination || event.destination;
-  event.dateFrom = newEvent.dateFrom || event.dateFrom;
-  event.dateTo = newEvent.dateTo || event.dateTo;
-
-  return (
-    `<li class="trip-events__item">
-      <form class="event  event--edit" action="#" method="post">
-        ${createTripEventEditHeaderTemplate(event)}
-
-        <section class="event__details">
-          ${createTripEventEditOffersTemplate(event.offers)}
-
-          ${createTripEventEditDestinationTemplate(event.destination)}
-        </section>
-      </form>
-    </li>`
-  );
-};
-
-const parseFormData = (formData) => {
+const parseFormData = (formData, elseData) => {
   return {
-    id: new Date().getMilliseconds() + Math.random(),
-    basePrice: formData.get(`event-price`),
+    basePrice: +formData.get(`event-price`),
     dateFrom: new Date(formData.get(`event-start-time`)),
     dateTo: new Date(formData.get(`event-end-time`)),
     destination: {
+      description: elseData.destination.description,
       name: formData.get(`event-destination`),
+      pictures: elseData.destination.pictures,
     },
     type: formData.get(`event-type`),
+    offers: elseData.offers,
   };
 };
 
-export default class MainTripDayEventEdit extends AbstractSmartComponent {
+export default class EventEditComponent extends AbstracSmarttComponent {
   constructor(event) {
     super();
     this._event = event;
-    this._newEvent = {};
+    this._newEvent = {
+      basePrice: event.basePrice,
+      dateFrom: event.dateFrom,
+      dateTo: event.dateTo,
+      destination: {
+        description: event.destination.description,
+        name: event.destination.name,
+        pictures: event.destination.pictures,
+      },
+      type: event.type,
+      offers: event.offers,
+    };
 
-    this._eventSubmitHandler = null;
-    this._eventResetHandler = null;
-    this._eventCloseHandler = null;
-    this._favoriteClickHandler = null;
+    this._setSubmitEventHandler = null;
+    this._setResetEventHandler = null;
+    this._setCloseEditHandler = null;
+    this._setFavoriteClickHandler = null;
     this._subscribeOnEvents();
 
     this._flatpickrFrom = null;
@@ -62,18 +51,12 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return createTripEventEditTemplate(this._event, this._newEvent);
+    return createMainEventEditTemplate(Object.assign({}, this._event, this._newEvent));
   }
 
-  getData() {
-    const form = this.getElement().querySelector(`.event--edit`);
-    const formData = new FormData(form);
-    return Object.assign(parseFormData(formData), this._newEvent);
-  }
-
-  reset() {
-    this._newEvent = this._event;
-    this.rerenderElement();
+  rerenderElement() {
+    super.rerenderElement();
+    this._applyFlatpickr();
   }
 
   removeElement() {
@@ -90,34 +73,53 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
     super.removeElement();
   }
 
-  rerenderElement() {
-    super.rerenderElement();
-    this._applyFlatpickr();
-  }
-
   recoveryListeners() {
-    this.setSubmitHandler(this._eventSubmitHandler);
-    this.setResetHandler(this._eventResetHandler);
-    this.setCloseHandler(this._eventCloseHandler);
-    this.setFavoriteClickHandler(this._favoriteClickHandler);
+    this.setSubmitEventHandler(this._setSubmitEventHandler);
+    this.setResetEventHandler(this._setResetEventHandler);
+    this.setCloseEditHandler(this._setCloseEditHandler);
+    this.setFavoriteClickHandler(this._setFavoriteClickHandler);
     this._subscribeOnEvents();
   }
 
-  setSubmitHandler(handler) {
-    this.getElement().querySelector(`.event--edit`).addEventListener(`submit`, handler);
-    this._eventSubmitHandler = handler;
+  reset() {
+    const event = this._event;
+    this._newEvent = {
+      basePrice: event.basePrice,
+      dateFrom: event.dateFrom,
+      dateTo: event.dateTo,
+      destination: {
+        description: event.destination.description,
+        name: event.destination.name,
+        pictures: event.destination.pictures,
+      },
+      type: event.type,
+      offers: event.offers,
+    };
+
+    this.rerenderElement();
   }
 
-  setResetHandler(handler) {
+  getData() {
+    const form = this.getElement();
+    const formData = new FormData(form);
+    return parseFormData(formData, this._newEvent);
+  }
+
+  setSubmitEventHandler(handler) {
+    this.getElement().addEventListener(`submit`, handler);
+    this._setSubmitEventHandler = handler;
+  }
+
+  setResetEventHandler(handler) {
     this.getElement().querySelector(`.event__reset-btn`).addEventListener(`click`, handler);
-    this._eventResetHandler = handler;
+    this._setResetEventHandler = handler;
   }
 
-  setCloseHandler(handler) {
-    const rollUp = this.getElement().querySelector(`.event__rollup-btn`);
-    if (rollUp) {
-      rollUp.addEventListener(`click`, handler);
-      this._eventCloseHandler = handler;
+  setCloseEditHandler(handler) {
+    const close = this.getElement().querySelector(`.event__rollup-btn`);
+    if (close) {
+      close.addEventListener(`click`, handler);
+      this._setCloseEditHandler = handler;
     }
   }
 
@@ -125,12 +127,8 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
     const favorite = this.getElement().querySelector(`.event__favorite-btn`);
     if (favorite) {
       favorite.addEventListener(`click`, handler);
-      this._favoriteClickHandler = handler;
+      this._setFavoriteClickHandler = handler;
     }
-  }
-
-  _isValide() {
-
   }
 
   _subscribeOnEvents() {
@@ -151,6 +149,8 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
     element.querySelector(`.event__input--destination`).addEventListener(`click`, (evt) => {
       evt.target.value = ``;
       this._newEvent.destination = false;
+      const saveButton = this.getElement().querySelector(`.event__save-btn`);
+      saveButton.disabled = true;
     });
 
     element.querySelector(`.event__input--destination`).addEventListener(`input`, (evt) => {
@@ -165,9 +165,9 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
       }
 
       this._newEvent.destination = {
-        description: getTripDestinationDesccription(),
+        description: getEventDestinationDescription(),
         name: inputCity,
-        pictures: getTripDestinationPhotos(),
+        pictures: getEventDestinationPhotos(),
       };
 
       this.rerenderElement();
@@ -175,7 +175,7 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
 
     element.querySelector(`.event__input--price`).addEventListener(`input`, (evt) => {
       const inputPrice = evt.target.value;
-      const invalidPrice = inputPrice.match(/[^\d]/);
+      const invalidPrice = !inputPrice.match(/[\d]/);
 
       const saveButton = this.getElement().querySelector(`.event__save-btn`);
       saveButton.disabled = invalidPrice;
@@ -193,7 +193,6 @@ export default class MainTripDayEventEdit extends AbstractSmartComponent {
       this._flatpickrTo.destroy();
       this._flatpickrTo = null;
     }
-
 
     const dateFromElement = this.getElement().querySelector(`[name="event-start-time"]`);
     this._flatpickrFrom = flatpickr(dateFromElement, {

@@ -1,7 +1,7 @@
 import {DESTINATION_CITY} from '../utils/const';
 import {getRandomIntegerNumber, getRandomArrayItem, getRandomArrayFromArray} from './utils';
 
-export const tripDestinationDescriptions = [
+export const eventDestinationDescriptions = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
   `Cras aliquet varius magna, non porta ligula feugiat eget.`,
   `Fusce tristique felis at fermentum pharetra.`,
@@ -15,17 +15,17 @@ export const tripDestinationDescriptions = [
   `In rutrum ac purus sit amet tempus.`,
 ];
 
-export const DescriptionCount = {
+const DescriptionCount = {
   MIN: 1,
   MAX: 5,
 };
 
-export const PhotoCount = {
+const PhotoCount = {
   MIN: 1,
   MAX: 5,
 };
 
-export const getTripDestinationPhotos = (count = PhotoCount) => {
+export const getEventDestinationPhotos = (count = PhotoCount) => {
   const photosCount = getRandomIntegerNumber(count.MIN, count.MAX);
   return new Array(photosCount)
     .fill(``)
@@ -37,17 +37,17 @@ export const getTripDestinationPhotos = (count = PhotoCount) => {
     });
 };
 
-export const getTripDestinationDesccription = (descriptions = tripDestinationDescriptions, length = DescriptionCount) => {
+export const getEventDestinationDescription = (descriptions = eventDestinationDescriptions, length = DescriptionCount) => {
   const count = getRandomIntegerNumber(length.MIN, length.MAX);
   return getRandomArrayFromArray(descriptions, count).join(` `);
 };
 
-export const generateTripDestination = () => {
+export const generateEventDestination = () => {
   return {
     destination: {
-      description: getTripDestinationDesccription(tripDestinationDescriptions, DescriptionCount),
+      description: getEventDestinationDescription(eventDestinationDescriptions, DescriptionCount),
       name: getRandomArrayItem(DESTINATION_CITY),
-      pictures: getTripDestinationPhotos(PhotoCount),
+      pictures: getEventDestinationPhotos(PhotoCount),
     }
   };
 };

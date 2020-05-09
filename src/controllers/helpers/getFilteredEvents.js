@@ -11,7 +11,7 @@ export const getFilteredEvents = (events, filterType = FilterType.EVERYTHING) =>
       break;
     case FilterType.FUTURE:
       filteredEvents = trip.filter((event) => {
-        return event.dateTo instanceof Date ? moment(event.dateTo.getTime()) > moment() : null;
+        return event.dateTo instanceof Date ? moment(event.dateFrom.getTime()) > moment() : null;
       });
       break;
     case FilterType.PAST:

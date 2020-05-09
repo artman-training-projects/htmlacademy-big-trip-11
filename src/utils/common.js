@@ -20,10 +20,10 @@ export const getDiffTime = (from, to) => {
   return diffString;
 };
 
-export const calcFullPrice = (events, prices) => {
+export const getFullCost = (events) => {
   return events ? events
     .slice()
-    .map((event) => event[prices] + calcFullPrice(event.offers, `price`))
+    .map((event) => event.basePrice)
     .reduce((sum, price) => sum + price) : 0;
 };
 
