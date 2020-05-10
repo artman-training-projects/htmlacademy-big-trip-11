@@ -1,4 +1,4 @@
-import {generateEvents} from './mock/utils';
+import API from './api';
 import {renderComponent, removeComponent, RenderPosition} from './utils/element';
 
 import HeadInfoComponent from './components/head/head-info';
@@ -9,17 +9,16 @@ import EventsModel from './models/events';
 import TripController from './controllers/tripController';
 import FilterController from './controllers/filterController';
 
+const AUTHORIZATION = `Basic 3fc28b89c9a044aa0ceedf0b1602d4f9`;
+
 const ENTRY_POINT = {
   MAIN: document.querySelector(`.trip-main`),
   CONTROLS: document.querySelector(`.trip-controls`),
   EVENTS: document.querySelector(`.trip-events`),
 };
 
-const EVENTS = 10;
-const trip = generateEvents(EVENTS);
-
+const api = new API(AUTHORIZATION);
 const eventsModel = new EventsModel();
-eventsModel.setEvents(trip);
 
 const headInfoComponent = new HeadInfoComponent(eventsModel);
 const headMenuComponent = new HeadMenuComponent();
@@ -31,7 +30,11 @@ const filterController = new FilterController(ENTRY_POINT.CONTROLS, eventsModel)
 filterController.render();
 
 const tripController = new TripController(ENTRY_POINT.EVENTS, eventsModel);
-tripController.render();
+api.getEvents()
+  .then((events) => {
+    eventsModel.setEvents(events);
+    tripController.render();
+  });
 
 eventsModel.setDataChangeHandler(() => {
   removeComponent(headInfoComponent);
