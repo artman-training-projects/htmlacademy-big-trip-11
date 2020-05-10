@@ -1,3 +1,5 @@
+import EventAdapter from './models/eventsAdapter';
+
 const API = class {
   constructor(authorization) {
     this._authorization = authorization;
@@ -8,7 +10,8 @@ const API = class {
     headers.append(`Authorization`, this._authorization);
 
     return fetch(`https://11.ecmascript.pages.academy/big-trip/points`, {headers})
-      .then((responce) => responce.json());
+      .then((responce) => responce.json())
+      .then(EventAdapter.parseEvents);
   }
 };
 
