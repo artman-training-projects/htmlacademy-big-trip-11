@@ -10,6 +10,7 @@ import TripController from './controllers/tripController';
 import FilterController from './controllers/filterController';
 
 const AUTHORIZATION = `Basic 3fc28b89c9a044aa0ceedf0b1602d4f9`;
+const END_POINT = `https://11.ecmascript.pages.academy/big-trip`;
 
 const ENTRY_POINT = {
   MAIN: document.querySelector(`.trip-main`),
@@ -17,7 +18,7 @@ const ENTRY_POINT = {
   EVENTS: document.querySelector(`.trip-events`),
 };
 
-const api = new API(AUTHORIZATION);
+const api = new API(END_POINT, AUTHORIZATION);
 const eventsModel = new EventsModel();
 
 const headInfoComponent = new HeadInfoComponent(eventsModel);

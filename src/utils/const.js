@@ -23,25 +23,25 @@ export const monthMap = new Map([
 
 export const DESTINATION_CITY = [`Amsterdam`, `Geneva`, `Melbourne`, `Chamonix`, `Saint Petersburg`, `Frankfurt`, `Lisbon`, `Sochi`, `Barcelona`, `Helsinki`, `Oslo`, `Moscow`, `Kioto`, `Tokyo`];
 
-export const TRANSFER_TYPE = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`];
+export const TRANSFER_TYPE = [`taxi`, `bus`, `train`, `ship`, `transport`, `drive`, `flight`];
 
-export const ACTIVITY_TYPE = [`Check-in`, `Sightseeing`, `Restaurant`];
+export const ACTIVITY_TYPE = [`check-in`, `sightseeing`, `restaurant`];
 
 export const tripPointTypesMap = new Map([
-  [`Taxi`, `Taxi to`],
-  [`Bus`, `Bus to`],
-  [`Train`, `Train to`],
-  [`Ship`, `Ship to`],
-  [`Transport`, `Transport to`],
-  [`Drive`, `Drive to`],
-  [`Flight`, `Flight to`],
-  [`Check-in`, `Check-in in`],
-  [`Sightseeing`, `Sightseeing in`],
-  [`Restaurant`, `Restaurant in`],
+  [`taxi`, `Taxi to`],
+  [`bus`, `Bus to`],
+  [`train`, `Train to`],
+  [`ship`, `Ship to`],
+  [`transport`, `Transport to`],
+  [`drive`, `Drive to`],
+  [`flight`, `Flight to`],
+  [`check-in`, `Check-in in`],
+  [`sightseeing`, `Sightseeing in`],
+  [`restaurant`, `Restaurant in`],
 ]);
 
 export const tripOffersMap = new Map([
-  [`Taxi`, [{
+  [`taxi`, [{
     "title": `Upgrade to a business class`,
     "price": 150
   }, {
@@ -57,7 +57,7 @@ export const tripOffersMap = new Map([
     "title": `Drive slowly`,
     "price": 70
   }]],
-  [`Bus`, [{
+  [`bus`, [{
     "title": `Infotainment system`,
     "price": 30
   }, {
@@ -67,7 +67,7 @@ export const tripOffersMap = new Map([
     "title": `Choose seats`,
     "price": 90
   }]],
-  [`Train`, [{
+  [`train`, [{
     "title": `Book a taxi at the arrival point`,
     "price": 40
   }, {
@@ -77,7 +77,7 @@ export const tripOffersMap = new Map([
     "title": `Wake up at a certain time`,
     "price": 170
   }]],
-  [`Flight`, [{
+  [`flight`, [{
     "title": `Choose meal`,
     "price": 40
   }, {
@@ -96,7 +96,7 @@ export const tripOffersMap = new Map([
     "title": `Business lounge`,
     "price": 160
   }]],
-  [`Check-in`, [{
+  [`check-in`, [{
     "title": `Choose the time of check-in`,
     "price": 120
   }, {
@@ -112,8 +112,8 @@ export const tripOffersMap = new Map([
     "title": `Order a meal from the restaurant`,
     "price": 180
   }]],
-  [`Sightseeing`],
-  [`Ship`, [{
+  [`sightseeing`],
+  [`ship`, [{
     "title": `Choose meal`,
     "price": 160
   }, {
@@ -132,15 +132,15 @@ export const tripOffersMap = new Map([
     "title": `Business lounge`,
     "price": 50
   }]],
-  [`Transport`],
-  [`Drive`, [{
+  [`transport`],
+  [`drive`, [{
     "title": `Choose comfort class`,
     "price": 30
   }, {
     "title": `Choose business class`,
     "price": 50
   }]],
-  [`Restaurant`, [{
+  [`restaurant`, [{
     "title": `Choose live music`,
     "price": 100
   }, {

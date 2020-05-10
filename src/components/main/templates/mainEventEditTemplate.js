@@ -14,8 +14,8 @@ const createTripTypeTransferList = (transferList, currentType, id) => {
 
     template +=
       `<div class="event__type-item">
-        <input id="event-type-${type.toLowerCase()}-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${isChecked}>
-        <label class="event__type-label  event__type-label--${type.toLowerCase()}" for="event-type-${type.toLowerCase()}-${id}">${type}</label>
+        <input id="event-type-${type}-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${isChecked}>
+        <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-${id}">${type}</label>
       </div>`;
   }
 
@@ -29,8 +29,8 @@ const createTripTypeActivityList = (activityList, currentType, id) => {
 
     template +=
       `<div class="event__type-item">
-        <input id="event-type-${type.toLowerCase()}-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${isChecked}>
-        <label class="event__type-label  event__type-label--${type.toLowerCase()}" for="event-type-${type.toLowerCase()}-${id}">${type}</label>
+        <input id="event-type-${type}-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${isChecked}>
+        <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-${id}">${type}</label>
       </div>`;
   }
 
@@ -72,7 +72,7 @@ export const createMainEventEditTemplate = (event) => {
         <div class="event__type-wrapper">
           <label class="event__type  event__type-btn" for="event-type-toggle-${event.id}">
           <span class="visually-hidden">Choose event type</span>
-          <img class="event__type-icon" width="17" height="17" src="img/icons/${event.type.toLowerCase()}.png" alt="${event.type} icon">
+          <img class="event__type-icon" width="17" height="17" src="img/icons/${event.type}.png" alt="${event.type} icon">
         </label>
         <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${event.id}" type="checkbox">
 

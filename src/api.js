@@ -1,5 +1,12 @@
 import EventAdapter from './models/eventsAdapter';
 
+const Method = {
+  GET: `GET`,
+  POST: `POST`,
+  PUT: `PUT`,
+  DELETE: `DELETE`
+};
+
 const checkStatus = (response) => {
   if (response.status >= 200 && response.status < 300) {
     return response;
@@ -9,36 +16,39 @@ const checkStatus = (response) => {
 };
 
 const API = class {
-  constructor(authorization) {
+  constructor(endPoint, authorization) {
+    this._endPoint = endPoint;
     this._authorization = authorization;
   }
 
   getEvents() {
-    const headers = new Headers();
-    headers.append(`Authorization`, this._authorization);
-
-    return fetch(`https://11.ecmascript.pages.academy/big-trip/points`, {
-      method: `GET`,
-      headers,
+    return this._load({
+      url: `/points`,
+      method: Method.GET,
     })
-      .then(checkStatus)
       .then((responce) => responce.json())
       .then(EventAdapter.parseEvents);
   }
 
   updateEvent(id, data) {
-    const headers = new Headers();
-    headers.append(`Authorization`, this._authorization);
-    headers.append(`Content-Type`, `application/json`);
-
-    return fetch(`https://11.ecmascript.pages.academy/big-trip/points/${id}`, {
-      method: `PUT`,
+    return this._load({
+      url: `/points/${id}`,
+      method: Method.PUT,
       body: JSON.stringify(data.toRAW()),
-      headers,
+      headers: new Headers({"Content-Type": `application/json`}),
     })
-      .then(checkStatus)
       .then((response) => response.json())
       .then(EventAdapter.parseEvent);
+  }
+
+  _load({url, method = Method.GET, body = null, headers = new Headers()}) {
+    headers.append(`Authorization`, this._authorization);
+
+    return fetch(`${this._endPoint}/${url}`, {method, body, headers})
+      .then(checkStatus)
+      .catch((err) => {
+        throw err;
+      });
   }
 };
 

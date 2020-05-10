@@ -1,15 +1,7 @@
-const upFirstLetter = (str) => {
-  if (!str) {
-    return str;
-  }
-
-  return str[0].toUpperCase() + str.slice(1);
-};
-
 export default class EventAdapter {
   constructor(data) {
     this.id = data[`id`];
-    this.type = upFirstLetter(data[`type`]);
+    this.type = data[`type`];
     this.dateFrom = new Date(data[`date_from`]);
     this.dateTo = new Date(data[`date_to`]);
     this.destination = data[`destination`];
