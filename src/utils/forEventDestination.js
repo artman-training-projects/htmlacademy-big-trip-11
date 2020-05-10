@@ -1,7 +1,16 @@
-import {DESTINATION_CITY} from '../utils/const';
-import {getRandomIntegerNumber, getRandomArrayItem, getRandomArrayFromArray} from './utils';
+const DescriptionCount = {
+  MIN: 1,
+  MAX: 5,
+};
 
-export const eventDestinationDescriptions = [
+const PhotoCount = {
+  MIN: 1,
+  MAX: 5,
+};
+
+const getRandomIntegerNumber = (min, max) => (min + Math.floor(Math.random() * (max - min)));
+
+const eventDestinationDescriptions = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
   `Cras aliquet varius magna, non porta ligula feugiat eget.`,
   `Fusce tristique felis at fermentum pharetra.`,
@@ -15,14 +24,17 @@ export const eventDestinationDescriptions = [
   `In rutrum ac purus sit amet tempus.`,
 ];
 
-const DescriptionCount = {
-  MIN: 1,
-  MAX: 5,
-};
+const getRandomArrayFromArray = (array, length) => {
+  let oldArray = Array.from(array);
+  let newArray = [];
 
-const PhotoCount = {
-  MIN: 1,
-  MAX: 5,
+  for (let i = 0; i < length; i++) {
+    let index = getRandomIntegerNumber(0, oldArray.length);
+    newArray.push(oldArray[index]);
+    oldArray.splice(index, 1);
+  }
+
+  return newArray;
 };
 
 export const getEventDestinationPhotos = (count = PhotoCount) => {
@@ -40,14 +52,4 @@ export const getEventDestinationPhotos = (count = PhotoCount) => {
 export const getEventDestinationDescription = (descriptions = eventDestinationDescriptions, length = DescriptionCount) => {
   const count = getRandomIntegerNumber(length.MIN, length.MAX);
   return getRandomArrayFromArray(descriptions, count).join(` `);
-};
-
-export const generateEventDestination = () => {
-  return {
-    destination: {
-      description: getEventDestinationDescription(eventDestinationDescriptions, DescriptionCount),
-      name: getRandomArrayItem(DESTINATION_CITY),
-      pictures: getEventDestinationPhotos(PhotoCount),
-    }
-  };
 };

@@ -1,6 +1,6 @@
 import {FilterType} from '../controllers/filterController';
 import {getFilteredEvents} from '../controllers/helpers/getFilteredEvents';
-import {getRandomId} from '../mock/utils';
+import {getRandomId} from '../utils/common';
 
 export default class Events {
   constructor() {

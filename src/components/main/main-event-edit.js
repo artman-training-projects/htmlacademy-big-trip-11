@@ -1,5 +1,5 @@
 import {DESTINATION_CITY, tripOffersMap} from '../../utils/const';
-import {getEventDestinationDescription, getEventDestinationPhotos} from '../../mock/event-destination';
+import {getEventDestinationDescription, getEventDestinationPhotos} from '../../utils/forEventDestination';
 
 import {createMainEventEditTemplate} from './templates/mainEventEditTemplate';
 import AbstracSmarttComponent from '../abstract-smart-component';

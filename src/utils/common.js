@@ -1,6 +1,7 @@
 import moment from 'moment';
 import {Millisecond, monthMap, SHOW_OFFERS} from './const';
 
+export const getRandomId = () => new Date().getMilliseconds() + Math.random();
 export const getEventTime = (from, to) => (to - from);
 export const parseTime = (timestamp) => moment(timestamp).format(`HH:mm`);
 export const parseDate = (timestamp) => moment(timestamp).format(`DD/MM/YY`);
