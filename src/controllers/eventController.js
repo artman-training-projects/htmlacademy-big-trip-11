@@ -3,6 +3,8 @@ import {renderComponent, replaceComponent, removeComponent, RenderPosition} from
 import EventEditComponent from '../components/main/main-event-edit';
 import EventComponent from '../components/main/main-day-event-item';
 
+import EventAdapter from '../models/eventsAdapter';
+
 export const Mode = {
   DEFAULT: `default`,
   EDIT: `edit`,
@@ -15,6 +17,22 @@ export const EmptyEvent = {
   dateTo: new Date(),
   destination: ``,
   type: `Taxi`,
+};
+
+const parseFormData = (formData, elseData) => {
+  return new EventAdapter({
+    "id": elseData.id,
+    "base_price": +formData.get(`event-price`),
+    "date_from": new Date(formData.get(`event-start-time`)),
+    "date_to": new Date(formData.get(`event-end-time`)),
+    "destination": {
+      "description": elseData.destination.description,
+      "name": formData.get(`event-destination`),
+      "pictures": elseData.destination.pictures,
+    },
+    "type": formData.get(`event-type`),
+    "offers": elseData.offers,
+  });
 };
 
 export default class EventController {
@@ -51,8 +69,11 @@ export default class EventController {
 
     this._eventEditComponent.setSubmitEventHandler((evt) => {
       evt.preventDefault();
-      const data = this._eventEditComponent.getData();
-      this._onDataChange(this, event, Object.assign({}, event, data));
+
+      const formData = this._eventEditComponent.getData();
+      const data = parseFormData(formData, event);
+
+      this._onDataChange(this, event, data);
       this._mode = Mode.DEFAULT;
     });
 
@@ -62,10 +83,10 @@ export default class EventController {
     });
 
     this._eventEditComponent.setFavoriteClickHandler(() => {
-      const data = this._eventEditComponent.getData();
-      this._onDataChange(this, event, Object.assign({}, event, data, {
-        [`is_favorite`]: !event[`is_favorite`],
-      }));
+      const newEvent = EventAdapter.clone(event);
+      newEvent[`isFavorite`] = !newEvent[`is_favorite`];
+
+      this._onDataChange(this, event, newEvent);
       this._replaceEventToEdit();
     });
 

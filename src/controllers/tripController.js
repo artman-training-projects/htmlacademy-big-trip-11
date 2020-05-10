@@ -10,9 +10,10 @@ import DaysComponent from '../components/main/main-days';
 import EventController, {Mode as EventControllerMode, EmptyEvent} from './eventController';
 
 export default class TripController {
-  constructor(container, eventsModel) {
+  constructor(container, eventsModel, api) {
     this._container = container;
     this._eventsModel = eventsModel;
+    this._api = api;
     this._eventsControllers = [];
     this._daysComponents = [];
     this._creatingEvent = null;
@@ -135,10 +136,15 @@ export default class TripController {
       this._eventsModel.removeEvent(oldData.id);
       this._updateEvents();
     } else {
-      const isSuccess = this._eventsModel.updateEvent(oldData.id, newData);
-      if (isSuccess) {
-        eventController.render(newData, EventControllerMode.DEFAULT);
-      }
+      this._api.updateEvent(oldData.id, newData)
+        .then((eventModel) => {
+          const isSuccess = this._eventsModel.updateEvent(oldData.id, eventModel);
+
+          if (isSuccess) {
+            eventController.render(eventModel, EventControllerMode.DEFAULT);
+            this._updateEvents();
+          }
+        });
     }
   }
 

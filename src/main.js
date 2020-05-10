@@ -29,7 +29,7 @@ renderComponent(ENTRY_POINT.CONTROLS, headMenuComponent);
 const filterController = new FilterController(ENTRY_POINT.CONTROLS, eventsModel);
 filterController.render();
 
-const tripController = new TripController(ENTRY_POINT.EVENTS, eventsModel);
+const tripController = new TripController(ENTRY_POINT.EVENTS, eventsModel, api);
 api.getEvents()
   .then((events) => {
     eventsModel.setEvents(events);

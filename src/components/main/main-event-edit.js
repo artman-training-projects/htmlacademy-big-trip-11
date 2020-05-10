@@ -7,21 +7,6 @@ import AbstracSmarttComponent from '../abstract-smart-component';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
-const parseFormData = (formData, elseData) => {
-  return {
-    basePrice: +formData.get(`event-price`),
-    dateFrom: new Date(formData.get(`event-start-time`)),
-    dateTo: new Date(formData.get(`event-end-time`)),
-    destination: {
-      description: elseData.destination.description,
-      name: formData.get(`event-destination`),
-      pictures: elseData.destination.pictures,
-    },
-    type: formData.get(`event-type`),
-    offers: elseData.offers,
-  };
-};
-
 export default class EventEditComponent extends AbstracSmarttComponent {
   constructor(event) {
     super();
@@ -101,8 +86,7 @@ export default class EventEditComponent extends AbstracSmarttComponent {
 
   getData() {
     const form = this.getElement();
-    const formData = new FormData(form);
-    return parseFormData(formData, this._newEvent);
+    return new FormData(form);
   }
 
   setSubmitEventHandler(handler) {

@@ -18,11 +18,28 @@ export default class EventAdapter {
     this.offers = data[`offers`];
   }
 
+  toRAW() {
+    return {
+      "id": this.id,
+      "type": this.type,
+      "date_from": this.dateFrom,
+      "date_to": this.dateTo,
+      "destination": this.destination,
+      "base_price": this.basePrice,
+      "is_favorite": this.isFavorite,
+      "offers": this.offers,
+    };
+  }
+
   static parseEvent(data) {
     return new EventAdapter(data);
   }
 
   static parseEvents(data) {
     return data.map(EventAdapter.parseEvent);
+  }
+
+  static clone(data) {
+    return new EventAdapter(data.toRAW());
   }
 }
