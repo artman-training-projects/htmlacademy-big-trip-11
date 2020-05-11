@@ -1,8 +1,3 @@
-import AbstractComponent from '../abstract-component';
-
-const FILTER_ID_PREFIX = `filter-`;
-const getFilterNameById = (id) => id.substring(FILTER_ID_PREFIX.length);
-
 const filterMarkup = (filter, isChecked) => {
   const {name, count} = filter;
 
@@ -14,7 +9,7 @@ const filterMarkup = (filter, isChecked) => {
   );
 };
 
-const tripEventsFilterTemplate = (filters) => {
+export const createHeadFilterTemplate = (filters) => {
   const filtersMarkup = filters
     .map((filter) => filterMarkup(filter, filter.checked))
     .join(`\n`);
@@ -22,26 +17,7 @@ const tripEventsFilterTemplate = (filters) => {
   return (
     `<form class="trip-filters" action="#" method="get">
       ${filtersMarkup}
-
       <button class="visually-hidden" type="submit">Accept filter</button>
     </form>`
   );
 };
-
-export default class HeaderTripFilter extends AbstractComponent {
-  constructor(filters) {
-    super();
-    this._filters = filters;
-  }
-
-  getTemplate() {
-    return tripEventsFilterTemplate(this._filters);
-  }
-
-  setFilterChangeHandler(handler) {
-    this.getElement().addEventListener(`change`, (evt) => {
-      const filterName = getFilterNameById(evt.target.id);
-      handler(filterName);
-    });
-  }
-}

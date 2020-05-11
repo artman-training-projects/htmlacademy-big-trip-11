@@ -1,8 +1,27 @@
-import AbstractComponent from '../../abstract-component';
-import {tripPointTypesMap, SHOW_OFFERS} from '../../../utils/const';
+import {tripPointTypesMap} from '../../../utils/const';
 import {parseTime, getDiffTime} from '../../../utils/common';
 
-const tripEventsItempTemplate = (event) => {
+const SHOW_OFFERS = 3;
+
+const createTripEventOffersTemplate = (offers) => {
+  return offers ? offers
+    .slice(0, SHOW_OFFERS)
+    .map((offer) => createTripEventOfferTemplate(offer))
+    .join(``) : ``;
+};
+
+const createTripEventOfferTemplate = (offer) => {
+  return (
+    `<li class="event__offer">
+      <span class="event__offer-title">${offer.title}</span>
+      &plus;
+      &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
+    </li>`
+  );
+};
+
+export const createMainDayEventItemTemplate = (event) => {
+
   return (
     `<li class="trip-events__item">
       <div class="event">
@@ -36,36 +55,3 @@ const tripEventsItempTemplate = (event) => {
     </li>`
   );
 };
-
-const createTripEventOffersTemplate = (offers) => {
-  return offers ? offers
-    .slice(0, SHOW_OFFERS)
-    .map((offer) => createTripEventOfferTemplate(offer))
-    .join(``) : ``;
-};
-
-const createTripEventOfferTemplate = (offer) => {
-  return (
-    `<li class="event__offer">
-      <span class="event__offer-title">${offer.title}</span>
-      &plus;
-      &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
-    </li>`
-  );
-};
-
-export default class MainTripDayEvent extends AbstractComponent {
-  constructor(event) {
-    super();
-    this._event = event;
-  }
-
-  getTemplate() {
-    return tripEventsItempTemplate(this._event);
-  }
-
-  setButtonEventEditClickHandler(handler) {
-    this.getElement().querySelector(`.event__rollup-btn`)
-      .addEventListener(`click`, handler);
-  }
-}

@@ -1,26 +1,45 @@
 import {FilterType} from '../controllers/filterController';
+import {getFilteredEvents} from '../controllers/helpers/getFilteredEvents';
+import {getRandomId} from '../utils/common';
 
 export default class Events {
   constructor() {
     this._events = [];
-    this._activeFilterType = FilterType.EVERYTHING;
+    this._OffersByType = [];
+    this._destinations = [];
+    this._currentFilterType = FilterType.EVERYTHING;
 
     this._dataChangeHandlers = [];
     this._filterChangeHandlers = [];
   }
 
   addEvent(event) {
+    if (!event.id) {
+      event.id = getRandomId();
+    }
+
     this._events = [].concat(event, this._events);
     this._callHandlers(this._dataChangeHandlers);
   }
 
   setEvents(events) {
-    this._events = events ? Array.from(events) : false;
+    this._events = events ? Array.from(events) : [];
     this._callHandlers(this._dataChangeHandlers);
   }
 
+  setOffersByType(offers) {
+    this._OffersByType = offers ? new Map() : [];
+    for (const item of offers) {
+      this._OffersByType.set(item.type, item.offers);
+    }
+  }
+
+  setDestinations(destinations) {
+    this._destinations = destinations ? Array.from(destinations) : [];
+  }
+
   setFilterType(filterType) {
-    this._activeFilterType = filterType;
+    this._currentFilterType = filterType;
     this._callHandlers(this._filterChangeHandlers);
   }
 
@@ -28,13 +47,24 @@ export default class Events {
     return this._events;
   }
 
+  getOffersByType() {
+    return this._OffersByType;
+  }
+
+  getDestinations() {
+    return this._destinations;
+  }
+
+  getFilteredEvents() {
+    return getFilteredEvents(this._events, this._currentFilterType);
+  }
+
   getFilterType() {
-    return this._activeFilterType;
+    return this._currentFilterType;
   }
 
   updateEvent(id, event) {
     const index = this._events.findIndex((it) => it.id === id);
-
     if (index === -1) {
       return false;
     }
@@ -46,7 +76,6 @@ export default class Events {
 
   removeEvent(id) {
     const index = this._events.findIndex((it) => it.id === id);
-
     if (index === -1) {
       return false;
     }
@@ -56,7 +85,7 @@ export default class Events {
     return true;
   }
 
-  setFilterChangeHandler(handler) {
+  setFilterTypeChangeHandler(handler) {
     this._filterChangeHandlers.push(handler);
   }
 

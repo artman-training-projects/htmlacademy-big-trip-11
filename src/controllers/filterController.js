@@ -1,7 +1,7 @@
 import {renderComponent, replaceComponent} from '../utils/element';
 import {getFilteredEvents} from './helpers/getFilteredEvents';
 
-import FilterComponent from '../components/page-header/trip-filter';
+import FilterComponent from '../components/head/head-filter';
 
 export const FilterType = {
   EVERYTHING: `everything`,
@@ -13,6 +13,8 @@ export default class FilterController {
   constructor(container, eventsModel) {
     this._container = container;
     this._eventsModel = eventsModel;
+
+    this._currentFilterType = FilterType.EVERYTHING;
     this._filterComponent = null;
 
     this._onDataChange = this._onDataChange.bind(this);
@@ -25,13 +27,13 @@ export default class FilterController {
     const allEvents = this._eventsModel.getAllEvents();
     const filters = Object.values(FilterType).map((filterType) => ({
       name: filterType,
-      count: getFilteredEvents(allEvents, filterType).length,
+      count: allEvents ? getFilteredEvents(allEvents, filterType).length : 0,
       checked: filterType === this._eventsModel.getFilterType(),
     }));
 
     const oldComponent = this._filterComponent;
     this._filterComponent = new FilterComponent(filters);
-    this._filterComponent.setFilterChangeHandler(this._onFilterChange);
+    this._filterComponent.setFilterTypeChangeHandler(this._onFilterChange);
 
     if (oldComponent) {
       replaceComponent(this._filterComponent, oldComponent);
@@ -40,8 +42,15 @@ export default class FilterController {
     }
   }
 
+  reset() {
+    this._currentFilterType = FilterType.EVERYTHING;
+    this._eventsModel.setFilterType(FilterType.EVERYTHING);
+    this.render();
+  }
+
   _onFilterChange(filterType) {
     this._eventsModel.setFilterType(filterType);
+    this._currentFilterType = filterType;
   }
 
   _onDataChange() {

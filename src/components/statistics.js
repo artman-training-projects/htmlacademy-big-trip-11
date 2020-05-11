@@ -1,4 +1,3 @@
-import {HIDDEN_CLASS} from '../components/abstract-component';
 import AbstractSmartComponent from './abstract-smart-component';
 
 // import {initStatistics} from '../utils/forStatistics';
@@ -40,10 +39,67 @@ export default class Statistics extends AbstractSmartComponent {
   }
 
   hide() {
-    this.getElement().classList.add(HIDDEN_CLASS);
+    super.hide();
   }
 
   show() {
-    this.getElement().classList.remove(HIDDEN_CLASS);
+    super.show();
+    // this.rerender(this._tasks, this._dateFrom, this._dateTo);
   }
+
+  recoveryListeners() {}
+
+  // rerender(tasks, dateFrom, dateTo) {
+  //   this._tasks = tasks;
+  //   this._dateFrom = dateFrom;
+  //   this._dateTo = dateTo;
+
+  //   super.rerender();
+
+  //   this._renderCharts();
+  // }
+
+  // _renderCharts() {
+  //   const element = this.getElement();
+
+  //   this._applyFlatpickr(this.getElement().querySelector(`.statistic__period-input`));
+
+  //   const daysCtx = element.querySelector(`.statistic__days`);
+  //   const colorsCtx = element.querySelector(`.statistic__colors`);
+
+  //   this._resetCharts();
+
+  //   this._daysChart = renderDaysChart(daysCtx, this._tasks.getTasks(), this._dateFrom, this._dateTo);
+  //   this._colorsChart = renderColorsChart(colorsCtx, this._tasks.getTasks());
+  // }
+
+  // _resetCharts() {
+  //   if (this._daysChart) {
+  //     this._daysChart.destroy();
+  //     this._daysChart = null;
+  //   }
+
+  //   if (this._colorsChart) {
+  //     this._colorsChart.destroy();
+  //     this._colorsChart = null;
+  //   }
+  // }
+
+  // _applyFlatpickr(element) {
+  //   if (this._flatpickr) {
+  //     this._flatpickr.destroy();
+  //   }
+
+  //   this._flatpickr = flatpickr(element, {
+  //     altInput: true,
+  //     allowInput: true,
+  //     defaultDate: [this._dateFrom, this._dateTo],
+  //     mode: `range`,
+  //     onChange: (dates) => {
+  //       if (dates.length === 2) {
+  //         this.rerender(this._tasks, dates[0], dates[1]);
+  //       }
+  //     }
+  //   });
+  // }
 }
