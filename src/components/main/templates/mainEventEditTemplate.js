@@ -1,5 +1,5 @@
 import {TRANSFER_TYPE, ACTIVITY_TYPE, tripPointTypesMap} from '../../../utils/const';
-import {parseTime, parseDate} from '../../../utils/common';
+import {parseTime, parseDate, isChecked} from '../../../utils/common';
 
 const createTripDestinationList = (destinationCitys) => {
   return destinationCitys
@@ -10,11 +10,11 @@ const createTripDestinationList = (destinationCitys) => {
 const createTripTypeTransferList = (transferList, currentType, id) => {
   let template = ``;
   for (const type of transferList) {
-    const isChecked = (type === currentType) ? `checked` : ``;
+    const сhecked = (type === currentType) ? `checked` : ``;
 
     template +=
       `<div class="event__type-item">
-        <input id="event-type-${type}-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${isChecked}>
+        <input id="event-type-${type}-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${сhecked}>
         <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-${id}">${type}</label>
       </div>`;
   }
@@ -25,11 +25,11 @@ const createTripTypeTransferList = (transferList, currentType, id) => {
 const createTripTypeActivityList = (activityList, currentType, id) => {
   let template = ``;
   for (const type of activityList) {
-    const isChecked = (type === currentType) ? `checked` : ``;
+    const сhecked = (type === currentType) ? `checked` : ``;
 
     template +=
       `<div class="event__type-item">
-        <input id="event-type-${type}-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${isChecked}>
+        <input id="event-type-${type}-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${сhecked}>
         <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-${id}">${type}</label>
       </div>`;
   }
@@ -37,17 +37,20 @@ const createTripTypeActivityList = (activityList, currentType, id) => {
   return template;
 };
 
-const createTripEventEditOfferTemplate = (offers, id) => {
-  return offers ? offers
+const createTripEventEditOfferTemplate = (event, id, offersByType) => {
+  const checkedOffers = event.offers;
+  const allOffers = offersByType.get(event.type);
+  return allOffers ? allOffers
     .slice()
-    .map((offer) => createTripEventOffersTempate(offer, id))
+    .map((offer) => createTripEventOffersTempate(offer, id, checkedOffers))
     .join(``) : ``;
 };
 
-const createTripEventOffersTempate = (offer, id) => {
+const createTripEventOffersTempate = (offer, id, checkedOffers) => {
+
   return (
     `<div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="${offer.title}-${id}" type="checkbox" name="${offer.title}">
+      <input class="event__offer-checkbox  visually-hidden" id="${offer.title}-${id}" type="checkbox" name="event-offer" value="${offer.title}" ${isChecked(offer, checkedOffers) ? `checked` : ``}>
       <label class="event__offer-label" for="${offer.title}-${id}">
         <span class="event__offer-title">${offer.title}</span>
         &plus;
@@ -64,7 +67,7 @@ const getPhotos = (photos) => {
     .join(``) : ``;
 };
 
-export const createMainEventEditTemplate = (event, destinationsCity, externalData) => {
+export const createMainEventEditTemplate = (event, destinationsCity, offersByType, externalData) => {
   const deleteButtonText = externalData.deleteButtonText;
   const saveButtonText = externalData.saveButtonText;
   const isValid = (event.destination.name !== undefined) && event.basePrice;
@@ -142,7 +145,7 @@ export const createMainEventEditTemplate = (event, destinationsCity, externalDat
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
           <div class="event__available-offers">
-            ${createTripEventEditOfferTemplate(event.offers, event.id)}
+            ${createTripEventEditOfferTemplate(event, event.id, offersByType)}
           </div>
         </section>
 

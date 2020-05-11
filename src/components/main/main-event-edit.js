@@ -44,7 +44,7 @@ export default class EventEditComponent extends AbstracSmarttComponent {
   }
 
   getTemplate() {
-    return createMainEventEditTemplate(Object.assign({}, this._event, this._newEvent), this._destinationsCity, this._externalData);
+    return createMainEventEditTemplate(Object.assign({}, this._event, this._newEvent), this._destinationsCity, this._offersByType, this._externalData);
   }
 
   setData(data) {

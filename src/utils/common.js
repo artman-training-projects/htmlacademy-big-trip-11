@@ -67,3 +67,14 @@ export const getRouteDates = (events) => {
 
   return `${getDateStartString()} - ${getDateFinishString()}`;
 };
+
+export const isChecked = (currentOffer, availableOfers) => {
+  let state = false;
+  for (const off of availableOfers) {
+    if (JSON.stringify(off) === JSON.stringify(currentOffer)) {
+      state = true;
+    }
+  }
+
+  return state;
+};
