@@ -75,7 +75,6 @@ export default class EventController {
 
       const formData = this._eventEditComponent.getData();
       const data = parseFormData(formData, event, this._eventsModel);
-      console.log(data);
 
       this._onDataChange(this, event, data);
       this._mode = Mode.DEFAULT;

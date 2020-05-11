@@ -36,7 +36,6 @@ filterController.render();
 const tripController = new TripController(ENTRY_POINT.EVENTS, eventsModel, api);
 api.getData()
   .then((data) => {
-    console.log(data);
     eventsModel.setEvents(data.events);
     eventsModel.setOffersByType(data.offers);
     eventsModel.setDestinations(data.destinations);

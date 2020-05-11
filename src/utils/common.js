@@ -53,7 +53,6 @@ export const getRoute = (events) => {
 };
 
 export const getRouteDates = (events) => {
-  console.log(events);
   let dates = events.slice().sort((a, b) => Date.parse(a.dateFrom) - Date.parse(b.dateFrom));
   dates = [dates[0].dateFrom, dates[dates.length - 1].dateTo];
 

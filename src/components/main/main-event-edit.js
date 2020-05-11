@@ -88,7 +88,6 @@ export default class EventEditComponent extends AbstracSmarttComponent {
 
   getData() {
     const form = this.getElement();
-    console.log(form);
     return new FormData(form);
   }
 
@@ -167,16 +166,6 @@ export default class EventEditComponent extends AbstracSmarttComponent {
   }
 
   _applyFlatpickr() {
-    if (this._flatpickrFrom) {
-      this._flatpickrFrom.destroy();
-      this._flatpickrFrom = null;
-    }
-
-    if (this._flatpickrTo) {
-      this._flatpickrTo.destroy();
-      this._flatpickrTo = null;
-    }
-
     const dateFromElement = this.getElement().querySelector(`[name="event-start-time"]`);
     this._flatpickrFrom = flatpickr(dateFromElement, {
       enableTime: true,
