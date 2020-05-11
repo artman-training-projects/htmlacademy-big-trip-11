@@ -1,6 +1,3 @@
-import {DESTINATION_CITY, tripOffersMap} from '../../utils/const';
-import {getEventDestinationDescription, getEventDestinationPhotos} from '../../utils/forEventDestination';
-
 import {createMainEventEditTemplate} from './templates/mainEventEditTemplate';
 import AbstracSmarttComponent from '../abstract-smart-component';
 
@@ -8,9 +5,14 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
 export default class EventEditComponent extends AbstracSmarttComponent {
-  constructor(event) {
+  constructor(event, eventsModel) {
     super();
     this._event = event;
+    this._eventsModel = eventsModel;
+    this._offersByType = this._eventsModel.getOffersByType();
+    this._destinations = this._eventsModel.getDestinations();
+    this._destinationsCity = this._eventsModel.getDestinations().map((destination) => destination.name);
+
     this._newEvent = {
       basePrice: event.basePrice,
       dateFrom: event.dateFrom,
@@ -36,7 +38,7 @@ export default class EventEditComponent extends AbstracSmarttComponent {
   }
 
   getTemplate() {
-    return createMainEventEditTemplate(Object.assign({}, this._event, this._newEvent));
+    return createMainEventEditTemplate(Object.assign({}, this._event, this._newEvent), this._destinationsCity);
   }
 
   rerenderElement() {
@@ -86,6 +88,7 @@ export default class EventEditComponent extends AbstracSmarttComponent {
 
   getData() {
     const form = this.getElement();
+    console.log(form);
     return new FormData(form);
   }
 
@@ -126,7 +129,7 @@ export default class EventEditComponent extends AbstracSmarttComponent {
 
       target.checked = true;
       this._newEvent.type = target.value;
-      this._newEvent.offers = tripOffersMap.get(target.value);
+      this._newEvent.offers = this._offersByType.get(target.value);
       this.rerenderElement();
     });
 
@@ -139,7 +142,7 @@ export default class EventEditComponent extends AbstracSmarttComponent {
 
     element.querySelector(`.event__input--destination`).addEventListener(`input`, (evt) => {
       const inputCity = evt.target.value;
-      const invalidCity = !DESTINATION_CITY.find((city) => city === inputCity);
+      const invalidCity = !this._destinationsCity.find((city) => city === inputCity);
 
       const saveButton = this.getElement().querySelector(`.event__save-btn`);
       saveButton.disabled = invalidCity;
@@ -148,12 +151,8 @@ export default class EventEditComponent extends AbstracSmarttComponent {
         return;
       }
 
-      this._newEvent.destination = {
-        description: getEventDestinationDescription(),
-        name: inputCity,
-        pictures: getEventDestinationPhotos(),
-      };
-
+      const description = (this._destinations.find((destination) => destination.name === inputCity));
+      this._newEvent.destination = description;
       this.rerenderElement();
     });
 

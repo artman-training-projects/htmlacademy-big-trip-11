@@ -63,7 +63,7 @@ export default class TripController {
     }
 
     const eventListElement = this._daysComponent.getElement();
-    this._creatingEvent = new EventController(eventListElement, this._onDataChange, this._onViewChange);
+    this._creatingEvent = new EventController(eventListElement, this._onDataChange, this._onViewChange, this._eventsModel);
     this._creatingEvent.render(EmptyEvent, EventControllerMode.ADD);
   }
 
@@ -96,7 +96,7 @@ export default class TripController {
       tripList = dayTrip.getElement().querySelector(`.trip-events__list`);
       renderComponent(daysContainer, dayTrip);
 
-      const eventController = new EventController(tripList, this._onDataChange, this._onViewChange);
+      const eventController = new EventController(tripList, this._onDataChange, this._onViewChange, this._eventsModel);
       eventController.render(event, EventControllerMode.DEFAULT);
 
       return eventController;
@@ -127,9 +127,12 @@ export default class TripController {
         this._creatingEvent = null;
         eventController.destroy();
       } else {
-        this._eventsModel.addEvent(newData);
-        this._creatingEvent.destroy();
-        this._creatingEvent = null;
+        this._api.createEvent(newData)
+          .then((eventModel) => {
+            this._eventsModel.addEvent(eventModel);
+            eventController.render(eventModel, EventControllerMode.DEFAULT);
+          });
+
         this._updateEvents();
       }
     } else if (newData === null) {

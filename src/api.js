@@ -23,16 +23,59 @@ const API = class {
 
   getEvents() {
     return this._load({
-      url: `/points`,
+      url: `points`,
       method: Method.GET,
     })
       .then((responce) => responce.json())
       .then(EventAdapter.parseEvents);
   }
 
+  getDestinations() {
+    return this._load({
+      url: `destinations`,
+      method: Method.GET,
+    })
+      .then((response) => response.json());
+  }
+
+  getOffers() {
+    return this._load({
+      url: `offers`,
+      method: Method.GET,
+    })
+      .then((response) => response.json());
+  }
+
+  getData() {
+    return Promise.all([
+      this.getEvents(),
+      this.getDestinations(),
+      this.getOffers(),
+    ])
+      .then((responce) => {
+        const [events, destinations, offers] = responce;
+        return {
+          events,
+          destinations,
+          offers,
+        };
+      });
+  }
+
+  createEvent(event) {
+    return this._load({
+      url: `points`,
+      method: Method.POST,
+      body: JSON.stringify(event.toRAW()),
+      headers: new Headers({"Content-Type": `application/json`})
+    })
+      .then((response) => response.json())
+      .then(EventAdapter.parseEvent);
+  }
+
   updateEvent(id, data) {
     return this._load({
-      url: `/points/${id}`,
+      url: `points/${id}`,
       method: Method.PUT,
       body: JSON.stringify(data.toRAW()),
       headers: new Headers({"Content-Type": `application/json`}),
@@ -44,7 +87,7 @@ const API = class {
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {
     headers.append(`Authorization`, this._authorization);
 
-    return fetch(`${this._endPoint}/${url}`, {method, body, headers})
+    return fetch(`${this._endPoint}${url}`, {method, body, headers})
       .then(checkStatus)
       .catch((err) => {
         throw err;

@@ -19,25 +19,28 @@ export const EmptyEvent = {
   type: `Taxi`,
 };
 
-const parseFormData = (formData, elseData) => {
+const parseFormData = (formData, elseData, eventsModel) => {
+  const name = formData.get(`event-destination`);
+  const description = (eventsModel.getDestinations().find((destination) => destination.name === name));
+
+  const type = formData.get(`event-type`);
+  const offers = eventsModel.getOffersByType().get(formData.get(`event-type`));
+
   return new EventAdapter({
     "id": elseData.id,
     "base_price": +formData.get(`event-price`),
     "date_from": new Date(formData.get(`event-start-time`)),
     "date_to": new Date(formData.get(`event-end-time`)),
-    "destination": {
-      "description": elseData.destination.description,
-      "name": formData.get(`event-destination`),
-      "pictures": elseData.destination.pictures,
-    },
-    "type": formData.get(`event-type`),
-    "offers": elseData.offers,
+    "destination": description,
+    "type": type,
+    "offers": offers,
   });
 };
 
 export default class EventController {
-  constructor(container, onDataChange, onViewChange) {
+  constructor(container, onDataChange, onViewChange, eventsModel) {
     this._container = container;
+    this._eventsModel = eventsModel;
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
     this._eventComponent = null;
@@ -54,7 +57,7 @@ export default class EventController {
     this._mode = mode;
 
     this._eventComponent = new EventComponent(event);
-    this._eventEditComponent = new EventEditComponent(event);
+    this._eventEditComponent = new EventEditComponent(event, this._eventsModel);
 
     this._eventComponent.setOpenEditHandler(() => {
       this._replaceEventToEdit();
@@ -71,7 +74,8 @@ export default class EventController {
       evt.preventDefault();
 
       const formData = this._eventEditComponent.getData();
-      const data = parseFormData(formData, event);
+      const data = parseFormData(formData, event, this._eventsModel);
+      console.log(data);
 
       this._onDataChange(this, event, data);
       this._mode = Mode.DEFAULT;
@@ -83,11 +87,8 @@ export default class EventController {
     });
 
     this._eventEditComponent.setFavoriteClickHandler(() => {
-      const newEvent = EventAdapter.clone(event);
-      newEvent[`isFavorite`] = !newEvent[`is_favorite`];
-
-      this._onDataChange(this, event, newEvent);
-      this._replaceEventToEdit();
+      event[`isFavorite`] = !event[`isFavorite`];
+      this._eventsModel.updateEvent(event.id, event);
     });
 
     switch (mode) {

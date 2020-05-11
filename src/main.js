@@ -4,13 +4,14 @@ import {renderComponent, removeComponent, RenderPosition} from './utils/element'
 import HeadInfoComponent from './components/head/head-info';
 import HeadMenuComponent, {MenuItem} from './components/head/head-menu';
 import StatisticsComponent from './components/statistics';
+import LoadingComponent from './components/main/main-loading-events';
 
 import EventsModel from './models/events';
 import TripController from './controllers/tripController';
 import FilterController from './controllers/filterController';
 
-const AUTHORIZATION = `Basic 3fc28b89c9a044aa0ceedf0b1602d4f9`;
-const END_POINT = `https://11.ecmascript.pages.academy/big-trip`;
+const AUTHORIZATION = `Basic 3fc28b89c9a044a0ceedf0b1602d4f9`;
+const END_POINT = `https://11.ecmascript.pages.academy/big-trip/`;
 
 const ENTRY_POINT = {
   MAIN: document.querySelector(`.trip-main`),
@@ -23,17 +24,23 @@ const eventsModel = new EventsModel();
 
 const headInfoComponent = new HeadInfoComponent(eventsModel);
 const headMenuComponent = new HeadMenuComponent();
+const loadingComponent = new LoadingComponent();
 
 renderComponent(ENTRY_POINT.MAIN, headInfoComponent, RenderPosition.AFTERBEGIN);
 renderComponent(ENTRY_POINT.CONTROLS, headMenuComponent);
+renderComponent(ENTRY_POINT.EVENTS, loadingComponent);
 
 const filterController = new FilterController(ENTRY_POINT.CONTROLS, eventsModel);
 filterController.render();
 
 const tripController = new TripController(ENTRY_POINT.EVENTS, eventsModel, api);
-api.getEvents()
-  .then((events) => {
-    eventsModel.setEvents(events);
+api.getData()
+  .then((data) => {
+    console.log(data);
+    eventsModel.setEvents(data.events);
+    eventsModel.setOffersByType(data.offers);
+    eventsModel.setDestinations(data.destinations);
+    removeComponent(loadingComponent);
     tripController.render();
   });
 

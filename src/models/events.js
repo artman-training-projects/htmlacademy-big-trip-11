@@ -5,6 +5,8 @@ import {getRandomId} from '../utils/common';
 export default class Events {
   constructor() {
     this._events = [];
+    this._OffersByType = [];
+    this._destinations = [];
     this._currentFilterType = FilterType.EVERYTHING;
 
     this._dataChangeHandlers = [];
@@ -15,6 +17,7 @@ export default class Events {
     if (!event.id) {
       event.id = getRandomId();
     }
+
     this._events = [].concat(event, this._events);
     this._callHandlers(this._dataChangeHandlers);
   }
@@ -24,6 +27,17 @@ export default class Events {
     this._callHandlers(this._dataChangeHandlers);
   }
 
+  setOffersByType(offers) {
+    this._OffersByType = offers ? new Map() : [];
+    for (const item of offers) {
+      this._OffersByType.set(item.type, item.offers);
+    }
+  }
+
+  setDestinations(destinations) {
+    this._destinations = destinations ? Array.from(destinations) : [];
+  }
+
   setFilterType(filterType) {
     this._currentFilterType = filterType;
     this._callHandlers(this._filterChangeHandlers);
@@ -31,6 +45,14 @@ export default class Events {
 
   getAllEvents() {
     return this._events;
+  }
+
+  getOffersByType() {
+    return this._OffersByType;
+  }
+
+  getDestinations() {
+    return this._destinations;
   }
 
   getFilteredEvents() {

@@ -21,6 +21,7 @@ const createTripEventOfferTemplate = (offer) => {
 };
 
 export const createMainDayEventItemTemplate = (event) => {
+
   return (
     `<li class="trip-events__item">
       <div class="event">
