@@ -1,6 +1,5 @@
 import moment from 'moment';
 import {Millisecond, monthMap, SHOW_OFFERS} from './const';
-import EventEditComponent from '../components/main/main-event-edit';
 
 export const getRandomId = () => new Date().getMilliseconds() + Math.random();
 export const getEventTime = (from, to) => (to - from);

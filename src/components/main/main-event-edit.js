@@ -4,6 +4,11 @@ import AbstracSmarttComponent from '../abstract-smart-component';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
+const DefaultData = {
+  deleteButtonText: `Delete`,
+  saveButtonText: `Save`,
+};
+
 export default class EventEditComponent extends AbstracSmarttComponent {
   constructor(event, eventsModel) {
     super();
@@ -13,6 +18,7 @@ export default class EventEditComponent extends AbstracSmarttComponent {
     this._destinations = this._eventsModel.getDestinations();
     this._destinationsCity = this._eventsModel.getDestinations().map((destination) => destination.name);
 
+    this._externalData = DefaultData;
     this._newEvent = {
       basePrice: event.basePrice,
       dateFrom: event.dateFrom,
@@ -38,7 +44,12 @@ export default class EventEditComponent extends AbstracSmarttComponent {
   }
 
   getTemplate() {
-    return createMainEventEditTemplate(Object.assign({}, this._event, this._newEvent), this._destinationsCity);
+    return createMainEventEditTemplate(Object.assign({}, this._event, this._newEvent), this._destinationsCity, this._externalData);
+  }
+
+  setData(data) {
+    this._externalData = Object.assign({}, DefaultData, data);
+    this.rerenderElement();
   }
 
   rerenderElement() {

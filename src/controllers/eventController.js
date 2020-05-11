@@ -5,6 +5,8 @@ import EventComponent from '../components/main/main-day-event-item';
 
 import EventAdapter from '../models/eventsAdapter';
 
+const SHAKE_ANIMATION_TIMEOUT = 1000;
+
 export const Mode = {
   DEFAULT: `default`,
   EDIT: `edit`,
@@ -76,11 +78,19 @@ export default class EventController {
       const formData = this._eventEditComponent.getData();
       const data = parseFormData(formData, event, this._eventsModel);
 
+      this._eventEditComponent.setData({
+        saveButtonText: `Saving...`,
+      });
+
       this._onDataChange(this, event, data);
       this._mode = Mode.DEFAULT;
     });
 
     this._eventEditComponent.setResetEventHandler(() => {
+      this._eventEditComponent.setData({
+        deleteButtonText: `Deleting...`,
+      });
+
       this._onDataChange(this, event, null);
       this._mode = Mode.DEFAULT;
     });
@@ -128,6 +138,16 @@ export default class EventController {
     }
   }
 
+  shake() {
+    this._eventEditComponent.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+    this._eventComponent.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+
+    setTimeout(() => {
+      this._eventEditComponent.getElement().style.animation = ``;
+      this._eventComponent.getElement().style.animation = ``;
+    }, SHAKE_ANIMATION_TIMEOUT);
+  }
+
   _replaceEventToEdit() {
     this._onViewChange();
     replaceComponent(this._eventEditComponent, this._eventComponent);
@@ -150,7 +170,7 @@ export default class EventController {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
     if (isEscKey) {
       if (this._mode === Mode.ADD) {
-        this._onDataChange(this, event, null);
+        this._onDataChange(this, EmptyEvent, null);
         this._mode = Mode.DEFAULT;
       }
 

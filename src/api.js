@@ -80,8 +80,8 @@ const API = class {
       body: JSON.stringify(data.toRAW()),
       headers: new Headers({"Content-Type": `application/json`}),
     })
-      .then((response) => response.json())
-      .then(EventAdapter.parseEvent);
+     .then((response) => response.json())
+     .then(EventAdapter.parseEvent);
   }
 
   deleteEvent(id) {

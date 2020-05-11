@@ -64,7 +64,9 @@ const getPhotos = (photos) => {
     .join(``) : ``;
 };
 
-export const createMainEventEditTemplate = (event, destinationsCity) => {
+export const createMainEventEditTemplate = (event, destinationsCity, externalData) => {
+  const deleteButtonText = externalData.deleteButtonText;
+  const saveButtonText = externalData.saveButtonText;
   const isValid = (event.destination.name !== undefined) && event.basePrice;
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
@@ -72,7 +74,7 @@ export const createMainEventEditTemplate = (event, destinationsCity) => {
         <div class="event__type-wrapper">
           <label class="event__type  event__type-btn" for="event-type-toggle-${event.id}">
           <span class="visually-hidden">Choose event type</span>
-          <img class="event__type-icon" width="17" height="17" src="img/icons/${event.type}.png" alt="${event.type} icon">
+          <img class="event__type-icon" width="17" height="17" src="img/icons/${event.type.toLowerCase()}.png" alt="${event.type} icon">
         </label>
         <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${event.id}" type="checkbox">
 
@@ -119,8 +121,8 @@ export const createMainEventEditTemplate = (event, destinationsCity) => {
           <input class="event__input  event__input--price" id="event-price-${event.id}" type="text" name="event-price" value="${event.basePrice}">
         </div>
 
-        <button class="event__save-btn  btn  btn--blue" type="submit" ${isValid ? `` : `disabled`}>Save</button>
-        <button class="event__reset-btn" type="reset">${event.id ? `Delete` : `Cancel`}</button>
+        <button class="event__save-btn  btn  btn--blue" type="submit" ${isValid ? `` : `disabled`}>${saveButtonText}</button>
+        <button class="event__reset-btn" type="reset">${event.id ? `${deleteButtonText}` : `Cancel`}</button>
 
         ${event.id ? `<input id="event-favorite-${event.id}" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${event.isFavorite ? `checked` : ``}>
                       <label class="event__favorite-btn" for="event-favorite-${event.id}">
