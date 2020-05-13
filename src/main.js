@@ -49,7 +49,7 @@ eventsModel.setDataChangeHandler(() => {
 });
 
 const statisticsComponent = new StatisticsComponent(eventsModel);
-renderComponent(ENTRY_POINT.EVENTS, statisticsComponent, RenderPosition.BEFOREEND);
+renderComponent(ENTRY_POINT.EVENTS, statisticsComponent, RenderPosition.AFTEREND);
 statisticsComponent.hide();
 
 headMenuComponent.setOnChange((menuItem) => {

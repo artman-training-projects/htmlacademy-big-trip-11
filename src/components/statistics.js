@@ -1,37 +1,18 @@
-import AbstractSmartComponent from './abstract-smart-component';
+import AbstractComponent from './abstract-smart-component';
+import {createStatisticsTemplate} from './statistics/statisticsTemplate';
 
-// import {initStatistics} from '../utils/forStatistics';
+import {moneyChart} from './statistics/moneyChart';
+import {transportChart} from './statistics/transportChart';
+import {timeSpendChart} from './statistics/timeSpendChart';
 
-// import Chart from "chart.js";
-// import ChartDataLabels from 'chartjs-plugin-datalabels';
-
-// import flatpickr from 'flatpickr';
-import 'flatpickr/dist/flatpickr.min.css';
-
-const createStatisticsTemplate = () => {
-  return (
-    `<section class="statistics">
-      <h2 class="visually-hidden">Trip statistics</h2>
-
-      <div class="statistics__item statistics__item--money">
-        <canvas class="statistics__chart  statistics__chart--money" width="900"></canvas>
-      </div>
-
-      <div class="statistics__item statistics__item--transport">
-        <canvas class="statistics__chart  statistics__chart--transport" width="900"></canvas>
-      </div>
-
-      <div class="statistics__item statistics__item--time-spend">
-        <canvas class="statistics__chart  statistics__chart--time" width="900"></canvas>
-      </div>
-    </section>`
-  );
-};
-
-export default class Statistics extends AbstractSmartComponent {
+export default class Statistics extends AbstractComponent {
   constructor(eventsModel) {
     super();
     this._eventsModel = eventsModel;
+
+    this._moneyChart = null;
+    this._transportChart = null;
+    this._timeSpendChart = null;
   }
 
   getTemplate() {
@@ -44,62 +25,42 @@ export default class Statistics extends AbstractSmartComponent {
 
   show() {
     super.show();
-    // this.rerender(this._tasks, this._dateFrom, this._dateTo);
+    this._renderCharts();
   }
 
-  recoveryListeners() {}
+  _renderCharts() {
+    const element = this.getElement();
+    const ctxMoney = element.querySelector(`.statistics__chart--money`);
+    const ctxTransport = element.querySelector(`.statistics__chart--transport`);
+    const ctxTimeSpend = element.querySelector(`.statistics__chart--time`);
 
-  // rerender(tasks, dateFrom, dateTo) {
-  //   this._tasks = tasks;
-  //   this._dateFrom = dateFrom;
-  //   this._dateTo = dateTo;
+    const BAR_HEIGHT = 55;
+    ctxMoney.height = BAR_HEIGHT * 6;
+    ctxTransport.height = BAR_HEIGHT * 4;
+    ctxTimeSpend.height = BAR_HEIGHT * 6;
 
-  //   super.rerender();
+    const events = this._eventsModel.getAllEvents();
 
-  //   this._renderCharts();
-  // }
+    this._resetCharts();
+    this._moneyChart = moneyChart(ctxMoney, events);
+    this._transportChart = transportChart(ctxTransport, events);
+    this._timeSpendChart = timeSpendChart(ctxTimeSpend, events);
+  }
 
-  // _renderCharts() {
-  //   const element = this.getElement();
+  _resetCharts() {
+    if (this._moneyChart) {
+      this._moneyChart.destroy();
+      this._moneyChart = null;
+    }
 
-  //   this._applyFlatpickr(this.getElement().querySelector(`.statistic__period-input`));
+    if (this._transportChart) {
+      this._transportChart.destroy();
+      this._transportChart = null;
+    }
 
-  //   const daysCtx = element.querySelector(`.statistic__days`);
-  //   const colorsCtx = element.querySelector(`.statistic__colors`);
-
-  //   this._resetCharts();
-
-  //   this._daysChart = renderDaysChart(daysCtx, this._tasks.getTasks(), this._dateFrom, this._dateTo);
-  //   this._colorsChart = renderColorsChart(colorsCtx, this._tasks.getTasks());
-  // }
-
-  // _resetCharts() {
-  //   if (this._daysChart) {
-  //     this._daysChart.destroy();
-  //     this._daysChart = null;
-  //   }
-
-  //   if (this._colorsChart) {
-  //     this._colorsChart.destroy();
-  //     this._colorsChart = null;
-  //   }
-  // }
-
-  // _applyFlatpickr(element) {
-  //   if (this._flatpickr) {
-  //     this._flatpickr.destroy();
-  //   }
-
-  //   this._flatpickr = flatpickr(element, {
-  //     altInput: true,
-  //     allowInput: true,
-  //     defaultDate: [this._dateFrom, this._dateTo],
-  //     mode: `range`,
-  //     onChange: (dates) => {
-  //       if (dates.length === 2) {
-  //         this.rerender(this._tasks, dates[0], dates[1]);
-  //       }
-  //     }
-  //   });
-  // }
+    if (this._timeSpendChart) {
+      this._timeSpendChart.destroy();
+      this._timeSpendChart = null;
+    }
+  }
 }

@@ -47,7 +47,6 @@ const createTripEventEditOfferTemplate = (event, id, offersByType) => {
 };
 
 const createTripEventOffersTempate = (offer, id, checkedOffers) => {
-
   return (
     `<div class="event__offer-selector">
       <input class="event__offer-checkbox  visually-hidden" id="${offer.title}-${id}" type="checkbox" name="event-offer" value="${offer.title}" ${isChecked(offer, checkedOffers) ? `checked` : ``}>
