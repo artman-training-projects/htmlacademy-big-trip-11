@@ -4,18 +4,25 @@ export default class Store {
     this._storeKey = key;
   }
 
-  getEvents() {
+  getItems() {
     try {
-      return JSON.parse(this._storage.getEvents(this._storeKey)) || {};
+      return JSON.parse(this._storage.getItem(this._storeKey)) || {};
     } catch (err) {
       return {};
     }
   }
 
-  setEvent(key, value) {
-    const store = this.getEvents();
+  setItems(items) {
+    this._storage.setItem(
+        this._storeKey,
+        JSON.stringify(items)
+    );
+  }
 
-    this._storage.setEvent(
+  setItem(key, value) {
+    const store = this.getItems();
+
+    this._storage.setItem(
         this._storeKey,
         JSON.stringify(
             Object.assign({}, store, {
@@ -25,18 +32,12 @@ export default class Store {
     );
   }
 
-  setEvents(events) {
-    this._storage.setEvent(
-        this._storeKey,
-        JSON.stringify(events)
-    );
-  }
+  removeItem(key) {
+    const store = this.getItems();
 
-  removeEvent(key) {
-    const store = this.getEvents();
     delete store[key];
 
-    this._storage.setEvent(
+    this._storage.setItem(
         this._storeKey,
         JSON.stringify(store)
     );

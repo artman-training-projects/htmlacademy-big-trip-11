@@ -5,13 +5,13 @@ const isOnline = () => {
   return window.navigator.onLine;
 };
 
-const getSyncedEvents = (events) => {
-  return events.filter(({success}) => success)
+const getSyncedEvents = (items) => {
+  return items.filter(({success}) => success)
     .map(({payload}) => payload.event);
 };
 
-const createStoreStructure = (events) => {
-  return events.reduce((acc, current) => {
+const createStoreStructure = (items) => {
+  return items.reduce((acc, current) => {
     return Object.assign({}, acc, {
       [current.id]: current,
     });
@@ -27,15 +27,15 @@ export default class Provider {
   getEvents() {
     if (isOnline()) {
       return this._api.getEvents()
-        .then((items) => {
-          const events = createStoreStructure(items.map((item) => item.toRAW()));
+        .then((events) => {
+          const items = createStoreStructure(events.map((event) => event.toRAW()));
 
-          this._store.setEvents(events);
+          this._store.setItems(items);
           return events;
         });
     }
 
-    const storeEvents = Object.values(this._store.getEvents());
+    const storeEvents = Object.values(this._store.getItems());
     return Promise.resolve(EventAdapter.parseEvents(storeEvents));
   }
 
@@ -67,7 +67,7 @@ export default class Provider {
     if (isOnline()) {
       return this._api.createEvent(event)
         .then((newEvent) => {
-          this._store.setEvent(newEvent.id, newEvent.toRAW());
+          this._store.setItem(newEvent.id, newEvent.toRAW());
 
           return newEvent;
         });
@@ -75,7 +75,7 @@ export default class Provider {
 
     const localNewEventId = nanoid();
     const localNewEvent = EventAdapter.clone(Object.assign(event, {id: localNewEventId}));
-    this._store.setEvent(localNewEvent.id, localNewEvent.toRAW());
+    this._store.setItem(localNewEvent.id, localNewEvent.toRAW());
     return Promise.resolve(localNewEvent);
   }
 
@@ -83,37 +83,37 @@ export default class Provider {
     if (isOnline()) {
       return this._api.updateEvent(id, event)
       .then((newEvent) => {
-        this._store.setEvent(newEvent.id, newEvent.toRAW());
+        this._store.setItem(newEvent.id, newEvent.toRAW());
 
         return newEvent;
       });
     }
 
     const localEvent = EventAdapter.clone(Object.assign(event, {id}));
-    this._store.setEvent(id, localEvent.toRAW());
+    this._store.setItem(id, localEvent.toRAW());
     return Promise.resolve(localEvent);
   }
 
   removeEvent(id) {
     if (isOnline()) {
       return this._api.removeEvent(id)
-        .then(() => this._store.removeEvent(id));
+        .then(() => this._store.removeItem(id));
     }
 
-    this._store.removeEvent(id);
+    this._store.removeItem(id);
     return Promise.resolve();
   }
 
   sync() {
     if (isOnline()) {
-      const storeTasks = Object.values(this._store.getEvents());
+      const storeEvents = Object.values(this._store.getItems());
 
-      return this._api.sync(storeTasks)
+      return this._api.sync(storeEvents)
         .then((response) => {
-          const createdTasks = getSyncedEvents(response.created);
-          const updatedTasks = getSyncedEvents(response.updated);
+          const createdEvents = getSyncedEvents(response.created);
+          const updatedEvents = getSyncedEvents(response.updated);
 
-          const events = createStoreStructure([...createdTasks, ...updatedTasks]);
+          const events = createStoreStructure([...createdEvents, ...updatedEvents]);
           this._store.setEvents(events);
         });
     }
