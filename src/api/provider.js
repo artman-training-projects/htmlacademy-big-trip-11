@@ -5,6 +5,19 @@ const isOnline = () => {
   return window.navigator.onLine;
 };
 
+const getSyncedEvents = (events) => {
+  return events.filter(({success}) => success)
+    .map(({payload}) => payload.event);
+};
+
+const createStoreStructure = (events) => {
+  return events.reduce((acc, current) => {
+    return Object.assign({}, acc, {
+      [current.id]: current,
+    });
+  }, {});
+};
+
 export default class Provider {
   constructor(api, store) {
     this._api = api;
@@ -15,11 +28,7 @@ export default class Provider {
     if (isOnline()) {
       return this._api.getEvents()
         .then((items) => {
-          const events = items.reduce((acc, current) => {
-            return Object.assign({}, acc, {
-              [current.id]: current,
-            });
-          }, {});
+          const events = createStoreStructure(items.map((item) => item.toRAW()));
 
           this._store.setEvents(events);
           return events;
@@ -93,5 +102,22 @@ export default class Provider {
 
     this._store.removeEvent(id);
     return Promise.resolve();
+  }
+
+  sync() {
+    if (isOnline()) {
+      const storeTasks = Object.values(this._store.getEvents());
+
+      return this._api.sync(storeTasks)
+        .then((response) => {
+          const createdTasks = getSyncedEvents(response.created);
+          const updatedTasks = getSyncedEvents(response.updated);
+
+          const events = createStoreStructure([...createdTasks, ...updatedTasks]);
+          this._store.setEvents(events);
+        });
+    }
+
+    return Promise.reject(new Error(`Sync data failed`));
   }
 }
