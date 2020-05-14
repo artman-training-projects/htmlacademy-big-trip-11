@@ -1,4 +1,5 @@
-import API from './api';
+import API from './api/index';
+import Provider from './api/provider';
 import {renderComponent, removeComponent, RenderPosition} from './utils/element';
 
 import HeadInfoComponent from './components/head/head-info';
@@ -20,6 +21,7 @@ const ENTRY_POINT = {
 };
 
 const api = new API(END_POINT, AUTHORIZATION);
+const apiWithProvider = new Provider(api);
 const eventsModel = new EventsModel();
 
 const headInfoComponent = new HeadInfoComponent(eventsModel);
@@ -33,8 +35,8 @@ renderComponent(ENTRY_POINT.EVENTS, loadingComponent);
 const filterController = new FilterController(ENTRY_POINT.CONTROLS, eventsModel);
 filterController.render();
 
-const tripController = new TripController(ENTRY_POINT.EVENTS, eventsModel, api);
-api.getData()
+const tripController = new TripController(ENTRY_POINT.EVENTS, eventsModel, apiWithProvider);
+apiWithProvider.getData()
   .then((data) => {
     eventsModel.setEvents(data.events);
     eventsModel.setOffersByType(data.offers);

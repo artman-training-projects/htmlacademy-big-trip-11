@@ -1,4 +1,4 @@
-import EventAdapter from './models/eventsAdapter';
+import EventAdapter from '../models/eventsAdapter';
 
 const Method = {
   GET: `GET`,
