@@ -1,33 +1,65 @@
+const isOnline = () => {
+  return window.navigator.onLine;
+};
+
 export default class Provider {
   constructor(api) {
     this._api = api;
   }
 
   getEvents() {
-    return this._api.getEvents();
+    if (isOnline()) {
+      return this._api.getEvents();
+    }
+
+    return Promise.reject(`offline logic is not implemented`);
   }
 
   getDestinations() {
-    return this._api.getDestinations();
+    if (isOnline()) {
+      return this._api.getDestinations();
+    }
+
+    return Promise.reject(`offline logic is not implemented`);
   }
 
   getOffers() {
-    return this._api.getOffers();
+    if (isOnline()) {
+      return this._api.getOffers();
+    }
+
+    return Promise.reject(`offline logic is not implemented`);
   }
 
   getData() {
-    return this._api.getData();
+    if (isOnline()) {
+      return this._api.getData();
+    }
+
+    return Promise.reject(`offline logic is not implemented`);
   }
 
   createEvent(event) {
-    return this._api.createEvent(event);
+    if (isOnline()) {
+      return this._api.createEvent(event);
+    }
+
+    return Promise.reject(`offline logic is not implemented`);
   }
 
   updateEvent(id, data) {
-    return this._api.updateEvent(id, data);
+    if (isOnline()) {
+      return this._api.updateEvent(id, data);
+    }
+
+    return Promise.reject(`offline logic is not implemented`);
   }
 
   deleteEvent(id) {
-    return this._api.deleteEvent(id);
+    if (isOnline()) {
+      return this._api.deleteEvent(id);
+    }
+
+    return Promise.reject(`offline logic is not implemented`);
   }
 }
