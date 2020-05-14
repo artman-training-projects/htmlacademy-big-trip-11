@@ -25,6 +25,13 @@ export default class Store {
     );
   }
 
+  setEvents(events) {
+    this._storage.setEvent(
+        this._storeKey,
+        JSON.stringify(events)
+    );
+  }
+
   removeEvent(key) {
     const store = this.getEvents();
     delete store[key];
