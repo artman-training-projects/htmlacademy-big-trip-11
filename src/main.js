@@ -14,6 +14,9 @@ import FilterController from './controllers/filterController';
 
 const AUTHORIZATION = `Basic 3fc28b89c9a044a0ceedf0b1602d4f9`;
 const END_POINT = `https://11.ecmascript.pages.academy/big-trip/`;
+const STORE_PREFIX = `bigtrip-localstorage`;
+const STORE_VER = `v1`;
+const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
 
 const ENTRY_POINT = {
   MAIN: document.querySelector(`.trip-main`),
@@ -22,7 +25,7 @@ const ENTRY_POINT = {
 };
 
 const api = new API(END_POINT, AUTHORIZATION);
-const store = new Store();
+const store = new Store(STORE_NAME, window.localStorage);
 const apiWithProvider = new Provider(api, store);
 const eventsModel = new EventsModel();
 
