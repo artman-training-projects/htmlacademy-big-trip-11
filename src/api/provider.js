@@ -1,4 +1,5 @@
 import EventAdapter from '../models/events';
+import {nanoid} from 'nanoid';
 
 const isOnline = () => {
   return window.navigator.onLine;
@@ -49,25 +50,42 @@ export default class Provider {
 
   createEvent(event) {
     if (isOnline()) {
-      return this._api.createEvent(event);
+      return this._api.createEvent(event)
+        .then((newEvent) => {
+          this._store.setEvent(newEvent.id, newEvent.toRAW());
+
+          return newEvent;
+        });
     }
 
-    return Promise.reject(`offline logic is not implemented`);
+    const localNewEventId = nanoid();
+    const localNewEvent = EventAdapter.clone(Object.assign(event, {id: localNewEventId}));
+    this._store.setEvent(localNewEvent.id, localNewEvent.toRAW());
+    return Promise.resolve(localNewEvent);
   }
 
-  updateEvent(id, data) {
+  updateEvent(id, event) {
     if (isOnline()) {
-      return this._api.updateEvent(id, data);
+      return this._api.updateEvent(id, event)
+      .then((newEvent) => {
+        this._store.setEvent(newEvent.id, newEvent.toRAW());
+
+        return newEvent;
+      });
     }
 
-    return Promise.reject(`offline logic is not implemented`);
+    const localEvent = EventAdapter.clone(Object.assign(event, {id}));
+    this._store.setEvent(id, localEvent.toRAW());
+    return Promise.resolve(localEvent);
   }
 
-  deleteEvent(id) {
+  removeEvent(id) {
     if (isOnline()) {
-      return this._api.deleteEvent(id);
+      return this._api.removeEvent(id)
+        .then(() => this._store.removeEvent(id));
     }
 
-    return Promise.reject(`offline logic is not implemented`);
+    this._store.removeEvent(id);
+    return Promise.resolve();
   }
 }
