@@ -1,18 +1,26 @@
+import EventAdapter from '../models/events';
+
 const isOnline = () => {
   return window.navigator.onLine;
 };
 
 export default class Provider {
-  constructor(api) {
+  constructor(api, store) {
     this._api = api;
+    this._store = store;
   }
 
   getEvents() {
     if (isOnline()) {
-      return this._api.getEvents();
+      return this._api.getEvents()
+        .then((events) => {
+          events.forEach((event) => this._store.setEvent(event.id, event.toRAW()));
+          return events;
+        });
     }
 
-    return Promise.reject(`offline logic is not implemented`);
+    const storeEvents = Object.values(this._store.getEvents());
+    return Promise.resolve(EventAdapter.parseEvents(storeEvents));
   }
 
   getDestinations() {

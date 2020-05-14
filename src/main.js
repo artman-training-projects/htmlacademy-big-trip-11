@@ -1,4 +1,5 @@
 import API from './api/index';
+import Store from './api/store';
 import Provider from './api/provider';
 import {renderComponent, removeComponent, RenderPosition} from './utils/element';
 
@@ -21,7 +22,8 @@ const ENTRY_POINT = {
 };
 
 const api = new API(END_POINT, AUTHORIZATION);
-const apiWithProvider = new Provider(api);
+const store = new Store();
+const apiWithProvider = new Provider(api, store);
 const eventsModel = new EventsModel();
 
 const headInfoComponent = new HeadInfoComponent(eventsModel);
