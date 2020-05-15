@@ -21,11 +21,11 @@ export const getDiffTime = (from, to) => {
   return diffString;
 };
 
-export const getFullCost = (events) => {
+export const getFullCost = (events, prices) => {
   return events ? events
     .slice()
-    .map((event) => event.basePrice)
-    .reduce((sum, price) => sum + price) : 0;
+    .map((event) => event[prices] + getFullCost(event.offers, `price`))
+    .reduce((sum, price) => sum + price, 0) : 0;
 };
 
 export const getRoute = (events) => {
