@@ -18,7 +18,7 @@ export const EmptyEvent = {
   dateFrom: new Date(),
   dateTo: new Date(),
   destination: ``,
-  type: `Taxi`,
+  type: `taxi`,
 };
 
 const parseFormData = (formData, elseData, eventsModel) => {

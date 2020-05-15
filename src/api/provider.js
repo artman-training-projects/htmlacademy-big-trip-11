@@ -1,5 +1,5 @@
-import EventAdapter from '../models/events';
-import {nanoid} from 'nanoid';
+import EventAdapter from '../models/eventsAdapter';
+import {nanoid} from "nanoid";
 
 const isOnline = () => {
   return window.navigator.onLine;
@@ -41,26 +41,49 @@ export default class Provider {
 
   getDestinations() {
     if (isOnline()) {
-      return this._api.getDestinations();
-    }
+      return this._api.getDestinations()
+        .then((destinations) => {
+          this._store.setDestinations(destinations);
 
-    return Promise.reject(`offline logic is not implemented`);
+          return destinations;
+        });
+    }
+    return Promise.resolve(this._store.getDestinations());
   }
 
   getOffers() {
     if (isOnline()) {
-      return this._api.getOffers();
-    }
+      return this._api.getOffers()
+        .then((offers) => {
+          this._store.setOffers(offers);
 
-    return Promise.reject(`offline logic is not implemented`);
+          return offers;
+        });
+    }
+    return Promise.resolve(this._store.getOffers());
   }
 
   getData() {
     if (isOnline()) {
-      return this._api.getData();
+      return this._api.getData()
+        .then((responce) => {
+          return responce;
+        });
     }
 
-    return Promise.reject(`offline logic is not implemented`);
+    return Promise.resolve([
+      this._store.getItems(),
+      this._store.getDestinations(),
+      this._store.getOffers(),
+    ])
+      .then((responce) => {
+        const [events, destinations, offers] = responce;
+        return {
+          events,
+          destinations,
+          offers,
+        };
+      });
   }
 
   createEvent(event) {
@@ -73,8 +96,11 @@ export default class Provider {
         });
     }
 
+    // На случай локального создания данных мы должны сами создать `id`.
+    // Иначе наша модель будет не полной и это может привнести баги.
     const localNewEventId = nanoid();
     const localNewEvent = EventAdapter.clone(Object.assign(event, {id: localNewEventId}));
+
     this._store.setItem(localNewEvent.id, localNewEvent.toRAW());
     return Promise.resolve(localNewEvent);
   }
@@ -82,11 +108,11 @@ export default class Provider {
   updateEvent(id, event) {
     if (isOnline()) {
       return this._api.updateEvent(id, event)
-      .then((newEvent) => {
-        this._store.setItem(newEvent.id, newEvent.toRAW());
+        .then((newEvent) => {
+          this._store.setItem(newEvent.id, newEvent.toRAW());
 
-        return newEvent;
-      });
+          return newEvent;
+        });
     }
 
     const localEvent = EventAdapter.clone(Object.assign(event, {id}));
@@ -94,9 +120,9 @@ export default class Provider {
     return Promise.resolve(localEvent);
   }
 
-  removeEvent(id) {
+  deleteEvent(id) {
     if (isOnline()) {
-      return this._api.removeEvent(id)
+      return this._api.deleteEvent(id)
         .then(() => this._store.removeItem(id));
     }
 
@@ -110,11 +136,15 @@ export default class Provider {
 
       return this._api.sync(storeEvents)
         .then((response) => {
+          // Забираем из ответа синхронизированные задачи
           const createdEvents = getSyncedEvents(response.created);
           const updatedEvents = getSyncedEvents(response.updated);
 
-          const events = createStoreStructure([...createdEvents, ...updatedEvents]);
-          this._store.setEvents(events);
+          // Добавляем синхронизированные задачи в хранилище.
+          // Хранилище должно быть актуальным в любой момент.
+          const items = createStoreStructure([...createdEvents, ...updatedEvents]);
+
+          this._store.setItems(items);
         });
     }
 

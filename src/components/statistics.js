@@ -5,6 +5,8 @@ import {moneyChart} from './statistics/moneyChart';
 import {transportChart} from './statistics/transportChart';
 import {timeSpendChart} from './statistics/timeSpendChart';
 
+export const BAR_HEIGHT = 55;
+
 export default class Statistics extends AbstractComponent {
   constructor(eventsModel) {
     super();
@@ -33,11 +35,6 @@ export default class Statistics extends AbstractComponent {
     const ctxMoney = element.querySelector(`.statistics__chart--money`);
     const ctxTransport = element.querySelector(`.statistics__chart--transport`);
     const ctxTimeSpend = element.querySelector(`.statistics__chart--time`);
-
-    const BAR_HEIGHT = 55;
-    ctxMoney.height = BAR_HEIGHT * 6;
-    ctxTransport.height = BAR_HEIGHT * 4;
-    ctxTimeSpend.height = BAR_HEIGHT * 6;
 
     const events = this._eventsModel.getAllEvents();
 

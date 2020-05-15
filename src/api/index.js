@@ -73,15 +73,15 @@ const API = class {
       .then(EventAdapter.parseEvent);
   }
 
-  updateEvent(id, data) {
+  updateEvent(id, event) {
     return this._load({
       url: `points/${id}`,
       method: Method.PUT,
-      body: JSON.stringify(data.toRAW()),
+      body: JSON.stringify(event.toRAW()),
       headers: new Headers({"Content-Type": `application/json`}),
     })
-      .then((response) => response.json())
-      .then(EventAdapter.parseEvent);
+     .then((response) => response.json())
+     .then(EventAdapter.parseEvent);
   }
 
   deleteEvent(id) {

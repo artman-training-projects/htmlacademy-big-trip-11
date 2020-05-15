@@ -70,9 +70,12 @@ export const getRouteDates = (events) => {
 
 export const isChecked = (currentOffer, availableOfers) => {
   let state = false;
-  for (const off of availableOfers) {
-    if (JSON.stringify(off) === JSON.stringify(currentOffer)) {
-      state = true;
+
+  if (availableOfers) {
+    for (const off of availableOfers) {
+      if (JSON.stringify(off) === JSON.stringify(currentOffer)) {
+        state = true;
+      }
     }
   }
 

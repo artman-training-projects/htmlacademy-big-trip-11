@@ -70,6 +70,7 @@ export const createMainEventEditTemplate = (event, destinationsCity, offersByTyp
   const deleteButtonText = externalData.deleteButtonText;
   const saveButtonText = externalData.saveButtonText;
   const isValid = (event.destination.name !== undefined) && event.basePrice;
+
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
       <header class="event__header">

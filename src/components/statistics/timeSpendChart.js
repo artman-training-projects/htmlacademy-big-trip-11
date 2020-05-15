@@ -1,4 +1,6 @@
 import {tripPointIconMap} from '../../utils/const';
+import {BAR_HEIGHT} from '../statistics';
+
 import Moment from 'moment';
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -16,6 +18,8 @@ export const timeSpendChart = (ctx, events) => {
 
   const sortedData = Object.entries(parseData).sort((a, b) => b[1] - a[1]);
   const data = Object.fromEntries(sortedData);
+
+  ctx.height = BAR_HEIGHT * sortedData.length;
 
   return new Chart(ctx, {
     plugins: [ChartDataLabels],
