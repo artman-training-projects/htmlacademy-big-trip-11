@@ -1,7 +1,7 @@
 import {createMainDayTemplate} from './templates/main-day';
 import AbstractComponent from '../abstract-component';
 
-export default class DayComponent extends AbstractComponent {
+export default class Day extends AbstractComponent {
   constructor(event, number) {
     super();
     this._dayNumber = number ? number : ``;

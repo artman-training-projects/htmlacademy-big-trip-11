@@ -9,7 +9,7 @@ const DefaultData = {
   saveButtonText: `Save`,
 };
 
-export default class EventEditComponent extends AbstracSmarttComponent {
+export default class EventEdit extends AbstracSmarttComponent {
   constructor(event, eventsModel) {
     super();
     this._event = event;
@@ -40,11 +40,15 @@ export default class EventEditComponent extends AbstracSmarttComponent {
 
     this._flatpickrFrom = null;
     this._flatpickrTo = null;
-    // this._applyFlatpickr();
   }
 
   getTemplate() {
     return createMainEventEditTemplate(Object.assign({}, this._event, this._newEvent), this._destinationsCity, this._offersByType, this._externalData);
+  }
+
+  getData() {
+    const form = this.getElement();
+    return new FormData(form);
   }
 
   setData(data) {
@@ -52,17 +56,35 @@ export default class EventEditComponent extends AbstracSmarttComponent {
     this.rerenderElement();
   }
 
+  setSubmitEventHandler(handler) {
+    this.getElement().addEventListener(`submit`, handler);
+    this._setSubmitEventHandler = handler;
+  }
+
+  setResetEventHandler(handler) {
+    this.getElement().querySelector(`.event__reset-btn`).addEventListener(`click`, handler);
+    this._setResetEventHandler = handler;
+  }
+
+  setCloseEditHandler(handler) {
+    const close = this.getElement().querySelector(`.event__rollup-btn`);
+    if (close) {
+      close.addEventListener(`click`, handler);
+      this._setCloseEditHandler = handler;
+    }
+  }
+
+  setFavoriteClickHandler(handler) {
+    const favorite = this.getElement().querySelector(`.event__favorite-btn`);
+    if (favorite) {
+      favorite.addEventListener(`click`, handler);
+      this._setFavoriteClickHandler = handler;
+    }
+  }
+
   rerenderElement() {
     super.rerenderElement();
     this.applyFlatpickr();
-  }
-
-  recoveryListeners() {
-    this.setSubmitEventHandler(this._setSubmitEventHandler);
-    this.setResetEventHandler(this._setResetEventHandler);
-    this.setCloseEditHandler(this._setCloseEditHandler);
-    this.setFavoriteClickHandler(this._setFavoriteClickHandler);
-    this._subscribeOnEvents();
   }
 
   removeElement() {
@@ -97,37 +119,6 @@ export default class EventEditComponent extends AbstracSmarttComponent {
     this.rerenderElement();
   }
 
-  getData() {
-    const form = this.getElement();
-    return new FormData(form);
-  }
-
-  setSubmitEventHandler(handler) {
-    this.getElement().addEventListener(`submit`, handler);
-    this._setSubmitEventHandler = handler;
-  }
-
-  setResetEventHandler(handler) {
-    this.getElement().querySelector(`.event__reset-btn`).addEventListener(`click`, handler);
-    this._setResetEventHandler = handler;
-  }
-
-  setCloseEditHandler(handler) {
-    const close = this.getElement().querySelector(`.event__rollup-btn`);
-    if (close) {
-      close.addEventListener(`click`, handler);
-      this._setCloseEditHandler = handler;
-    }
-  }
-
-  setFavoriteClickHandler(handler) {
-    const favorite = this.getElement().querySelector(`.event__favorite-btn`);
-    if (favorite) {
-      favorite.addEventListener(`click`, handler);
-      this._setFavoriteClickHandler = handler;
-    }
-  }
-
   applyFlatpickr() {
     if (this._flatpickrFrom) {
       this._flatpickrFrom.destroy();
@@ -156,6 +147,14 @@ export default class EventEditComponent extends AbstracSmarttComponent {
       [`time_24hr`]: true,
       defaultDate: this._event.dateTo,
     });
+  }
+
+  recoveryListeners() {
+    this.setSubmitEventHandler(this._setSubmitEventHandler);
+    this.setResetEventHandler(this._setResetEventHandler);
+    this.setCloseEditHandler(this._setCloseEditHandler);
+    this.setFavoriteClickHandler(this._setFavoriteClickHandler);
+    this._subscribeOnEvents();
   }
 
   _subscribeOnEvents() {

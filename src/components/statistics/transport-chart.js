@@ -1,19 +1,15 @@
-import {tripPointIconMap} from '../../utils/const';
-import {BAR_HEIGHT} from '../statistics';
+import {TRANSFER_TYPE, tripPointIconMap} from '../../utils/const';
+import {BAR_HEIGHT, ChartVariables} from '../statistics';
 
-import Moment from 'moment';
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-export const timeSpendChart = (ctx, events) => {
+export const transportChart = (ctx, events) => {
   const parseData = events
-    .reduce((time, event) => {
-      const dateFrom = new Moment(event.dateFrom);
-      const dateTo = new Moment(event.dateTo);
-      const diff = Moment.duration(dateTo.diff(dateFrom)).hours();
-
-      time[event.type] = (time[event.type] || 0) + diff;
-      return time;
+    .filter((event) => TRANSFER_TYPE.includes(event.type))
+    .reduce((count, event) => {
+      count[event.type] = (count[event.type] || 0) + 1;
+      return count;
     }, {});
 
   const sortedData = Object.entries(parseData).sort((a, b) => b[1] - a[1]);
@@ -31,32 +27,30 @@ export const timeSpendChart = (ctx, events) => {
         backgroundColor: `#ffffff`,
         hoverBackgroundColor: `#ffffff`,
         anchor: `start`,
-        barThickness: 44,
-        minBarLength: 50,
-      }],
+        barThickness: ChartVariables.BAR_THICKNESS,
+        minBarLength: ChartVariables.MIN_BAR_LENGTH,
+      }]
     },
     options: {
       plugins: {
         datalabels: {
-          font: {
-            size: 13
-          },
+          fontSize: ChartVariables.LABELS_FONT_SIZE,
           color: `#000000`,
           anchor: `end`,
           align: `start`,
-          formatter: (val) => `${val} H`
+          formatter: (val) => `${val}x`
         }
       },
       title: {
         display: true,
-        text: `TIME SPEND`,
+        text: `TRANSPORT`,
         fontColor: `#000000`,
-        fontSize: 23,
+        fontSize: ChartVariables.TITLE_FONT_SIZE,
         position: `left`
       },
       layout: {
         padding: {
-          left: 50,
+          left: ChartVariables.LAYOUT_PADDING_LEFT,
         }
       },
       scales: {

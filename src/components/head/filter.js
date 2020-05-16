@@ -4,7 +4,7 @@ import AbstractComponent from '../abstract-component';
 const FILTER_ID_PREFIX = `filter-`;
 const getFilterNameById = (id) => id.substring(FILTER_ID_PREFIX.length);
 
-export default class FilterComponent extends AbstractComponent {
+export default class Filter extends AbstractComponent {
   constructor(filters) {
     super();
     this._filters = filters;

@@ -1,4 +1,4 @@
-import EventAdapter from '../models/events-adapter';
+import EventAdapter from '../models/event-adapter';
 import {nanoid} from "nanoid";
 
 const isOnline = () => {

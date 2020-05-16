@@ -1,5 +1,5 @@
 import {tripPointIconMap} from '../../utils/const';
-import {BAR_HEIGHT} from '../statistics';
+import {BAR_HEIGHT, ChartVariables} from '../statistics';
 
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -26,16 +26,14 @@ export const moneyChart = (ctx, events) => {
         backgroundColor: `#ffffff`,
         hoverBackgroundColor: `#ffffff`,
         anchor: `start`,
-        barThickness: 44,
-        minBarLength: 50,
+        barThickness: ChartVariables.BAR_THICKNESS,
+        minBarLength: ChartVariables.MIN_BAR_LENGTH,
       }],
     },
     options: {
       plugins: {
         datalabels: {
-          font: {
-            size: 13
-          },
+          fontSize: ChartVariables.LABELS_FONT_SIZE,
           color: `#000000`,
           anchor: `end`,
           align: `start`,
@@ -46,12 +44,12 @@ export const moneyChart = (ctx, events) => {
         display: true,
         text: `MONEY`,
         fontColor: `#000000`,
-        fontSize: 23,
+        fontSize: ChartVariables.TITLE_FONT_SIZE,
         position: `left`
       },
       layout: {
         padding: {
-          left: 50,
+          left: ChartVariables.LAYOUT_PADDING_LEFT,
         }
       },
       scales: {

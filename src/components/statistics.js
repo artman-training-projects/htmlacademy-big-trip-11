@@ -1,11 +1,18 @@
 import AbstractComponent from './abstract-smart-component';
-import {createStatisticsTemplate} from './statistics/statisticsTemplate';
+import {createStatisticsTemplate} from './statistics/statistics-template';
 
-import {moneyChart} from './statistics/moneyChart';
-import {transportChart} from './statistics/transportChart';
-import {timeSpendChart} from './statistics/timeSpendChart';
+import {moneyChart} from './statistics/money-сhart';
+import {transportChart} from './statistics/transport-chart';
+import {timeSpendChart} from './statistics/time-spend-chart';
 
 export const BAR_HEIGHT = 55;
+export const ChartVariables = {
+  BAR_THICKNESS: 44,
+  MIN_BAR_LENGTH: 50,
+  LABELS_FONT_SIZE: 13,
+  TITLE_FONT_SIZE: 23,
+  LAYOUT_PADDING_LEFT: 45,
+};
 
 export default class Statistics extends AbstractComponent {
   constructor(eventsModel) {
