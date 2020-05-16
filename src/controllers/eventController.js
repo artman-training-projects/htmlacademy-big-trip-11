@@ -158,6 +158,7 @@ export default class EventController {
   _replaceEventToEdit() {
     this._onViewChange();
     replaceComponent(this._eventEditComponent, this._eventComponent);
+    this._eventEditComponent.applyFlatpickr();
     document.addEventListener(`keydown`, this._onEscKeyDown);
     this._mode = Mode.EDIT;
   }
