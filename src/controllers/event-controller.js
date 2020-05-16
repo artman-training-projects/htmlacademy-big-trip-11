@@ -85,6 +85,9 @@ export default class EventController {
         saveButtonText: `Saving...`,
       });
 
+      this._eventEditComponent.reset();
+      this._eventEditComponent.resetFlatpickr();
+
       this._onDataChange(this, event, data);
       this._mode = Mode.DEFAULT;
     });
@@ -125,6 +128,7 @@ export default class EventController {
 
         renderComponent(this._container, this._eventEditComponent, RenderPosition.AFTERBEGIN);
         document.addEventListener(`keydown`, this._onEscKeyDown);
+        this._eventEditComponent.applyFlatpickr();
         break;
     }
   }
@@ -169,6 +173,7 @@ export default class EventController {
 
     if (document.contains(this._eventEditComponent.getElement())) {
       replaceComponent(this._eventComponent, this._eventEditComponent);
+      this._eventEditComponent.resetFlatpickr();
     }
 
     if (this._mode === Mode.ADD) {

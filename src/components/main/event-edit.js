@@ -82,25 +82,6 @@ export default class EventEdit extends AbstracSmarttComponent {
     }
   }
 
-  rerenderElement() {
-    super.rerenderElement();
-    this.applyFlatpickr();
-  }
-
-  removeElement() {
-    if (this._flatpickrFrom) {
-      this._flatpickrFrom.destroy();
-      this._flatpickrFrom = null;
-    }
-
-    if (this._flatpickrTo) {
-      this._flatpickrTo.destroy();
-      this._flatpickrTo = null;
-    }
-
-    super.removeElement();
-  }
-
   reset() {
     const event = this._event;
     this._newEvent = {
@@ -116,10 +97,11 @@ export default class EventEdit extends AbstracSmarttComponent {
       offers: event.offers,
     };
 
+    this.resetFlatpickr();
     this.rerenderElement();
   }
 
-  applyFlatpickr() {
+  resetFlatpickr() {
     if (this._flatpickrFrom) {
       this._flatpickrFrom.destroy();
       this._flatpickrFrom = null;
@@ -129,24 +111,6 @@ export default class EventEdit extends AbstracSmarttComponent {
       this._flatpickrTo.destroy();
       this._flatpickrTo = null;
     }
-
-    const dateFromElement = this.getElement().querySelector(`[name="event-start-time"]`);
-    this._flatpickrFrom = flatpickr(dateFromElement, {
-      enableTime: true,
-      altFormat: `d/m/y H:i`,
-      altInput: true,
-      [`time_24hr`]: true,
-      defaultDate: this._event.dateFrom,
-    });
-
-    const dateToElement = this.getElement().querySelector(`[name="event-end-time"]`);
-    this._flatpickrTo = flatpickr(dateToElement, {
-      enableTime: true,
-      altFormat: `d/m/y H:i`,
-      altInput: true,
-      [`time_24hr`]: true,
-      defaultDate: this._event.dateTo,
-    });
   }
 
   recoveryListeners() {
@@ -157,12 +121,47 @@ export default class EventEdit extends AbstracSmarttComponent {
     this._subscribeOnEvents();
   }
 
+  rerenderElement() {
+    super.rerenderElement();
+    this.applyFlatpickr();
+  }
+
+  removeElement() {
+    super.removeElement();
+    this.resetFlatpickr();
+  }
+
+  applyFlatpickr() {
+    this.resetFlatpickr();
+
+    const dateFromElement = this.getElement().querySelector(`[name="event-start-time"]`);
+    this._flatpickrFrom = flatpickr(dateFromElement, {
+      enableTime: true,
+      altFormat: `d/m/y H:i`,
+      altInput: true,
+      [`time_24hr`]: true,
+      defaultDate: this._newEvent.dateFrom,
+    });
+
+    const dateToElement = this.getElement().querySelector(`[name="event-end-time"]`);
+    this._flatpickrTo = flatpickr(dateToElement, {
+      enableTime: true,
+      altFormat: `d/m/y H:i`,
+      altInput: true,
+      [`time_24hr`]: true,
+      defaultDate: this._newEvent.dateTo,
+    });
+  }
+
   _subscribeOnEvents() {
     const element = this.getElement();
     const FormElements = {
       Type: element.querySelector(`.event__type-list`),
       DESTINATION: element.querySelector(`.event__input--destination`),
+      DATE_FROM: element.querySelector(`[name="event-start-time"]`),
+      DATE_TO: element.querySelector(`[name="event-end-time"]`),
       PRICE: element.querySelector(`.event__input--price`),
+      OFFERS: element.querySelector(`.event__available-offers`),
       SAVE: element.querySelector(`.event__save-btn`),
     };
 
@@ -198,12 +197,35 @@ export default class EventEdit extends AbstracSmarttComponent {
       this.rerenderElement();
     });
 
+    FormElements.DATE_FROM.addEventListener(`input`, (evt) => {
+      const inputDate = evt.target.value;
+      this._newEvent.dateFrom = inputDate;
+    });
+
+    FormElements.DATE_TO.addEventListener(`input`, (evt) => {
+      const inputDate = evt.target.value;
+      this._newEvent.dateTo = inputDate;
+    });
+
     FormElements.PRICE.addEventListener(`input`, (evt) => {
       const inputPrice = evt.target.value;
       const invalidPrice = !inputPrice.match(/[\d]/) || inputPrice < 0;
 
       FormElements.SAVE.disabled = invalidPrice;
       this._newEvent.basePrice = inputPrice;
+    });
+
+    FormElements.OFFERS.addEventListener(`change`, (evt) => {
+      const clickOfferr = evt.target;
+      clickOfferr.toggleAttribute(`checked`);
+
+      const checkedOffers = FormElements.OFFERS.querySelectorAll(`[name="event-offer"]` + `[checked=""]`);
+      const checkedOffersTitle = [...checkedOffers].map((offer) => offer.value);
+
+      const allOffers = this._eventsModel.getOffersByType().get(this._newEvent.type);
+      const newCheckedOffers = allOffers.filter((offer) => checkedOffersTitle.includes(offer.title));
+      this._newEvent.offers = newCheckedOffers;
+      this.rerenderElement();
     });
   }
 }
