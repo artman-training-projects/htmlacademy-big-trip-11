@@ -1,4 +1,4 @@
-import {createMainDayTemplate} from './templates/mainDayTemplate';
+import {createMainDayTemplate} from './templates/main-day';
 import AbstractComponent from '../abstract-component';
 
 export default class DayComponent extends AbstractComponent {

@@ -1,4 +1,4 @@
-import {createMainDayEventItemTemplate} from './templates/mainDayEventItemTemplate';
+import {createMainDayEventItemTemplate} from './templates/main-day-event';
 import AbstractComponent from '../abstract-component';
 
 export default class EventComponent extends AbstractComponent {

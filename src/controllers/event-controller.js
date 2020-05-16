@@ -3,7 +3,7 @@ import {renderComponent, replaceComponent, removeComponent, RenderPosition} from
 import EventEditComponent from '../components/main/event-edit';
 import EventComponent from '../components/main/event';
 
-import EventAdapter from '../models/eventsAdapter';
+import EventAdapter from '../models/events-adapter';
 
 const SHAKE_ANIMATION_TIMEOUT = 1000;
 

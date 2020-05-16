@@ -1,4 +1,4 @@
-import {createLoadingEventsTemplate} from './templates/mainLoadingEventsTemplate';
+import {createLoadingEventsTemplate} from './templates/main-loading';
 import AbstractComponent from '../abstract-component';
 
 export default class LoadingComponent extends AbstractComponent {

@@ -1,5 +1,5 @@
 import {renderComponent, replaceComponent} from '../utils/element';
-import {getFilteredEvents} from './helpers/getFilteredEvents';
+import {getFilteredEvents} from './helpers/get-filtered-events';
 
 import FilterComponent from '../components/head/filter';
 

@@ -9,8 +9,8 @@ import StatisticsComponent from './components/statistics';
 import LoadingComponent from './components/main/loading';
 
 import EventsModel from './models/events';
-import TripController from './controllers/tripController';
-import FilterController from './controllers/filterController';
+import TripController from './controllers/trip-controller';
+import FilterController from './controllers/filter-controller';
 
 const AUTHORIZATION = `Basic 3fc28b89c9a044a0ceedf0b1602d4f9`;
 const END_POINT = `https://11.ecmascript.pages.academy/big-trip/`;

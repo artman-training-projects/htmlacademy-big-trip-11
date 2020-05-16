@@ -1,4 +1,4 @@
-import {createHeadFilterTemplate} from './templates/headFilterTemplate';
+import {createHeadFilterTemplate} from './templates/head-filter';
 import AbstractComponent from '../abstract-component';
 
 const FILTER_ID_PREFIX = `filter-`;

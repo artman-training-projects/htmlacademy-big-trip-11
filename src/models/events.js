@@ -1,5 +1,5 @@
-import {FilterType} from '../controllers/filterController';
-import {getFilteredEvents} from '../controllers/helpers/getFilteredEvents';
+import {FilterType} from '../controllers/filter-controller';
+import {getFilteredEvents} from '../controllers/helpers/get-filtered-events';
 import {getRandomId} from '../utils/common';
 
 export default class Events {

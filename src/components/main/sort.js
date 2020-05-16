@@ -1,4 +1,4 @@
-import {createMainSortTemplate} from './templates/mainSortTemplate';
+import {createMainSortTemplate} from './templates/main-sort';
 import AbstractComponent from '../abstract-component';
 
 export const SortType = {

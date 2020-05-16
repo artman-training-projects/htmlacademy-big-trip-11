@@ -1,5 +1,5 @@
 import {renderComponent, removeComponent} from '../utils/element';
-import {getSortedEvents} from './helpers/getSortedEvents';
+import {getSortedEvents} from './helpers/get-sorted-events';
 import {HIDDEN_CLASS} from '../components/abstract-component';
 
 import DayComponent from '../components/main/day';
@@ -7,7 +7,7 @@ import NoEventComponent from '../components/main/no-events';
 import SortComponent, {SortType} from '../components/main/sort';
 import DaysComponent from '../components/main/days';
 
-import EventController, {Mode as EventControllerMode, EmptyEvent} from './eventController';
+import EventController, {Mode as EventControllerMode, EmptyEvent} from './event-controller';
 
 const addButton = document.querySelector(`.trip-main__event-add-btn`);
 

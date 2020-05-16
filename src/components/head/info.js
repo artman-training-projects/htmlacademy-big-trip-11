@@ -1,4 +1,4 @@
-import {createHeadInfoTemplate} from './templates/headInfoTemplate';
+import {createHeadInfoTemplate} from './templates/head-info';
 import AbstractComponent from '../abstract-component';
 
 export default class InfoComponent extends AbstractComponent {

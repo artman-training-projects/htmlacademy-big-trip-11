@@ -1,5 +1,5 @@
 import moment from 'moment';
-import {FilterType} from '../filterController';
+import {FilterType} from '../filter-controller';
 
 export const getFilteredEvents = (events, filterType = FilterType.EVERYTHING) => {
   const trip = events.slice();

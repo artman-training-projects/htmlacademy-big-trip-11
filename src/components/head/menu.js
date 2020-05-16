@@ -1,4 +1,4 @@
-import {createHeadMenuTemplate} from './templates/headMenuTemplate';
+import {createHeadMenuTemplate} from './templates/head-menu';
 import AbstractComponent from '../abstract-component';
 
 const NEW_EVENT_BTN = `trip-main__event-add-btn`;

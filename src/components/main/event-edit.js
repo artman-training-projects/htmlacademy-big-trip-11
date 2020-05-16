@@ -1,4 +1,4 @@
-import {createMainEventEditTemplate} from './templates/mainEventEditTemplate';
+import {createMainEventEditTemplate} from './templates/main-event-edit';
 import AbstracSmarttComponent from '../abstract-smart-component';
 
 import flatpickr from 'flatpickr';
