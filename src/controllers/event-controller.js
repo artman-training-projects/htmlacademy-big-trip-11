@@ -21,7 +21,7 @@ export const EmptyEvent = {
   type: `taxi`,
 };
 
-const parseFormData = (formData, elseData, eventsModel) => {
+const parseFormData = (formData, currentId, eventsModel) => {
   const name = formData.get(`event-destination`);
   const description = (eventsModel.getDestinations().find((destination) => destination.name === name));
 
@@ -31,7 +31,7 @@ const parseFormData = (formData, elseData, eventsModel) => {
   const checkedOffers = allOffers.filter((offer) => checkedOffersTitle.includes(offer.title));
 
   return new EventAdapter({
-    "id": elseData.id,
+    "id": currentId,
     "base_price": +formData.get(`event-price`),
     "date_from": new Date(formData.get(`event-start-time`)),
     "date_to": new Date(formData.get(`event-end-time`)),
@@ -79,7 +79,7 @@ export default class EventController {
       evt.preventDefault();
 
       const formData = this._eventEditComponent.getData();
-      const data = parseFormData(formData, event, this._eventsModel);
+      const data = parseFormData(formData, event.id, this._eventsModel);
 
       this._eventEditComponent.setData({
         saveButtonText: `Saving...`,

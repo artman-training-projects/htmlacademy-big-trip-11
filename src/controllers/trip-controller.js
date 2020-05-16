@@ -1,6 +1,6 @@
 import {renderComponent, removeComponent} from '../utils/element';
 import {getSortedEvents} from './helpers/get-sorted-events';
-import {HIDDEN_CLASS} from '../components/abstract-component';
+import {HIDDEN_CLASS} from '../utils/const';
 
 import DayComponent from '../components/main/day';
 import NoEventComponent from '../components/main/no-events';

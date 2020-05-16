@@ -1,3 +1,5 @@
+export const HIDDEN_CLASS = `visually-hidden`;
+
 export const SHOW_OFFERS = 3;
 
 export const Millisecond = {

@@ -54,6 +54,7 @@ export default class EventEditComponent extends AbstracSmarttComponent {
 
   rerenderElement() {
     super.rerenderElement();
+    this.applyFlatpickr();
   }
 
   recoveryListeners() {
@@ -200,7 +201,7 @@ export default class EventEditComponent extends AbstracSmarttComponent {
 
     FormElements.PRICE.addEventListener(`input`, (evt) => {
       const inputPrice = evt.target.value;
-      const invalidPrice = !inputPrice.match(/[\d]/);
+      const invalidPrice = !inputPrice.match(/[\d]/) || inputPrice < 0;
 
       FormElements.SAVE.disabled = invalidPrice;
       this._newEvent.basePrice = inputPrice;

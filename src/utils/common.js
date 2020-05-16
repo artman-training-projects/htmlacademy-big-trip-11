@@ -10,9 +10,9 @@ export const getDiffTime = (from, to) => {
   const diff = (to - from);
   let diffString;
 
-  if ((diff / Millisecond.IN_DAY) > 1) {
+  if ((diff / Millisecond.IN_DAY) >= 1) {
     diffString = `${Math.trunc(diff / Millisecond.IN_DAY)}D ${Math.trunc(diff % Millisecond.IN_DAY / Millisecond.IN_HOUR)}H ${Math.round(diff % Millisecond.IN_HOUR / Millisecond.IN_MINUTE)}M`;
-  } else if ((diff / Millisecond.IN_HOUR) > 1) {
+  } else if ((diff / Millisecond.IN_HOUR) >= 1) {
     diffString = `${Math.trunc(diff % Millisecond.IN_DAY / Millisecond.IN_HOUR)}H ${Math.round(diff % Millisecond.IN_HOUR / Millisecond.IN_MINUTE)}M`;
   } else {
     diffString = `${Math.round(diff % Millisecond.IN_HOUR / Millisecond.IN_MINUTE)}M`;

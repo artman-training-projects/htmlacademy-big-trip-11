@@ -1,6 +1,5 @@
 import {createElement} from '../utils/element';
-
-export const HIDDEN_CLASS = `visually-hidden`;
+import {HIDDEN_CLASS} from '../utils/const';
 
 export default class AbstractComponent {
   constructor() {
