@@ -33,7 +33,7 @@ export default class HeadMenuComponent extends AbstractComponent {
     item.classList.add(`trip-tabs__btn--active`);
   }
 
-  setOnChange(handler) {
+  setOnChangeItemClick(handler) {
     this.getElement().addEventListener(`click`, (evt) => {
       const menuItem = getMenuNameById(evt.target.id);
       handler(menuItem);

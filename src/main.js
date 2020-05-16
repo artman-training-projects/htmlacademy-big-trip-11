@@ -1,4 +1,4 @@
-import API from './api/index';
+import API from './api/api';
 import Store from './api/store';
 import Provider from './api/provider';
 import {renderComponent, removeComponent, RenderPosition} from './utils/element';
@@ -60,7 +60,7 @@ const statisticsComponent = new StatisticsComponent(eventsModel);
 renderComponent(ENTRY_POINT.EVENTS, statisticsComponent, RenderPosition.AFTEREND);
 statisticsComponent.hide();
 
-headMenuComponent.setOnChange((menuItem) => {
+headMenuComponent.setOnChangeItemClick((menuItem) => {
   switch (menuItem) {
     case MenuItem.TABLE: {
       headMenuComponent.setActiveItem(MenuItem.TABLE);

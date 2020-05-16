@@ -57,6 +57,14 @@ export default class EventEditComponent extends AbstracSmarttComponent {
     this._applyFlatpickr();
   }
 
+  recoveryListeners() {
+    this.setSubmitEventHandler(this._setSubmitEventHandler);
+    this.setResetEventHandler(this._setResetEventHandler);
+    this.setCloseEditHandler(this._setCloseEditHandler);
+    this.setFavoriteClickHandler(this._setFavoriteClickHandler);
+    this._subscribeOnEvents();
+  }
+
   removeElement() {
     if (this._flatpickrFrom) {
       this._flatpickrFrom.destroy();
@@ -69,14 +77,6 @@ export default class EventEditComponent extends AbstracSmarttComponent {
     }
 
     super.removeElement();
-  }
-
-  recoveryListeners() {
-    this.setSubmitEventHandler(this._setSubmitEventHandler);
-    this.setResetEventHandler(this._setResetEventHandler);
-    this.setCloseEditHandler(this._setCloseEditHandler);
-    this.setFavoriteClickHandler(this._setFavoriteClickHandler);
-    this._subscribeOnEvents();
   }
 
   reset() {
@@ -130,14 +130,14 @@ export default class EventEditComponent extends AbstracSmarttComponent {
 
   _subscribeOnEvents() {
     const element = this.getElement();
-    const elements = {
-      typeList: element.querySelector(`.event__type-list`),
-      destinations: element.querySelector(`.event__input--destination`),
-      inputPrice: element.querySelector(`.event__input--price`),
-      saveButton: element.querySelector(`.event__save-btn`),
+    const FormElements = {
+      Type: element.querySelector(`.event__type-list`),
+      DESTINATION: element.querySelector(`.event__input--destination`),
+      PRICE: element.querySelector(`.event__input--price`),
+      SAVE: element.querySelector(`.event__save-btn`),
     };
 
-    elements.typeList.addEventListener(`change`, (evt) => {
+    FormElements.Type.addEventListener(`change`, (evt) => {
       const target = evt.target;
       if (target.tagName !== `INPUT`) {
         return;
@@ -148,17 +148,17 @@ export default class EventEditComponent extends AbstracSmarttComponent {
       this.rerenderElement();
     });
 
-    elements.destinations.addEventListener(`click`, (evt) => {
+    FormElements.DESTINATION.addEventListener(`click`, (evt) => {
       evt.target.value = ``;
       this._newEvent.destination = false;
-      elements.saveButton.disabled = true;
+      FormElements.SAVE.disabled = true;
     });
 
-    elements.destinations.addEventListener(`input`, (evt) => {
+    FormElements.DESTINATION.addEventListener(`input`, (evt) => {
       const inputCity = evt.target.value;
       const invalidCity = !this._destinationsCity.find((city) => city === inputCity);
 
-      elements.saveButton.disabled = invalidCity;
+      FormElements.SAVE.disabled = invalidCity;
 
       if (invalidCity) {
         return;
@@ -169,11 +169,11 @@ export default class EventEditComponent extends AbstracSmarttComponent {
       this.rerenderElement();
     });
 
-    elements.inputPrice.addEventListener(`input`, (evt) => {
+    FormElements.PRICE.addEventListener(`input`, (evt) => {
       const inputPrice = evt.target.value;
       const invalidPrice = !inputPrice.match(/[\d]/);
 
-      elements.saveButton.disabled = invalidPrice;
+      FormElements.SAVE.disabled = invalidPrice;
       this._newEvent.basePrice = inputPrice;
     });
   }
