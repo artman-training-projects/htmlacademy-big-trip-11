@@ -1,7 +1,7 @@
 import {renderComponent, replaceComponent, removeComponent, RenderPosition} from '../utils/element';
 
-import EventEditComponent from '../components/main/main-event-edit';
-import EventComponent from '../components/main/main-day-event-item';
+import EventEditComponent from '../components/main/event-edit';
+import EventComponent from '../components/main/event';
 
 import EventAdapter from '../models/eventsAdapter';
 

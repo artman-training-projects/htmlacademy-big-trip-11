@@ -1,4 +1,4 @@
-import {MenuItem} from '../head-menu';
+import {MenuItem} from '../menu';
 
 const menuMarkup = (item) => {
   return (

@@ -1,4 +1,4 @@
-import {SortType} from '../../components/main/main-sort';
+import {SortType} from '../../components/main/sort';
 import {getEventTime} from '../../utils/common';
 
 export const getSortedEvents = (events, sortType = SortType.EVENT) => {

@@ -7,7 +7,7 @@ export const SortType = {
   PRICE: `price`,
 };
 
-export default class MainSortComponent extends AbstractComponent {
+export default class SortComponent extends AbstractComponent {
   constructor() {
     super();
     this._currentSortType = SortType.EVENT;

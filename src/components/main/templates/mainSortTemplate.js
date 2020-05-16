@@ -1,4 +1,4 @@
-import {SortType} from '../main-sort';
+import {SortType} from '../sort';
 
 export const createMainSortTemplate = (currentSortYpe) => {
   const sortTypes = Object.values(SortType);

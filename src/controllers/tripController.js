@@ -2,10 +2,10 @@ import {renderComponent, removeComponent} from '../utils/element';
 import {getSortedEvents} from './helpers/getSortedEvents';
 import {HIDDEN_CLASS} from '../components/abstract-component';
 
-import DayComponent from '../components/main/main-day';
-import NoEventComponent from '../components/main/main-no-events';
-import MainSortComponent, {SortType} from '../components/main/main-sort';
-import DaysComponent from '../components/main/main-days';
+import DayComponent from '../components/main/day';
+import NoEventComponent from '../components/main/no-events';
+import SortComponent, {SortType} from '../components/main/sort';
+import DaysComponent from '../components/main/days';
 
 import EventController, {Mode as EventControllerMode, EmptyEvent} from './eventController';
 
@@ -21,7 +21,7 @@ export default class TripController {
     this._creatingEvent = null;
 
     this._noEventComponent = new NoEventComponent();
-    this._sortComponent = new MainSortComponent();
+    this._sortComponent = new SortComponent();
     this._daysComponent = new DaysComponent();
 
     this._onDataChange = this._onDataChange.bind(this);

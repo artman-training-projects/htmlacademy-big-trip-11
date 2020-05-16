@@ -1,7 +1,7 @@
 import {renderComponent, replaceComponent} from '../utils/element';
 import {getFilteredEvents} from './helpers/getFilteredEvents';
 
-import FilterComponent from '../components/head/head-filter';
+import FilterComponent from '../components/head/filter';
 
 export const FilterType = {
   EVERYTHING: `everything`,

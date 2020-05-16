@@ -3,10 +3,10 @@ import Store from './api/store';
 import Provider from './api/provider';
 import {renderComponent, removeComponent, RenderPosition} from './utils/element';
 
-import HeadInfoComponent from './components/head/head-info';
-import HeadMenuComponent, {MenuItem} from './components/head/head-menu';
+import HeadInfoComponent from './components/head/info';
+import HeadMenuComponent, {MenuItem} from './components/head/menu';
 import StatisticsComponent from './components/statistics';
-import LoadingComponent from './components/main/main-loading-events';
+import LoadingComponent from './components/main/loading';
 
 import EventsModel from './models/events';
 import TripController from './controllers/tripController';

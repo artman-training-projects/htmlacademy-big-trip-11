@@ -10,7 +10,7 @@ export const MenuItem = {
   STATS: `Stats`,
 };
 
-export default class HeadMenuComponent extends AbstractComponent {
+export default class MenuComponent extends AbstractComponent {
   constructor() {
     super();
   }
