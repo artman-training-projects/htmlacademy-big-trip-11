@@ -170,17 +170,16 @@ export default class EventController {
       replaceComponent(this._eventComponent, this._eventEditComponent);
     }
 
+    if (this._mode === Mode.ADD) {
+      this._onDataChange(this, EmptyEvent, null);
+    }
+
     this._mode = Mode.DEFAULT;
   }
 
   _onEscKeyDown(evt) {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
     if (isEscKey) {
-      if (this._mode === Mode.ADD) {
-        this._onDataChange(this, EmptyEvent, null);
-        this._mode = Mode.DEFAULT;
-      }
-
       this._replaceEditToEvent();
       document.removeEventListener(`keydown`, this._onEscKeyDown);
     }

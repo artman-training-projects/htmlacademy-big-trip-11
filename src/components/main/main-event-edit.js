@@ -139,7 +139,6 @@ export default class EventEditComponent extends AbstracSmarttComponent {
 
       target.checked = true;
       this._newEvent.type = target.value;
-      // this._newEvent.offers = this._offersByType.get(target.value);
       this.rerenderElement();
     });
 

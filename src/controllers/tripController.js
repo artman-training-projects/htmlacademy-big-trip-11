@@ -9,6 +9,8 @@ import DaysComponent from '../components/main/main-days';
 
 import EventController, {Mode as EventControllerMode, EmptyEvent} from './eventController';
 
+const addButton = document.querySelector(`.trip-main__event-add-btn`);
+
 export default class TripController {
   constructor(container, eventsModel, api) {
     this._container = container;
@@ -52,6 +54,8 @@ export default class TripController {
   }
 
   createEvent() {
+    addButton.disabled = true;
+
     if (this._noEventComponent) {
       removeComponent(this._noEventComponent);
       renderComponent(this._container, this._daysComponent);
@@ -137,6 +141,8 @@ export default class TripController {
             eventController.shake();
           });
       }
+
+      addButton.disabled = false;
     } else if (newData === null) {
       this._api.deleteEvent(oldData.id)
         .then(() => {
@@ -165,6 +171,7 @@ export default class TripController {
   _onViewChange() {
     if (this._creatingEvent) {
       this._creatingEvent.setDefaultView();
+      this._creatingEvent = null;
     }
 
     this._eventsControllers.forEach((it) => it.setDefaultView());
@@ -175,6 +182,7 @@ export default class TripController {
     removeComponent(this._sortComponent);
     renderComponent(this._container, this._sortComponent);
     this._sortComponent.setSortTypeSelectHandler(this._onsSortTypeChange);
+    this._onViewChange();
     this._updateEvents();
   }
 
@@ -183,6 +191,7 @@ export default class TripController {
     removeComponent(this._sortComponent);
     renderComponent(this._container, this._sortComponent);
     this._sortComponent.setSortTypeSelectHandler(this._onsSortTypeChange);
+    this._onViewChange();
     this._updateEvents();
   }
 }
