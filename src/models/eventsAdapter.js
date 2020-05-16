@@ -23,15 +23,15 @@ export default class EventAdapter {
     };
   }
 
-  static parseEvent(data) {
-    return new EventAdapter(data);
+  static parseEvent(event) {
+    return new EventAdapter(event);
   }
 
-  static parseEvents(data) {
-    return data.map(EventAdapter.parseEvent);
+  static parseEvents(events) {
+    return events.map(EventAdapter.parseEvent);
   }
 
-  static clone(data) {
-    return new EventAdapter(data.toRAW());
+  static clone(event) {
+    return new EventAdapter(event.toRAW());
   }
 }

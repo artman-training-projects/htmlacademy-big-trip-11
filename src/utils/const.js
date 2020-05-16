@@ -36,3 +36,16 @@ export const tripPointTypesMap = new Map([
   [`sightseeing`, `Sightseeing in`],
   [`restaurant`, `Restaurant in`],
 ]);
+
+export const tripPointIconMap = new Map([
+  [`taxi`, `🚕`],
+  [`bus`, `🚌`],
+  [`train`, `🚂`],
+  [`ship`, `🚢`],
+  [`transport`, `🚆`],
+  [`drive`, `🚗`],
+  [`flight`, `✈️`],
+  [`check-in`, `🏨`],
+  [`sightseeing`, `🏛`],
+  [`restaurant`, `🍴`],
+]);

@@ -3,7 +3,7 @@ import {getFullCost, getRoute, getRouteDates} from '../../../utils/common';
 export const createHeadInfoTemplate = (events) => {
   const route = (events.length > 0) ? getRoute(events) : ``;
   const dates = (events.length > 0) ? getRouteDates(events) : ``;
-  const cost = (events.length > 0) ? getFullCost(events) : ``;
+  const cost = (events.length > 0) ? getFullCost(events, `basePrice`) : 0;
 
   return (
     `<section class="trip-main__trip-info  trip-info">

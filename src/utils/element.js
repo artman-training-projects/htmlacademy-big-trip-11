@@ -1,5 +1,6 @@
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
+  AFTEREND: `afterend`,
   BEFOREEND: `beforeend`,
   BEFOREBEGIN: `beforebegin`,
 };
@@ -14,6 +15,9 @@ export const renderComponent = (container, component, place = RenderPosition.BEF
   switch (place) {
     case RenderPosition.AFTERBEGIN:
       container.prepend(component.getElement());
+      break;
+    case RenderPosition.AFTEREND:
+      container.after(component.getElement());
       break;
     case RenderPosition.BEFOREEND:
       container.append(component.getElement());

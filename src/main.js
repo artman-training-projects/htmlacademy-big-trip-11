@@ -1,4 +1,6 @@
-import API from './api';
+import API from './api/index';
+import Store from './api/store';
+import Provider from './api/provider';
 import {renderComponent, removeComponent, RenderPosition} from './utils/element';
 
 import HeadInfoComponent from './components/head/head-info';
@@ -12,6 +14,9 @@ import FilterController from './controllers/filterController';
 
 const AUTHORIZATION = `Basic 3fc28b89c9a044a0ceedf0b1602d4f9`;
 const END_POINT = `https://11.ecmascript.pages.academy/big-trip/`;
+const STORE_PREFIX = `bigtrip-localstorage`;
+const STORE_VER = `v1`;
+const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
 
 const ENTRY_POINT = {
   MAIN: document.querySelector(`.trip-main`),
@@ -20,6 +25,8 @@ const ENTRY_POINT = {
 };
 
 const api = new API(END_POINT, AUTHORIZATION);
+const store = new Store(STORE_NAME, window.localStorage);
+const apiWithProvider = new Provider(api, store);
 const eventsModel = new EventsModel();
 
 const headInfoComponent = new HeadInfoComponent(eventsModel);
@@ -33,8 +40,8 @@ renderComponent(ENTRY_POINT.EVENTS, loadingComponent);
 const filterController = new FilterController(ENTRY_POINT.CONTROLS, eventsModel);
 filterController.render();
 
-const tripController = new TripController(ENTRY_POINT.EVENTS, eventsModel, api);
-api.getData()
+const tripController = new TripController(ENTRY_POINT.EVENTS, eventsModel, apiWithProvider);
+apiWithProvider.getData()
   .then((data) => {
     eventsModel.setEvents(data.events);
     eventsModel.setOffersByType(data.offers);
@@ -49,7 +56,7 @@ eventsModel.setDataChangeHandler(() => {
 });
 
 const statisticsComponent = new StatisticsComponent(eventsModel);
-renderComponent(ENTRY_POINT.EVENTS, statisticsComponent, RenderPosition.BEFOREEND);
+renderComponent(ENTRY_POINT.EVENTS, statisticsComponent, RenderPosition.AFTEREND);
 statisticsComponent.hide();
 
 headMenuComponent.setOnChange((menuItem) => {
@@ -72,4 +79,22 @@ headMenuComponent.setOnChange((menuItem) => {
 headMenuComponent.setNewEventButtonClick(() => {
   filterController.reset();
   tripController.createEvent();
+});
+
+window.addEventListener(`load`, () => {
+  navigator.serviceWorker.register(`/sw.js`)
+    .then(() => {
+      // Действие, в случае успешной регистрации ServiceWorker
+    }).catch(() => {
+      // Действие, в случае ошибки при регистрации ServiceWorker
+    });
+});
+
+window.addEventListener(`online`, () => {
+  document.title = document.title.replace(` [offline]`, ``);
+  apiWithProvider.sync();
+});
+
+window.addEventListener(`offline`, () => {
+  document.title += ` [offline]`;
 });

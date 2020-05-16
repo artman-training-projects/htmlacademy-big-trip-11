@@ -1,4 +1,4 @@
-import EventAdapter from './models/eventsAdapter';
+import EventAdapter from '../models/eventsAdapter';
 
 const Method = {
   GET: `GET`,
@@ -73,11 +73,11 @@ const API = class {
       .then(EventAdapter.parseEvent);
   }
 
-  updateEvent(id, data) {
+  updateEvent(id, event) {
     return this._load({
       url: `points/${id}`,
       method: Method.PUT,
-      body: JSON.stringify(data.toRAW()),
+      body: JSON.stringify(event.toRAW()),
       headers: new Headers({"Content-Type": `application/json`}),
     })
      .then((response) => response.json())
@@ -89,6 +89,16 @@ const API = class {
       url: `points/${id}`,
       method: Method.DELETE,
     });
+  }
+
+  sync(data) {
+    return this._load({
+      url: `points/sync`,
+      method: Method.POST,
+      body: JSON.stringify(data),
+      headers: new Headers({"Content-Type": `application/json`})
+    })
+      .then((response) => response.json());
   }
 
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {

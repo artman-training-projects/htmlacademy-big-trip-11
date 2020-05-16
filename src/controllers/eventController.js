@@ -18,7 +18,7 @@ export const EmptyEvent = {
   dateFrom: new Date(),
   dateTo: new Date(),
   destination: ``,
-  type: `Taxi`,
+  type: `taxi`,
 };
 
 const parseFormData = (formData, elseData, eventsModel) => {
@@ -26,7 +26,9 @@ const parseFormData = (formData, elseData, eventsModel) => {
   const description = (eventsModel.getDestinations().find((destination) => destination.name === name));
 
   const type = formData.get(`event-type`);
-  const offers = eventsModel.getOffersByType().get(formData.get(`event-type`));
+  const checkedOffersTitle = formData.getAll(`event-offer`);
+  const allOffers = eventsModel.getOffersByType().get(type);
+  const checkedOffers = allOffers.filter((offer) => checkedOffersTitle.includes(offer.title));
 
   return new EventAdapter({
     "id": elseData.id,
@@ -35,14 +37,15 @@ const parseFormData = (formData, elseData, eventsModel) => {
     "date_to": new Date(formData.get(`event-end-time`)),
     "destination": description,
     "type": type,
-    "offers": offers,
+    "offers": checkedOffers,
   });
 };
 
 export default class EventController {
-  constructor(container, onDataChange, onViewChange, eventsModel) {
+  constructor(container, onDataChange, onViewChange, eventsModel, api) {
     this._container = container;
     this._eventsModel = eventsModel;
+    this._api = api;
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
     this._eventComponent = null;
@@ -97,7 +100,11 @@ export default class EventController {
 
     this._eventEditComponent.setFavoriteClickHandler(() => {
       event[`isFavorite`] = !event[`isFavorite`];
-      this._eventsModel.updateEvent(event.id, event);
+
+      this._api.updateEvent(event.id, event)
+        .then((eventModel) => {
+          this._eventsModel.updateEvent(event.id, eventModel);
+        });
     });
 
     switch (mode) {
