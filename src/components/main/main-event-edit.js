@@ -130,8 +130,14 @@ export default class EventEditComponent extends AbstracSmarttComponent {
 
   _subscribeOnEvents() {
     const element = this.getElement();
+    const elements = {
+      typeList: element.querySelector(`.event__type-list`),
+      destinations: element.querySelector(`.event__input--destination`),
+      inputPrice: element.querySelector(`.event__input--price`),
+      saveButton: element.querySelector(`.event__save-btn`),
+    };
 
-    element.querySelector(`.event__type-list`).addEventListener(`change`, (evt) => {
+    elements.typeList.addEventListener(`change`, (evt) => {
       const target = evt.target;
       if (target.tagName !== `INPUT`) {
         return;
@@ -142,19 +148,17 @@ export default class EventEditComponent extends AbstracSmarttComponent {
       this.rerenderElement();
     });
 
-    element.querySelector(`.event__input--destination`).addEventListener(`click`, (evt) => {
+    elements.destinations.addEventListener(`click`, (evt) => {
       evt.target.value = ``;
       this._newEvent.destination = false;
-      const saveButton = this.getElement().querySelector(`.event__save-btn`);
-      saveButton.disabled = true;
+      elements.saveButton.disabled = true;
     });
 
-    element.querySelector(`.event__input--destination`).addEventListener(`input`, (evt) => {
+    elements.destinations.addEventListener(`input`, (evt) => {
       const inputCity = evt.target.value;
       const invalidCity = !this._destinationsCity.find((city) => city === inputCity);
 
-      const saveButton = this.getElement().querySelector(`.event__save-btn`);
-      saveButton.disabled = invalidCity;
+      elements.saveButton.disabled = invalidCity;
 
       if (invalidCity) {
         return;
@@ -165,12 +169,11 @@ export default class EventEditComponent extends AbstracSmarttComponent {
       this.rerenderElement();
     });
 
-    element.querySelector(`.event__input--price`).addEventListener(`input`, (evt) => {
+    elements.inputPrice.addEventListener(`input`, (evt) => {
       const inputPrice = evt.target.value;
       const invalidPrice = !inputPrice.match(/[\d]/);
 
-      const saveButton = this.getElement().querySelector(`.event__save-btn`);
-      saveButton.disabled = invalidPrice;
+      elements.saveButton.disabled = invalidPrice;
       this._newEvent.basePrice = inputPrice;
     });
   }
