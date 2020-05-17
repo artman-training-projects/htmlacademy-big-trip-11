@@ -6,7 +6,7 @@ export default class Store {
     this._storeDestinationsKey = `destinations`;
   }
 
-  getItems() {
+  getEvents() {
     try {
       return JSON.parse(this._storage.getItem(this._storeKey)) || {};
     } catch (err) {
@@ -30,15 +30,8 @@ export default class Store {
     }
   }
 
-  setItems(items) {
-    this._storage.setItem(
-        this._storeKey,
-        JSON.stringify(items)
-    );
-  }
-
   setItem(key, value) {
-    const store = this.getItems();
+    const store = this.getEvents();
 
     this._storage.setItem(
         this._storeKey,
@@ -47,6 +40,13 @@ export default class Store {
               [key]: value
             })
         )
+    );
+  }
+
+  setItems(items) {
+    this._storage.setItem(
+        this._storeKey,
+        JSON.stringify(items)
     );
   }
 
@@ -59,9 +59,8 @@ export default class Store {
   }
 
   removeItem(key) {
-    const store = this.getItems();
+    const store = this.getEvents();
     delete store[key];
-
     this._storage.setItem(
         this._storeKey,
         JSON.stringify(store)

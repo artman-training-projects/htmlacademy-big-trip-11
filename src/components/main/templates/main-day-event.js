@@ -36,7 +36,7 @@ export const createMainDayEventItemTemplate = (event) => {
             &mdash;
             <time class="event__end-time" datetime="${event.dateTo}">${parseTime(event.dateTo)}</time>
           </p>
-          <p class="event__duration">${getDiffTime(event.dateFrom, event.dateTo)}</p>
+          <p class="event__duration">${getDiffTime(new Date(event.dateFrom), new Date(event.dateTo))}</p>
         </div>
 
         <p class="event__price">

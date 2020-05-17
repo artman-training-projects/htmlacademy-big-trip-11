@@ -53,7 +53,7 @@ export const getRoute = (events) => {
 
 export const getRouteDates = (events) => {
   let dates = events.slice().sort((a, b) => Date.parse(a.dateFrom) - Date.parse(b.dateFrom));
-  dates = [dates[0].dateFrom, dates[dates.length - 1].dateTo];
+  dates = [new Date(dates[0].dateFrom), new Date(dates[dates.length - 1].dateTo)];
 
   const getDateStartString = () => {
     return `${monthMap.get(dates[0].getMonth())} ${dates[0].getDate()}`;

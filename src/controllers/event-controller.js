@@ -87,6 +87,7 @@ export default class EventController {
 
       this._eventEditComponent.reset();
       this._eventEditComponent.resetFlatpickr();
+      this._eventEditComponent.setDisabledForm();
 
       this._onDataChange(this, event, data);
       this._mode = Mode.DEFAULT;
@@ -96,6 +97,8 @@ export default class EventController {
       this._eventEditComponent.setData({
         deleteButtonText: `Deleting...`,
       });
+
+      this._eventEditComponent.setDisabledForm();
 
       this._onDataChange(this, event, null);
       this._mode = Mode.DEFAULT;

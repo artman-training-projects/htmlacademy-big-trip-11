@@ -87,9 +87,9 @@ export default class TripController {
         dayTrip = new DayComponent();
       }
 
-      if (dayFrom !== event.dateFrom.getDate()) {
+      if (dayFrom !== new Date(event.dateFrom).getDate()) {
         daysCount++;
-        dayFrom = event.dateFrom.getDate();
+        dayFrom = new Date(event.dateFrom).getDate();
 
         if (this._sortComponent.getSortType() === SortType.EVENT) {
           dayTrip = new DayComponent(event, daysCount);

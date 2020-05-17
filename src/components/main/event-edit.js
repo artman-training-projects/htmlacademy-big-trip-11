@@ -56,6 +56,13 @@ export default class EventEdit extends AbstracSmarttComponent {
     this.rerenderElement();
   }
 
+  setDisabledForm() {
+    const deleteButton = this.getElement().querySelector(`.event__reset-btn`);
+    const saveButton = this.getElement().querySelector(`.event__save-btn`);
+    deleteButton.disabled = true;
+    saveButton.disabled = true;
+  }
+
   setSubmitEventHandler(handler) {
     this.getElement().addEventListener(`submit`, handler);
     this._setSubmitEventHandler = handler;

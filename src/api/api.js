@@ -7,14 +7,6 @@ const Method = {
   DELETE: `DELETE`
 };
 
-const checkStatus = (response) => {
-  if (response.status >= 200 && response.status < 300) {
-    return response;
-  } else {
-    throw new Error(`${response.status}: ${response.statusText}`);
-  }
-};
-
 const API = class {
   constructor(endPoint, authorization) {
     this._endPoint = endPoint;
@@ -91,11 +83,11 @@ const API = class {
     });
   }
 
-  sync(data) {
+  sync(events) {
     return this._load({
       url: `points/sync`,
       method: Method.POST,
-      body: JSON.stringify(data),
+      body: JSON.stringify(events),
       headers: new Headers({"Content-Type": `application/json`})
     })
       .then((response) => response.json());
@@ -105,10 +97,18 @@ const API = class {
     headers.append(`Authorization`, this._authorization);
 
     return fetch(`${this._endPoint}${url}`, {method, body, headers})
-      .then(checkStatus)
+      .then(this._checkStatus)
       .catch((err) => {
         throw err;
       });
+  }
+
+  _checkStatus(response) {
+    if (response.status >= 200 && response.status < 300) {
+      return response;
+    } else {
+      throw new Error(`${response.status}: ${response.statusText}`);
+    }
   }
 };
 
