@@ -2,9 +2,10 @@ import EventAdapter from '../models/event-adapter';
 import {nanoid} from "nanoid";
 
 export default class Provider {
-  constructor(api, store) {
+  constructor(api, store, eventsModel) {
     this._api = api;
     this._store = store;
+    this._eventsModel = eventsModel;
   }
 
   getEvents() {
@@ -106,7 +107,6 @@ export default class Provider {
   sync() {
     if (this._isOnline()) {
       const storeEvents = Object.values(this._store.getEvents());
-      console.log(storeEvents);
 
       return this._api.sync(storeEvents)
         .then((response) => {
@@ -114,14 +114,13 @@ export default class Provider {
           const createdEvents = response.created;
           const updatedEvents = this._getSyncedEvents(response.updated);
 
-          console.log(createdEvents);
-          console.log(updatedEvents);
-
           // Добавляем синхронизированные задачи в хранилище.
           // Хранилище должно быть актуальным в любой момент.
           const items = this._createStoreStructure([...createdEvents, ...updatedEvents]);
-          console.log(items);
           this._store.setItems(items);
+
+          const events = EventAdapter.parseEvents(Object.values(items));
+          this._eventsModel.setEvents(events);
         });
     }
 
@@ -129,7 +128,6 @@ export default class Provider {
   }
 
   _getSyncedEvents(items) {
-    console.log(items);
     return items.filter(({success}) => success)
       .map(({payload}) => payload.point);
   }

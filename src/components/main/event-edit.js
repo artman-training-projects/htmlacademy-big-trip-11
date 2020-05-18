@@ -56,13 +56,6 @@ export default class EventEdit extends AbstracSmarttComponent {
     this.rerenderElement();
   }
 
-  setDisabledForm() {
-    const deleteButton = this.getElement().querySelector(`.event__reset-btn`);
-    const saveButton = this.getElement().querySelector(`.event__save-btn`);
-    deleteButton.disabled = true;
-    saveButton.disabled = true;
-  }
-
   setSubmitEventHandler(handler) {
     this.getElement().addEventListener(`submit`, handler);
     this._setSubmitEventHandler = handler;
@@ -87,6 +80,27 @@ export default class EventEdit extends AbstracSmarttComponent {
       favorite.addEventListener(`click`, handler);
       this._setFavoriteClickHandler = handler;
     }
+  }
+
+  recoveryListeners() {
+    this.setSubmitEventHandler(this._setSubmitEventHandler);
+    this.setResetEventHandler(this._setResetEventHandler);
+    this.setCloseEditHandler(this._setCloseEditHandler);
+    this.setFavoriteClickHandler(this._setFavoriteClickHandler);
+    this._subscribeOnEvents();
+  }
+
+  setFormOff() {
+    const buttons = this.getElement().querySelectorAll(`button`);
+    const inputs = this.getElement().querySelectorAll(`input`);
+
+    buttons.forEach((button) => {
+      button.disabled = true;
+    });
+
+    inputs.forEach((input) => {
+      input.disabled = true;
+    });
   }
 
   reset() {
@@ -118,14 +132,6 @@ export default class EventEdit extends AbstracSmarttComponent {
       this._flatpickrTo.destroy();
       this._flatpickrTo = null;
     }
-  }
-
-  recoveryListeners() {
-    this.setSubmitEventHandler(this._setSubmitEventHandler);
-    this.setResetEventHandler(this._setResetEventHandler);
-    this.setCloseEditHandler(this._setCloseEditHandler);
-    this.setFavoriteClickHandler(this._setFavoriteClickHandler);
-    this._subscribeOnEvents();
   }
 
   rerenderElement() {

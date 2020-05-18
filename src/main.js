@@ -25,10 +25,10 @@ const ENTRY_POINT = {
   EVENTS: document.querySelector(`.trip-events`),
 };
 
+const eventsModel = new EventsModel();
 const api = new API(END_POINT, AUTHORIZATION);
 const store = new Store(STORE_NAME, window.localStorage);
-const apiWithProvider = new Provider(api, store);
-const eventsModel = new EventsModel();
+const apiWithProvider = new Provider(api, store, eventsModel);
 
 const headInfoComponent = new HeadInfoComponent(eventsModel);
 const headMenuComponent = new HeadMenuComponent();
@@ -42,6 +42,8 @@ apiWithProvider.getData()
     eventsModel.setEvents(data.events);
     eventsModel.setOffersByType(data.offers);
     eventsModel.setDestinations(data.destinations);
+  })
+  .then(() => {
     removeComponent(loadingComponent);
     renderComponent(ENTRY_POINT.MAIN, headInfoComponent, RenderPosition.AFTERBEGIN);
     renderComponent(ENTRY_POINT.CONTROLS, headMenuComponent, RenderPosition.AFTERBEGIN);
@@ -93,7 +95,8 @@ window.addEventListener(`load`, () => {
 
 window.addEventListener(`online`, () => {
   document.title = document.title.replace(` [offline]`, ``);
-  apiWithProvider.sync();
+  apiWithProvider.sync()
+    .then(() => tripController.updateEvents());
 });
 
 window.addEventListener(`offline`, () => {

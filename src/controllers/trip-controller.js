@@ -71,6 +71,12 @@ export default class TripController {
     this._creatingEvent.render(EmptyEvent, EventControllerMode.ADD);
   }
 
+  updateEvents() {
+    this._removeEvents();
+    this._removeDays();
+    this.render();
+  }
+
   _renderTrip() {
     renderComponent(this._container, this._daysComponent);
     const daysContainer = this._daysComponent.getElement();
@@ -118,12 +124,6 @@ export default class TripController {
     this._eventsControllers = [];
   }
 
-  _updateEvents() {
-    this._removeEvents();
-    this._removeDays();
-    this.render();
-  }
-
   _onDataChange(eventController, oldData, newData) {
     if (oldData === EmptyEvent) {
       if (newData === null) {
@@ -135,7 +135,7 @@ export default class TripController {
           .then((eventModel) => {
             this._eventsModel.addEvent(eventModel);
             eventController.render(eventModel, EventControllerMode.DEFAULT);
-            this._updateEvents();
+            this.updateEvents();
           })
           .catch(() => {
             eventController.shake();
@@ -147,7 +147,7 @@ export default class TripController {
       this._api.deleteEvent(oldData.id)
         .then(() => {
           this._eventsModel.removeEvent(oldData.id);
-          this._updateEvents();
+          this.updateEvents();
         })
         .catch(() => {
           eventController.shake();
@@ -159,7 +159,7 @@ export default class TripController {
 
           if (isSuccess) {
             eventController.render(eventModel, EventControllerMode.DEFAULT);
-            this._updateEvents();
+            this.updateEvents();
           }
         })
         .catch(() => {
@@ -183,7 +183,7 @@ export default class TripController {
     renderComponent(this._container, this._sortComponent);
     this._sortComponent.setSortTypeSelectHandler(this._onsSortTypeChange);
     this._onViewChange();
-    this._updateEvents();
+    this.updateEvents();
   }
 
   _onsSortTypeChange() {
@@ -192,6 +192,6 @@ export default class TripController {
     renderComponent(this._container, this._sortComponent);
     this._sortComponent.setSortTypeSelectHandler(this._onsSortTypeChange);
     this._onViewChange();
-    this._updateEvents();
+    this.updateEvents();
   }
 }
