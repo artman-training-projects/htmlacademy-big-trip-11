@@ -40,10 +40,21 @@ export default class EventEdit extends AbstracSmarttComponent {
 
     this._flatpickrFrom = null;
     this._flatpickrTo = null;
+
+    this._invalidCity = false;
+    this._invalidPrice = false;
   }
 
   getTemplate() {
     return createMainEventEditTemplate(Object.assign({}, this._event, this._newEvent), this._destinationsCity, this._offersByType, this._externalData);
+  }
+
+  recoveryListeners() {
+    this.setSubmitEventHandler(this._setSubmitEventHandler);
+    this.setResetEventHandler(this._setResetEventHandler);
+    this.setCloseEditHandler(this._setCloseEditHandler);
+    this.setFavoriteClickHandler(this._setFavoriteClickHandler);
+    this._subscribeOnEvents();
   }
 
   getData() {
@@ -80,14 +91,6 @@ export default class EventEdit extends AbstracSmarttComponent {
       favorite.addEventListener(`click`, handler);
       this._setFavoriteClickHandler = handler;
     }
-  }
-
-  recoveryListeners() {
-    this.setSubmitEventHandler(this._setSubmitEventHandler);
-    this.setResetEventHandler(this._setResetEventHandler);
-    this.setCloseEditHandler(this._setCloseEditHandler);
-    this.setFavoriteClickHandler(this._setFavoriteClickHandler);
-    this._subscribeOnEvents();
   }
 
   setFormOff() {
@@ -178,6 +181,10 @@ export default class EventEdit extends AbstracSmarttComponent {
       SAVE: element.querySelector(`.event__save-btn`),
     };
 
+    const isValid = () => {
+      FormElements.SAVE.disabled = !(!this._invalidCity && !this._invalidPrice && !!this._newEvent.destination.name);
+    };
+
     FormElements.Type.addEventListener(`change`, (evt) => {
       const target = evt.target;
       if (target.tagName !== `INPUT`) {
@@ -191,17 +198,16 @@ export default class EventEdit extends AbstracSmarttComponent {
 
     FormElements.DESTINATION.addEventListener(`click`, (evt) => {
       evt.target.value = ``;
-      this._newEvent.destination = false;
-      FormElements.SAVE.disabled = true;
+      this._invalidCity = true;
+      isValid();
     });
 
     FormElements.DESTINATION.addEventListener(`input`, (evt) => {
       const inputCity = evt.target.value;
-      const invalidCity = !this._destinationsCity.find((city) => city === inputCity);
+      this._invalidCity = !this._destinationsCity.find((city) => city === inputCity);
 
-      FormElements.SAVE.disabled = invalidCity;
-
-      if (invalidCity) {
+      isValid();
+      if (this._invalidCity) {
         return;
       }
 
@@ -222,9 +228,9 @@ export default class EventEdit extends AbstracSmarttComponent {
 
     FormElements.PRICE.addEventListener(`input`, (evt) => {
       const inputPrice = evt.target.value;
-      const invalidPrice = !inputPrice.match(/[\d]/) || inputPrice < 0;
+      this._invalidPrice = !!inputPrice.match(/[^\d]/);
 
-      FormElements.SAVE.disabled = invalidPrice;
+      isValid();
       this._newEvent.basePrice = inputPrice;
     });
 

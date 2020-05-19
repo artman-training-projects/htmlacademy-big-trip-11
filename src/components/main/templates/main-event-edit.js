@@ -121,7 +121,7 @@ export const createMainEventEditTemplate = (event, destinationsCity, offersByTyp
             <span class="visually-hidden">${event.basePrice}</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-${event.id}" type="text" name="event-price" value="${event.basePrice}">
+          <input class="event__input  event__input--price" id="event-price-${event.id}" type="number" min="0" name="event-price" value="${event.basePrice}">
         </div>
 
         <button class="event__save-btn  btn  btn--blue" type="submit" ${isValid ? `` : `disabled`}>${saveButtonText}</button>

@@ -12,6 +12,8 @@ export const ChartVariables = {
   LABELS_FONT_SIZE: 13,
   TITLE_FONT_SIZE: 23,
   LAYOUT_PADDING_LEFT: 45,
+  SCALES_Y_PADDING: 5,
+  SCALES_Y_FONTSIZE: 13,
 };
 
 export default class Statistics extends AbstractComponent {

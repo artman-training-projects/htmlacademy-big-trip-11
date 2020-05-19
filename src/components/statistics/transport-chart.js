@@ -57,8 +57,8 @@ export const transportChart = (ctx, events) => {
         yAxes: [{
           ticks: {
             fontColor: `#000000`,
-            padding: 5,
-            fontSize: 13,
+            padding: ChartVariables.SCALES_Y_PADDING,
+            fontSize: ChartVariables.SCALES_Y_FONTSIZE,
           },
           gridLines: {
             display: false,
